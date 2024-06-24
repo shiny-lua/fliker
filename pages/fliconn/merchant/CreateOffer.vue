@@ -1,0 +1,15 @@
+<template>
+    <div class="offer-create pt-3 pt-md-4">
+        <offer-form />
+    </div>
+</template>
+<script>
+import OfferForm from "~/components/fliconn/merchant_offers/OfferForm.vue";
+export default {
+    name: 'offer-create',
+    middleware: 'auth',
+    components: {
+        OfferForm,
+    }
+}
+</script>

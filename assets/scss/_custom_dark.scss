@@ -1,0 +1,312 @@
+[data-theme=dark] {
+    .visible-dark {
+        display: inline-block;
+    }
+    .visible-light {
+        display: none;
+    }
+    body {
+        color: $text-color-dark;
+        background-color: $body-bg-dark;
+    }
+
+    label {
+        font-weight: 400;
+    }
+
+    hr {
+        background-color: rgba(51, 69, 87, 0.502);
+    }
+
+    .fp-card {
+        background-color: $card-bg-dark;
+        color: $text-color-dark;
+        .fp-card-header {
+          border-bottom-color: rgba(255, 255, 255, 0.2);
+          .fp-card-title {
+            font-weight: 400;
+          }
+        }
+        .count {
+            color: $text-color-dark-1 !important;
+        }
+        @media (max-width: 600px) {
+            &.bg-reverse-sm {
+                background-color: $body-bg-dark;
+            }
+        }
+    }
+
+
+    .fp-card-outline {
+        border-radius: 12px;
+        padding: 16px;
+        border: solid 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .sticky-placeholder {
+        background-color: $body-bg-dark;
+    }
+
+    .fp-input-placeholder {
+      background-color: $body-bg-dark;
+      @media (max-width: 600px) {
+          &.bg-reverse-sm {
+              background-color: $card-bg-dark;
+          }
+      }
+    }
+
+    .fp-text-color {
+        color: $text-color-dark !important;
+    }
+
+    .fp-text-color-main {
+        color: #8598B2 !important;
+    }
+
+    .fp-text-default {
+        color: #8598B2 !important;
+    }
+
+    .fp-border-color {
+        border-color: #00162D;
+    }
+
+    .fp-border-color-1 {
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .fp-bg-color-1 {
+        background-color: #00162D !important;
+    }
+
+    .fp-bg-color-2 {
+        background-color: $body-bg-dark !important;
+        color: #FFF !important;
+        &.bg-revert-sm {
+            @media (max-width: 600px) {
+                background-color: $card-bg-dark !important;
+            }
+        }
+    }
+
+    .fp-bg-color-3 {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .fp-bg-body {
+        background-color: $body-bg-dark !important;
+    }
+
+    .fp-btn-default {
+        color: $text-color-dark;
+        background-color: #18243E;
+    }
+
+    .form-control {
+        color: $text-color-dark;
+        border-color: rgba(255, 255, 255, 0.2);
+        &.has-bg {
+            background-color: $card-bg-dark;
+            &:not(.mobile-has-no-bg) {
+                @media (max-width: 600px) {
+                    background-color: $body-bg-dark;
+                }
+            }
+        }
+    }
+
+    .add-status {
+        color: #FFF;
+    }
+
+    .emojipicker .emojipicker-area {
+        background-color: transparent !important;
+        color: $text-color-dark;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .vdp-datepicker__calendar {
+        background-color: #18243E;
+        border-color: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        color: #8598B2;
+
+        header .prev:not(.disabled):hover,
+        header .next:not(.disabled):hover,
+        header .up:not(.disabled):hover {
+            background: transparent;
+        }
+        .disabled {
+            opacity: 0.5;
+        }
+    }
+
+    .login-container .form-wrapper {
+        border: solid 1px #18243E;
+        .card-header {
+            background-color: #18243E;
+        }
+    }
+
+  .fp-table {
+        table {
+            thead {
+                th {
+                    background: #00162D;
+                }
+            }
+        tr {
+            td {
+                background: #18243E;
+            }
+        }
+        td, th {
+            border-color: #334557;
+        }
+    }
+    .pagination {
+        .page-item {
+            margin-left: 10px;
+                .page-link {
+                    border-radius: 8px;
+                }
+                &.active {
+                    .page-link {
+                        background-color: #FF22A1;
+                        border-color: #FF22A1;
+                    }
+                }
+                &.disabled {
+                    .page-link {
+                        color: #64748B;
+                        border-color: #64748B;
+                        font-size: 13px;
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+
+    .fp-modal {
+        .vm--modal {
+            background-color: #00162D;
+            border: 1px solid #334557
+        }
+        .fp--modal-content {
+            .fp--modal-header {
+                border-bottom: solid 1px rgba(255, 255, 255, 0.2);
+                .fp--modal-title {
+                    color: #FFF;
+                }
+            }
+        }
+    }
+
+
+    .multiselect {
+        color: #8598B2;
+        &__tags {
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        &__single {
+            background-color: inherit;
+            color: #FFF;
+        }
+        &__input {
+            background-color: inherit;
+            color: #FFF;
+        }
+        &__content-wrapper {
+            background: #18243E;
+            border-color: $border-color-dark-1;
+        }
+    }
+
+    .dropdown-menu {
+        background-color: #00162D;
+        border: solid 1px rgba(51, 69, 87, 0.5);
+    }
+
+
+    .dropdown-context-menu {
+        .btn-context-menu {
+            color: #8598B2;
+        }
+    }
+
+    .category.button-view {
+        color: #8598B2;
+        border: 1px solid rgba(51, 69, 87, 0.502);
+    }
+
+    .fp-svg-fill {
+        fill: $text-color-dark;
+    }
+
+    .fp-svg-fill-3 {
+        fill: $text-color-3-dark;
+    }
+
+    .fp-svg-stroke {
+        stroke: $text-color-dark;
+    }
+
+    .fp-svg-stroke-3 {
+       stroke: $text-color-3-dark;
+    }
+
+    .fp-filter-item {
+        color: #8598B2;
+        border-color: $border-color-dark-1;
+    }
+
+    @media (min-width: 720px) {
+        .nice-scrollbar::-webkit-scrollbar-track {
+            background: #334557;
+        }
+        .nice-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(64, 110, 155, .8);
+        }
+        .nice-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(64, 110, 155, 1);
+        }
+        .nice-scrollbar::-webkit-scrollbar-thumb:active {
+            background: rgba(64, 110, 155, 1);
+        }
+    }
+    .group-message-item {
+        @media (max-width: 600px) {
+            .timestamp {
+                span {
+                    background-color: $body-bg-dark !important;
+                }
+            }
+        }
+    }
+
+    .swal2-popup {
+        background-color: #00162D;
+        border: 1px solid #334557;
+        .swal2-title {
+            color: #FFF;
+        }
+        .swal2-content {
+            color: #8598B2;
+        }
+    }
+
+    .profile-categories {
+        @media (min-width: 601px) {
+            background-color: #00162D;
+        }
+    }
+
+    .dropdown-menu {
+        .dropdown-item {
+            font-weight: 400;
+        }
+    }
+}
