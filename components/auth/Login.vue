@@ -1,15 +1,16 @@
 <template>
-  <div class="row pt-3 pt-md-3 justify-content-center">
+  <div class="row log-container">
     <div class="col-md-6 col-lg-5 d-none d-md-block">
       <login-card />
     </div>
     <div class="col-md-6 col-lg-5">
       <div class="login-container fp-card p-md-4">
-        <h4 class="mb-4">
+        <h4 class="mb-4 mt-3">
           Welcome to <span class="fp-text-active">FlickerPage</span>
         </h4>
-        <div class="d-flex align-items-center mb-3 mb-md-4">
-          <h6 class="mb-0 mr-1">Quick Sign-in</h6>
+        <!-- <div class="d-flex align-items-center mb-3 mb-md-4"> -->
+        <div class="login-with-social">
+          <h6 class="mb-0 ">Quick Sign-in</h6>
           <login-with-social />
         </div>
         <form @submit.prevent="login" @keydown="form.onKeydown($event)">
@@ -17,31 +18,15 @@
           <div class="form-group mb-3">
             <div class="d-flex justify-content-between">
               <label>Username</label>
-              <a
-                href="javascript:;"
-                class="font-weight-400"
-                tabindex="-1"
-                @click="handleForgotUser"
-                >Forgot username?
+              <a href="javascript:;" class="font-weight-400" tabindex="-1" @click="handleForgotUser">Forgot username?
               </a>
             </div>
             <div class="icon-prefix-input">
               <fp-icon name="user" />
-              <input
-                v-model="form.username"
-                class="form-control"
-                :class="form.errors.has('username') && 'is-invalid'"
-                type="text"
-                name="username"
-                placeholder="Enter username"
-                maxlength="128"
-                required
-              />
+              <input v-model="form.username" class="form-control" :class="form.errors.has('username') && 'is-invalid'"
+                     type="text" name="username" placeholder="Enter username" maxlength="128" required />
             </div>
-            <div
-              v-if="form.errors.has('username')"
-              class="invalid-feedback d-block"
-            >
+            <div v-if="form.errors.has('username')" class="invalid-feedback d-block">
               <fp-icon name="alert-circle" class="fp-fs-20 mt-n-2px" />
               {{ form.errors.get("username") }}
             </div>
@@ -50,63 +35,34 @@
           <div class="form-group">
             <div class="d-flex justify-content-between">
               <label>Password</label>
-              <a
-                href="javascript:;"
-                class="font-weight-400"
-                tabindex="-1"
-                @click="handleForgotPassword"
-                >Forgot password?
+              <a href="javascript:;" class="font-weight-400" tabindex="-1" @click="handleForgotPassword">Forgot
+                password?
               </a>
             </div>
             <div class="icon-prefix-input">
               <fp-icon name="lock" />
-              <input
-                v-model="form.password"
-                class="form-control"
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                maxlength="256"
-                required
-              />
+              <input v-model="form.password" class="form-control" type="password" name="password"
+                     placeholder="Enter password" maxlength="256" required />
             </div>
           </div>
-          <div class="row mx-n2">
-            <div class="col-md-6 px-2 mb-3">
-              <button
-                type="submit"
-                class="btn btn-block fp-btn-gradient"
-                :class="{ 'btn-loading': form.busy }"
-                :disabled="form.busy"
-              >
+          <div class="btn-group">
+            <div>
+              <button type="submit" class="btn w-100 fp-btn-gradient" :class="{ 'btn-loading': form.busy }"
+                      :disabled="form.busy">
                 <fp-icon name="sign-in" class="fp-fs-22" />
                 &nbsp; Sign in
               </button>
-            </div>
-            <div class="col-md-6 px-2 mb-3">
-              <a
-                href="javascript:;"
-                class="btn btn-block btn-signup"
-                @click="signUp()"
-              >
+              <a href="javascript:;" class="btn w-100 btn-signup" @click="signUp()">
                 <fp-icon name="user-plus" class="fp-fs-22" />
                 &nbsp; Sign up
               </a>
             </div>
-            <div class="col-6 px-2 mb-3">
-              <router-link
-                :to="{ name: 'ads' }"
-                class="btn btn-block fp-btn-default btn-direct-open"
-              >
+            <div>
+              <router-link :to="{ name: 'ads' }" class="btn router-link fp-btn-default btn-direct-open">
                 <fp-icon name="ads" class="fp-fs-22" />
                 &nbsp; Local Classifieds
               </router-link>
-            </div>
-            <div class="col-6 px-2 mb-3">
-              <router-link
-                :to="{ name: 'topic' }"
-                class="btn btn-block fp-btn-default btn-direct-open"
-              >
+              <router-link :to="{ name: 'topic' }" class="btn router-link fp-btn-default btn-direct-open">
                 <fp-icon name="facts_questions" class="fp-fs-22" />
                 &nbsp; Facts/ Questions?
               </router-link>
@@ -221,6 +177,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.row {
+  margin-inline: 0px !important;
+}
+
 h3 {
   @media (max-width: 600px) {
     font-size: 25px;
@@ -230,6 +190,7 @@ h3 {
 .login-container {
   border-radius: 12px;
   height: 100%;
+
   @media (max-width: 600px) {
     padding: 0;
     background-color: inherit;
@@ -243,15 +204,79 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
+
   &.btn-direct-open {
     font-size: 14px;
   }
+}
+
+.log-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 150px;
+
+  @media (max-width: 600px) {
+    margin-top: 70px;
+  }
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  &>:first-child {
+    display: flex;
+    justify-content: space-between;
+    gap: .5em;
+
+    @media (max-width: 370px) {
+      flex-direction: column;
+    }
+  }
+
+  &>:last-child {
+    display: flex;
+    justify-content: space-between;
+    gap: .5em;
+
+    @media (max-width: 370px) {
+      flex-direction: column;
+    }
+  }
+}
+
+.login-with-social {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  padding-bottom: 7px;
+
+  @media (max-width: 1199px) {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    gap: 2em;
+  }
+
 }
 
 .btn-signup {
   border-color: #ff22a1;
   color: #ff22a1;
 }
+
+.router-link {
+  width: 100%;
+}
+
 [data-theme="dark"] {
   .btn-direct-open {
     @media (max-width: 600px) {

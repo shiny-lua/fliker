@@ -25,7 +25,7 @@
         <div class="row mx-n2">
             <div v-for="(item, index) in posts"
                  :key="index"
-                 class="px-2 mb-4"
+                 class="px-2 mb-4 col-sm-6 col-md-3"
                  :class="itemClass"
             >
                 <timeline-item v-if="type === 'timeline'"

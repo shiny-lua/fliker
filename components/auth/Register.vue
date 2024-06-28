@@ -1,5 +1,5 @@
 <template>
-  <div class="row pt-3 pt-md-3 justify-content-center mb-5">
+  <div class="row pt-3 pt-md-3 justify-content-center mb-5 register-content">
     <div class="col-md-6 col-lg-5 d-none d-md-block">
       <login-card />
     </div>
@@ -7,87 +7,45 @@
       <div class="signup-container fp-card p-0 p-md-4">
         <div v-if="mustVerify">
           <form @submit.prevent="verifyCode()">
-            <verify-form
-              v-if="isEmailUse"
-              mode="email"
-              @sent="verificationCodeSent"
-              :resend="true"
-              :email="form_verify.email"
-              :user_id="form_verify.user_id"
-            />
-            <verify-form
-              v-else
-              mode="phone_number"
-              @sent="verificationCodeSent"
-              :resend="true"
-              :phone_number="phoneNumberObj"
-            />
+            <verify-form v-if="isEmailUse" mode="email" @sent="verificationCodeSent" :resend="true"
+                         :email="form_verify.email" :user_id="form_verify.user_id" />
+            <verify-form v-else mode="phone_number" @sent="verificationCodeSent" :resend="true"
+                         :phone_number="phoneNumberObj" />
             <div v-if="isEmailUse" class="my-2 d-flex align-items-center">
               <strong> Don't have access to Email?</strong>&nbsp;&nbsp;
-              <fp-icon
-                name="mobile"
-                class="fp-fs-24 fp-text-color-main"
-              />&nbsp;
-              <a
-                href="javascript:;"
-                tabindex="-1"
-                class="fp-text-color-primary text-underline"
-                @click="isEmailUse = false"
-                >Use phone number.</a
-              >
+              <fp-icon name="mobile" class="fp-fs-24 fp-text-color-main" />&nbsp;
+              <a href="javascript:;" tabindex="-1" class="fp-text-color-primary text-underline"
+                 @click="isEmailUse = false">Use phone number.</a>
             </div>
             <div v-else class="my-2 d-flex align-items-center">
               <strong> Having trouble with phone?</strong>&nbsp;&nbsp;
               <fp-icon name="email" class="fp-fs-24 fp-text-color-main" />&nbsp;
-              <a
-                href="javascript:;"
-                tabindex="-1"
-                class="fp-text-color-primary text-underline"
-                @click="isEmailUse = true"
-              >
-                Use email address</a
-              >
+              <a href="javascript:;" tabindex="-1" class="fp-text-color-primary text-underline"
+                 @click="isEmailUse = true">
+                Use email address</a>
             </div>
             <div class="fp-border-color-1 p-2 p-md-3 border round-12 mt-4">
               <div class="d-flex align-items-center mb-3">
                 <fa icon="check-circle" class="text-success" />
-                <p
-                  class="fp-text-color-main mb-0 ml-2"
-                  style="font-size: 13.6px"
-                >
+                <p class="fp-text-color-main mb-0 ml-2" style="font-size: 13.6px">
                   Enter the 4 digit verification code
                 </p>
               </div>
               <div class="mb-3">
-                <input
-                  v-model="form_verify.verification_code"
-                  type="code"
-                  class="form-control form-control-lg code-input"
-                  :class="{
-                    'is-invalid': form_verify.errors.has('verification_code'),
-                  }"
-                  maxlength="4"
-                  required
-                  placeholder="Enter code here"
-                />
-                <div
-                  v-if="form_verify.errors.has('verification_code')"
-                  class="invalid-feedback d-block"
-                >
+                <input v-model="form_verify.verification_code" type="code" class="form-control form-control-lg code-input"
+                       :class="{
+                         'is-invalid': form_verify.errors.has('verification_code'),
+                       }" maxlength="4" required placeholder="Enter code here" />
+                <div v-if="form_verify.errors.has('verification_code')" class="invalid-feedback d-block">
                   <fp-icon name="alert-circle" class="fp-fs-20 mt-n-2px" />
                   {{ form_verify.errors.get("verification_code") }}
                 </div>
               </div>
               <div class="justify-center">
-                <button
-                  type="submit"
-                  class="btn fp-btn-gradient px-4"
-                  :class="{
-                    'btn-loading':
-                      form_verify.mode === 'verify' && form_verify.busy,
-                  }"
-                  :disabled="form_verify.mode === 'verify' && form_verify.busy"
-                >
+                <button type="submit" class="btn fp-btn-gradient px-4" :class="{
+                  'btn-loading':
+                    form_verify.mode === 'verify' && form_verify.busy,
+                }" :disabled="form_verify.mode === 'verify' && form_verify.busy">
                   SUBMIT
                 </button>
               </div>
@@ -96,112 +54,73 @@
           <div class="mt-4">
             <fp-icon name="user-check" class="fp-fs-24 fp-text-color-main" />
             Already have an account?
-            <a
-              href="javascript:;"
-              class="fp-text-active ml-2"
-              style="text-decoration: underline"
-              @click.prevent="handleLogin"
-              ><strong>Login</strong></a
-            >
+            <a href="javascript:;" class="fp-text-active ml-2" style="text-decoration: underline"
+               @click.prevent="handleLogin"><strong>Login</strong></a>
           </div>
         </div>
         <div v-else>
-          <form @submit.prevent="register" @keydown="form.onKeydown($event)">
-            <div class="row mx-n1">
-              <div class="col-12 px-1 text-center d-md-none">
+          <form @submit.prevent="register" @keydown="form.onKeydown($event)" class="">
+            <div>
+              <div class="text-center d-md-none">
                 <h4 class="fp-text-active">Sign Up</h4>
               </div>
-              <!-- First Name -->
-              <div class="col-sm-6 mb-3 mb-md-2 px-1">
-                <label class="d-md-none">First Name</label>
-                <div class="icon-prefix-input">
-                  <fp-icon name="user" />
-                  <input
-                    v-model="form.first_name"
-                    :class="{
+              <div>
+                <!-- First Name -->
+                <div class=" mb-3 mb-md-2">
+                  <label class="d-md-none">First Name</label>
+                  <div class="icon-prefix-input">
+                    <fp-icon name="user" />
+                    <input v-model="form.first_name" :class="{
                       'is-invalid':
                         form.errors.has('first_name') ||
                         (showErrors && !form.first_name),
-                    }"
-                    type="text"
-                    name="first_name"
-                    class="form-control"
-                    placeholder="First name"
-                    required
-                    maxlength="50"
-                    @keydown="validateSpace"
-                  />
+                    }" type="text" name="first_name" class="form-control" placeholder="First name" required
+                           maxlength="50" @keydown="validateSpace" />
+                  </div>
+                  <has-error :form="form" field="first_name" />
                 </div>
-                <has-error :form="form" field="first_name" />
-              </div>
 
-              <!-- Last Name -->
-              <div class="col-sm-6 mb-3 mb-md-2 px-1">
-                <label class="d-md-none">Last Name</label>
-                <div class="icon-prefix-input">
-                  <fp-icon name="user" />
-                  <input
-                    v-model="form.last_name"
-                    :class="{
+                <!-- Last Name -->
+                <div class="mb-3 mb-md-2">
+                  <label class="d-md-none">Last Name</label>
+                  <div class="icon-prefix-input">
+                    <fp-icon name="user" />
+                    <input v-model="form.last_name" :class="{
                       'is-invalid':
                         form.errors.has('last_name') ||
                         (showErrors && !form.last_name),
-                    }"
-                    type="text"
-                    name="last_name"
-                    class="form-control"
-                    placeholder="Last name"
-                    required
-                    maxlength="50"
-                    @keydown="validateSpace"
-                  />
+                    }" type="text" name="last_name" class="form-control" placeholder="Last name" required
+                           maxlength="50" @keydown="validateSpace" />
+                  </div>
+                  <has-error :form="form" field="last_name" />
                 </div>
-                <has-error :form="form" field="last_name" />
               </div>
             </div>
-            <div class="row mx-n1">
-              <div class="col-sm-6 mb-3 mb-md-2 px-1">
+            <div>
+              <div class="mb-3 mb-md-2">
                 <label class="d-md-none">Date of Birth</label>
                 <div class="icon-prefix-input">
                   <fp-icon name="datepicker" />
-                  <datepicker
-                    v-model="form.date_of_birth"
-                    :disabled-dates="disabledDates"
-                    :open-date="lastAvailableDate"
-                    :input-class="{
-                      'form-control': true,
-                      'is-invalid': showErrors && !form.date_of_birth,
-                    }"
-                    placeholder="Date of birth"
-                  ></datepicker>
+                  <datepicker v-model="form.date_of_birth" :disabled-dates="disabledDates" :open-date="lastAvailableDate"
+                              :input-class="{
+                                'form-control': true,
+                                'is-invalid': showErrors && !form.date_of_birth,
+                              }" placeholder="Date of birth"></datepicker>
                 </div>
-                <div
-                  v-if="
-                    form.errors.has('date_of_birth') ||
-                    (showErrors && !form.date_of_birth)
-                  "
-                  class="invalid-feedback d-block"
-                >
+                <div v-if="form.errors.has('date_of_birth') ||
+                  (showErrors && !form.date_of_birth)
+                  " class="invalid-feedback d-block">
                   <fp-icon name="alert-circle" class="fp-fs-20 mt-n-2px" />
                   Please select Date of Birth
                 </div>
               </div>
               <!-- Gender -->
-              <div class="col-sm-6 mb-3 mb-md-2 px-1">
+              <div class="mb-3 mb-md-2">
                 <label class="d-md-none">Gender</label>
-                <gender-input
-                  v-model="form.gender"
-                  direction="right"
-                  :is-invalid="
-                    form.errors.has('gender') || (showErrors && !form.gender)
-                  "
-                />
-                <div
-                  v-if="
-                    form.errors.has('gender') || (showErrors && !form.gender)
-                  "
-                  class="invalid-feedback d-block"
-                >
+                <gender-input v-model="form.gender" direction="right" :is-invalid="form.errors.has('gender') || (showErrors && !form.gender)
+                  " />
+                <div v-if="form.errors.has('gender') || (showErrors && !form.gender)
+                  " class="invalid-feedback d-block">
                   <fp-icon name="alert-circle" class="fp-fs-20 mt-n-2px" />
                   Please select your Gender
                 </div>
@@ -209,29 +128,17 @@
               <div v-if="form.gender === 'custom'" class="col-12 px-1 mb-2">
                 <div class="icon-prefix-input">
                   <fp-icon name="gender" />
-                  <input
-                    v-model="form.custom_gender"
-                    :class="{
-                      'is-invalid':
-                        form.errors.has('custom_gender') ||
-                        (showErrors &&
-                          form.gender === 'custom' &&
-                          form.custom_gender == ''),
-                    }"
-                    type="text"
-                    name="custom_gender"
-                    class="form-control"
-                    placeholder="Enter custom gender"
-                    maxlength="128"
-                  />
+                  <input v-model="form.custom_gender" :class="{
+                    'is-invalid':
+                      form.errors.has('custom_gender') ||
+                      (showErrors &&
+                        form.gender === 'custom' &&
+                        form.custom_gender == ''),
+                  }" type="text" name="custom_gender" class="form-control" placeholder="Enter custom gender"
+                         maxlength="128" />
                 </div>
-                <div
-                  v-if="showErrors && form.custom_gender == ''"
-                  class="invalid-feedback"
-                >
-                  <span v-if="form.custom_gender == ''"
-                    >Please enter custom gender</span
-                  >
+                <div v-if="showErrors && form.custom_gender == ''" class="invalid-feedback">
+                  <span v-if="form.custom_gender == ''">Please enter custom gender</span>
                   <!-- <span v-else>Custom gender allowed only alphabets</span> -->
                 </div>
               </div>
@@ -242,26 +149,11 @@
               <label class="d-md-none">Email</label>
               <div class="icon-prefix-input has-info">
                 <fp-icon name="email" />
-                <input
-                  v-model="form.email"
-                  :class="{ 'is-invalid': form.errors.has('email') }"
-                  type="email"
-                  name="email"
-                  class="form-control"
-                  placeholder="Enter your email address"
-                  required
-                  maxlength="256"
-                />
-                <fp-icon
-                  name="question"
-                  class="info mr-2 fp-fs-18"
-                  v-tooltip="`We 'll send you a verification code.`"
-                />
+                <input v-model="form.email" :class="{ 'is-invalid': form.errors.has('email') }" type="email" name="email"
+                       class="form-control" placeholder="Enter your email address" required maxlength="256" />
+                <fp-icon name="question" class="info mr-2 fp-fs-18" v-tooltip="`We 'll send you a verification code.`" />
               </div>
-              <div
-                v-if="form.errors.has('email')"
-                class="invalid-feedback d-block"
-              >
+              <div v-if="form.errors.has('email')" class="invalid-feedback d-block">
                 <fp-icon name="alert-circle" class="fp-fs-20 mt-n-2px" />
                 {{ form.errors.get("email") }}
               </div>
@@ -270,47 +162,22 @@
             <div v-show="!isEmailUse" class="mb-2">
               <label class="d-md-none">Phone Number</label>
               <div class="phone-number-input has-info">
-                <phone-number-input
-                  v-model="phoneNumberObj"
-                  :required="!isEmailUse"
-                />
-                <fp-icon
-                  name="question"
-                  class="info mr-2 fp-fs-18"
-                  v-tooltip="`We 'll send you a verification code.`"
-                />
+                <phone-number-input v-model="phoneNumberObj" :required="!isEmailUse" />
+                <fp-icon name="question" class="info mr-2 fp-fs-18" v-tooltip="`We 'll send you a verification code.`" />
               </div>
               <has-error :form="form" field="phone_number" />
             </div>
-            <div
-              v-if="isEmailUse"
-              class="d-flex justify-content-end align-items-center mb-3 mb-md-2"
-            >
+            <div v-if="isEmailUse" class="d-flex justify-content-end align-items-center mb-3 mb-md-2">
               <span class="mr-2">Don't have an email?</span>
-              <fp-icon
-                name="mobile"
-                class="fp-fs-24 fp-text-color-main"
-              />&nbsp;&nbsp;
-              <a
-                href="javascript:;"
-                tabindex="-1"
-                class="fp-text-color-primary"
-                @click="isEmailUse = false"
-                >Use phone number.</a
-              >
+              <fp-icon name="mobile" class="fp-fs-24 fp-text-color-main" />&nbsp;&nbsp;
+              <a href="javascript:;" tabindex="-1" class="fp-text-color-primary" @click="isEmailUse = false">Use phone
+                number.</a>
             </div>
             <div v-else class="d-flex justify-content-end mb-3 mb-md-2">
               <span class="mr-2">Having trouble with phone?</span>
-              <fp-icon
-                name="email"
-                class="fp-fs-24 fp-text-color-main"
-              />&nbsp;&nbsp;
-              <a
-                href="javascript:;"
-                tabindex="-1"
-                class="fp-text-color-primary"
-                @click="isEmailUse = true"
-                >Use email address
+              <fp-icon name="email" class="fp-fs-24 fp-text-color-main" />&nbsp;&nbsp;
+              <a href="javascript:;" tabindex="-1" class="fp-text-color-primary" @click="isEmailUse = true">Use email
+                address
               </a>
             </div>
             <!-- Username -->
@@ -318,30 +185,17 @@
               <label class="d-md-none">Username</label>
               <div class="icon-prefix-input">
                 <fp-icon name="user" />
-                <input
-                  v-model="form.username"
-                  :class="{
-                    'is-invalid':
-                      form.errors.has('username') ||
-                      (showErrors && !_testUsername()),
-                  }"
-                  type="text"
-                  name="username"
-                  class="form-control"
-                  placeholder="Choose your username"
-                  required
-                  maxlength="128"
-                />
+                <input v-model="form.username" :class="{
+                  'is-invalid':
+                    form.errors.has('username') ||
+                    (showErrors && !_testUsername()),
+                }" type="text" name="username" class="form-control" placeholder="Choose your username" required
+                       maxlength="128" />
               </div>
-              <p
-                class="mb-0"
-                v-if="showErrors && !_testUsername()"
-                :class="{
-                  'text-danger': showErrors && !_testUsername(),
-                  'fp-text-color-main': !showErrors || _testUsername(),
-                }"
-                style="font-size: 12.2px; margin-top: 2px"
-              >
+              <p class="mb-0" v-if="showErrors && !_testUsername()" :class="{
+                'text-danger': showErrors && !_testUsername(),
+                'fp-text-color-main': !showErrors || _testUsername(),
+              }" style="font-size: 12.2px; margin-top: 2px">
                 Username must be 8-30 char. Allowed only letters, numbers, and
                 period(.)
               </p>
@@ -352,30 +206,17 @@
               <label class="d-md-none">Password</label>
               <div class="icon-prefix-input">
                 <fp-icon name="lock" />
-                <input
-                  v-model="form.password"
-                  :class="{
-                    'is-invalid':
-                      form.errors.has('password') ||
-                      (showErrors && !_testPassword()),
-                  }"
-                  type="password"
-                  name="password"
-                  class="form-control"
-                  placeholder="Choose your password"
-                  required
-                  maxlength="256"
-                />
+                <input v-model="form.password" :class="{
+                  'is-invalid':
+                    form.errors.has('password') ||
+                    (showErrors && !_testPassword()),
+                }" type="password" name="password" class="form-control" placeholder="Choose your password" required
+                       maxlength="256" />
               </div>
-              <p
-                class="mb-0"
-                v-if="showErrors && !_testPassword()"
-                :class="{
-                  'text-danger': showErrors && !_testPassword(),
-                  'fp-text-color-main': !showErrors || _testPassword(),
-                }"
-                style="font-size: 12.2px; margin-top: 2px"
-              >
+              <p class="mb-0" v-if="showErrors && !_testPassword()" :class="{
+                'text-danger': showErrors && !_testPassword(),
+                'fp-text-color-main': !showErrors || _testPassword(),
+              }" style="font-size: 12.2px; margin-top: 2px">
                 Password must contain 8 characters. 1 uppercase, 1 lowercase
                 number and special characters
               </p>
@@ -383,53 +224,27 @@
             </div>
 
             <div class="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                :class="{ invalid: showErrors && !is_accepted }"
-                id="is_accepted"
-                name="accept"
-                v-model="is_accepted"
-              />
-              <label
-                class="fp-text-color-main custom-control-label"
-                for="is_accepted"
-              >
+              <input type="checkbox" class="custom-control-input" :class="{ invalid: showErrors && !is_accepted }"
+                     id="is_accepted" name="accept" v-model="is_accepted" />
+              <label class="fp-text-color-main custom-control-label" for="is_accepted">
                 By clicking Register, you agree to our
-                <router-link
-                  :to="{ name: 'terms_of_use' }"
-                  class="fp-text-active"
-                  target="_blank"
-                  >Terms of use</router-link
-                >
+                <router-link :to="{ name: 'terms_of_use' }" class="fp-text-active" target="_blank">Terms of
+                  use</router-link>
                 and
-                <router-link
-                  :to="{ name: 'privacy_policies' }"
-                  class="fp-text-active"
-                  target="_blank"
-                  >Privacy policy</router-link
-                >
+                <router-link :to="{ name: 'privacy_policies' }" class="fp-text-active" target="_blank">Privacy
+                  policy</router-link>
               </label>
             </div>
             <div class="text-center mt-2">
-              <button
-                type="submit"
-                class="btn fp-btn-gradient px-5 btn-submit"
-                :class="{ 'btn-loading': form.busy }"
-                :disabled="form.busy"
-              >
+              <button type="submit" class="btn fp-btn-gradient px-5 btn-submit" :class="{ 'btn-loading': form.busy }"
+                      :disabled="form.busy">
                 <fp-icon name="user-plus" class="fp-fs-22" />
                 Sign up
               </button>
             </div>
             <div class="mt-3 d-flex justify-content-center fp-text-color-main">
               Already have an account?
-              <a
-                href="javascript:;"
-                class="fp-text-active ml-1"
-                @click="handleLogin"
-                >Sign in here</a
-              >
+              <a href="javascript:;" class="fp-text-active ml-1" @click="handleLogin">Sign in here</a>
             </div>
           </form>
         </div>
@@ -703,6 +518,60 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.register-content {
+  margin-top: 150px;
+
+  @media (max-width: 600px) {
+    margin-top: 0px;
+  }
+}
+
+.row {
+  margin-inline: 0px !important;
+}
+
+form {
+  &>:first-child {
+    &>:last-child {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: .5em;
+
+      &>:first-child {
+        width: 100%;
+      }
+
+      &>:last-child {
+        width: 100%;
+      }
+
+      @media (max-width: 600px) {
+        flex-direction: column;
+      }
+    }
+  }
+
+  &>:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: .5em;
+
+    &>:first-child {
+      width: 100%;
+    }
+
+    &>:last-child {
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
+}
+
 h3 {
   @media (max-width: 600px) {
     font-size: 25px;
@@ -712,9 +581,12 @@ h3 {
 .signup-container {
   border-radius: 12px;
   height: 100%;
-  @media (max-width: 600px) {
+  padding-inline: 10px;
+
+  @media (max-width: 767px) {
     background-color: transparent;
   }
+
   &::v-deep {
     .vdp-datepicker {
       width: 100%;
@@ -745,9 +617,11 @@ h3 {
 .phone-number-input {
   &.has-info {
     position: relative;
+
     input {
       padding-right: 34px;
     }
+
     .info {
       position: absolute;
       top: 10px;
@@ -756,6 +630,7 @@ h3 {
     }
   }
 }
+
 .btn-submit {
   @media (max-width: 600px) {
     width: 100%;

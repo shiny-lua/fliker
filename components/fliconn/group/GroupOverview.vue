@@ -140,7 +140,7 @@
                 </div>
             </transition>
             <transition>
-                <div v-if="group && tab === 'about'" class="px-1 px-md-2">
+                <div v-if="group && tab === 'about'" class="">
                     <p class="fp-text-color-main fp-border-color-1 font-weight-400 pb-3" style="border-bottom-style: solid; border-bottom-width: 1px;">{{ group.description }}</p>
                     <div class="row mx-n1 mx-md-n2">
                         <div class="col-md-6 px-1 px-md-2 mb-4">

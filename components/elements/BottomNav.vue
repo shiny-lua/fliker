@@ -2,7 +2,7 @@
   <div class="navbar d-md-none">
     <div class="nav-item">
       <a
-        class="nav-link"
+        class="nav-link d-flex flex-column justify-content-center align-items-center"
         :class="{ active: $route.name === 'index' }"
         href="javascript:;"
         @click.prevent="goToPage('index')"

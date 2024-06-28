@@ -65,7 +65,7 @@
                     <transition v-if="tab === 'page'">
                         <group-index type="page"></group-index>
                     </transition>
-                    <transition v-if="tab === 'discover'">
+                    <transition v-if="tab === 'discover'" class="pr-3">
                         <discover-index />
                     </transition>
                     <transition v-if="tab === 'bookmark'">
@@ -295,6 +295,7 @@
                 }
             }
         }
+
     }
 
     .post-left-section {
@@ -333,6 +334,7 @@
         margin-top: 24px;
         padding-left: 24px;
         padding-right: 24px;
+        width: 100%;
         @media (max-width: 600px) {
             padding-left: 0;
             padding-right: 0;
@@ -346,7 +348,6 @@
     @media (min-width: 601px) {
         .post-list {
             overflow: visible;
-            max-width: 100%;
         }
     }
 

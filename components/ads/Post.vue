@@ -303,6 +303,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.row {
+  margin-inline: 0;
+}
 .post-card {
   border-radius: 12px;
   .card-image-wrapper {

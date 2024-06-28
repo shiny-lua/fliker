@@ -195,7 +195,7 @@
 <style scoped>
     .timer {
         padding: 5px 10px;
-        font-size: 1.5em;
+        font-size: .5em;
         padding: 0 10px;
         color: #FFF;
     }

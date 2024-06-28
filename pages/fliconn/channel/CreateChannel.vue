@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-9 mt-2 mt-md-4 mb-5">
+        <div class="col-lg-10 col-xl-9 mt-4 pb-sm-5 mb-sm-5 mb-md-0">
             <channel-form></channel-form>
         </div>
     </div>
@@ -15,3 +15,9 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+    .row {
+        margin-inline: 0px !important;
+    }
+</style>

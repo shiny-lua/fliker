@@ -2,18 +2,20 @@
   <header id="header">
     <nav class="navbar navbar-expand navbar-default fixed-top px-2">
       <div
-        class="container-xl navbar-content"
+        class="container-xl navbar-content "
         :class="{ 'd-flex': !auth_user }"
       >
         <div class="navbar-brand d-inline-flex mr-2">
-          <portal-target name="logo-m" class="d-flex d-md-none">
+          <portal-target name="logo-m" class="logo-content d-md-none">
             <a
               v-if="has_sidebar"
               href="javascript:;"
-              class="mt-1 mr-2 d-md-none"
+              class="d-md-none"
               @click="toggleLeftMenu()"
             >
-              <fp-icon name="hamburger" class="fp-fs-30 text-white" />
+              <div>
+                <fp-icon name="hamburger" class="fp-fs-30 text-white" />
+              </div>
             </a>
             <div class="logo">
               <a href="/">
@@ -310,9 +312,23 @@ export default {
     z-index: 11;
     font-family: "Inter", sans-serif;
     font-weight: 500;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     @media (max-width: 600px) {
       height: 65px;
+    }
+    &>:first-child {
+      @media (max-width: 991px) {
+        padding-inline: 1.2em;
+      }
+      @media (max-width: 600px) {
+        padding-inline: .1em;
+      }
+    }
+    .logo-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1em;
     }
   }
 }
@@ -321,7 +337,6 @@ export default {
   .logo {
     margin-top: 11px;
     @media (max-width: 600px) {
-      margin-top: 4px;
       img {
         width: 36px;
         height: 36px;
@@ -357,7 +372,7 @@ export default {
 }
 
 .m-hide {
-  @media (max-width: 600px) {
+  @media (max-width: 767px) {
     display: none;
   }
 }

@@ -9,7 +9,7 @@
             <a v-if="form.type" href="javascript:;" class="fp-text-active btn-back d-none d-md-block" @click="init()"><fa icon="arrow-left" /> Back</a>
             <div v-if="form.type === ''" class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="d-flex justify-content-around">
+                    <div class="card-group">
                         <div class="status-type-item text" @click="form.type = 'text'">
                             <p class="type text-center">Text</p>
                             <fp-icon name="text-format" />
@@ -484,22 +484,28 @@
     };
 </script>
 <style lang="scss" scoped>
+    .card-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        @media (max-width: 420px) {
+            flex-direction: column;
+            gap: .5em;
+        }
+    }
     .status-type-item {
-        padding: 0px 18px;
         cursor: pointer;
         border-radius: 10px;
         color: #FFF;
-        width: 148px;
+        width: 32%;
         height: 260px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        @media (max-width: 600px) {
-            padding: 0 8px;
-            width: 100px;
+        @media (max-width: 420px) {
+            width: 100%;
             height: 150px;
-            border-radius: 6px;
         }
         &.text {
             background-color: #e8540f;

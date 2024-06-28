@@ -206,6 +206,5 @@ export default {
         height: 100%;
         z-index: 1;
         border-radius: 12px;
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 40.83%);
     }
 </style>

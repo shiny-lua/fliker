@@ -9,7 +9,7 @@
                 <div class="mb-4 slugs fp-text-color-main">
                     <span v-for="slug in slugs" :key="slug" class="pr-2">#{{ slug }}</span>
                 </div>
-                <div class="d-flex flex-wrap mb-2">
+                <div class="d-flex flex-wrap mb-2 icon-group">
                     <div class="icon-panel mr-3 mb-3">
                         <img :src="require(`~/assets/images/icons/login_card/ads.png`)" width="28" height="28" />
                     </div>
@@ -82,6 +82,11 @@
         justify-content: center;
         img {
             width: 28px;
+        }
+    }
+    .icon-panel {
+        @media screen and (max-width: 1200px) {
+            display: none;
         }
     }
 </style>

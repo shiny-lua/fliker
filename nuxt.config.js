@@ -105,5 +105,8 @@ export default {
   recaptcha: {
     version: 2,
     siteKey: process.env.RECAPTCHA_SITE_KEY,
+  }, 
+  server: {
+    host: '127.0.0.1'
   }
 }

@@ -136,7 +136,7 @@
                     ></p>
                 </template>
                 <poll-item v-if="post.poll" :poll="post.poll" class="mb-3" />
-                <div v-if="post.images">
+                <div v-if="post.images" class="d-flex justify-content-center">
                     <div v-if="post.images" :class="`row fliconn-media count-${postMedia.length}`">
                         <div
                             v-for="(image, index) in postMedia.slice(0, 4)"
@@ -153,7 +153,7 @@
                                 :poster="image.thumb"
                                 width="100%"
                                 height="100%"
-                                style="min-width: 150px;"
+                                style="min-width: 150px; border-radius: 20px; "
                                 @click="openGallery(index)"
                                 onmouseover="this.play()"
                                 onmouseleave="this.pause();"
@@ -165,7 +165,7 @@
                                  class="mb-2"
                                  width="100%"
                                  height="100%"
-                                 style="min-width: 150px;"
+                                 style="min-width: 150px; border-radius: 20px;"
                                  @click="openGallery(index)"
                             />
                             <div v-if="index === 1 || index === 3" class="mask" @click="openGallery(index)">
@@ -918,7 +918,7 @@
                 img.photo {
                     width: 52px;
                     height: 52px;
-                    border-radius: 100%;
+                    border-radius: 3em;
                     object-fit: cover;
                 }
                 .username {

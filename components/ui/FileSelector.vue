@@ -11,26 +11,26 @@
                     <div v-if="fileType === 'image' && !deviceType" class="device-options">
                         <label class="device-option fp-border-color-1">
                             <fp-icon name="image-gallery" />
-                            <p class="fp-text-color mt-1">Upload Images</p>
+                            <p class="fp-text-color mt-1 mb-2" style="font-size: 20px;" >Upload Images</p>
                             <p class="description fp-text-color-main">{{ descriptionUploadImage }}</p>
                             <input type="file" @change="handleImageFiles" multiple hidden accept="image/*" />
                         </label>
                         <a href="javascript:;" class="device-option fp-border-color-1" @click="openCamera()">
                             <fp-icon name="camera" />
-                            <p class="fp-text-color mt-1">Open Camera</p>
+                            <p class="fp-text-color mt-1 mb-2" style="font-size: 20px;">Open Camera</p>
                             <p class="description fp-text-color-main">{{ descriptionCameraImage }}</p>
                         </a>
                     </div>
                     <div v-else-if="fileType === 'video' && !deviceType" class="device-options">
                         <label class="device-option fp-border-color-1">
                             <fp-icon name="upload-video" style="font-size: 38px;" />
-                            <p class="fp-text-color mt-1">Upload Video</p>
+                            <p class="fp-text-color mt-1 mb-2" style="font-size: 20px;">Upload Video</p>
                             <p class="description fp-text-color-main">{{ descriptionUploadVideo }}</p>
                             <input type="file" @change="handleVideoFile" multiple hidden accept="video/*" />
                         </label>
                         <a href="javascript:;" class="device-option fp-border-color-1" @click="openCamera()">
                             <fp-icon name="video-camera" />
-                            <p class="fp-text-color mt-1">Open Camera</p>
+                            <p class="fp-text-color mt-1 mb-2" style="font-size: 20px;">Open Camera</p>
                             <p class="description fp-text-color-main">{{ descriptionCameraVideo }}</p>
                         </a>
                     </div>

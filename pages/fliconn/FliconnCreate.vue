@@ -12,7 +12,7 @@
                 <router-link :to="{ name: 'privacy_policies' }" target="_blank" class="fp-text-active">Content Policy</router-link>
                 before posting.
             </p>
-            <div class="fliconn-form-container fp-card d-md-flex">
+            <div class="fliconn-form-container fp-card">
                 <div class="fliconn-types mr-md-3">
                     <h5 class="text-center mb-3">
                         Post on&nbsp;
@@ -89,7 +89,13 @@
         }
     }
     .fliconn-form-container {
+        display: flex;
         border-radius: 12px;
+        @media (max-width: 767px) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
         @media (max-width: 600px) {
             padding: 0;
             border-radius: 0;
@@ -97,14 +103,18 @@
         }
     }
     .fliconn-types {
-        @media (min-width: 601px) {
-            width: 140px;
-        }
         .types-wrapper {
             display: flex;
+            flex-direction: column;
             overflow: auto;
-            @media (min-width: 601px) {
-                flex-direction: column;
+            @media (max-width: 767px) {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 1em;
+            }
+            @media (max-width: 600px) {
+                flex-direction: row;
+                justify-content: start;
             }
         }
         .fliconn-type {
@@ -121,9 +131,11 @@
             font-size: 14px;
             border: solid 1px #ECF1F6;
             text-decoration: none;
+            @media (max-width: 767px) {
+                width: 100%;
+            }
             @media (max-width: 600px) {
                 background-color: #DCE9FB;
-                margin-right: 12px;
                 &:last-child {
                     margin-right: 0;
                 }
@@ -141,11 +153,12 @@
         }
     }
     .router-view {
-        @media (min-width: 600px) {
+        @media (min-width: 768px) {
             flex-grow: 1;
             max-width: calc(100% - 159px);
         }
     }
+    
     [data-theme=dark] {
         .fliconn-type {
             background-color: #18243E;

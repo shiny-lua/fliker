@@ -1,7 +1,7 @@
 <template>
     <div class="discover-index position-relative">
         <div class="discover-filter d-md-flex">
-            <div class="icon-prefix-input discover-filter-location pr-3 mb-2 mb-md-0">
+            <div class="icon-prefix-input discover-filter-location pr-5 mb-2 mb-md-0">
                 <fp-icon name="search" style="font-size: 18px;" />
                 <gmap-autocomplete :value="mapLocation.zipcode"
                      class="form-control w-100"

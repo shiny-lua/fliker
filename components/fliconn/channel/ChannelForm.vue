@@ -51,7 +51,7 @@
                                 required
                                 placeholder="Describe this channel..."
                             ></textarea>
-                            <div class="d-flex font-weight-400">
+                            <div class="d-flex font-weight-400 mt-1">
                                 <span class="fp-text-color-main">Entered: {{form.description.length}} chars</span>
                                 <span class="fp-text-color-main ml-auto">Between 20-150 chars</span>
                             </div>

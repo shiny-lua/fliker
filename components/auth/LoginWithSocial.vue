@@ -1,5 +1,5 @@
 <template>
-    <div class="ml-2">
+    <div>
         <button type="button" class="btn google fp-border-color-1 fp-text-color" @click="login('google')">
             <img src="~/assets/images/icons/google.png" width="18" height="18" alt="" />
             <span class="d-none d-md-inline">Gmail</span>

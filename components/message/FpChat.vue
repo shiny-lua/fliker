@@ -193,7 +193,7 @@ export default {
 <style lang="scss" scoped>
     #btn-message-indicator {
         position: fixed;
-        bottom: 30px;
+        bottom: 70px;
         right: 30px;
         width: 64px;
         height: 64px;
@@ -224,7 +224,7 @@ export default {
             right: -5px;
         }
         @media (max-width: 600px) {
-            bottom: 65px;
+            bottom: 70px;
             right: 12px;
         }
     }
