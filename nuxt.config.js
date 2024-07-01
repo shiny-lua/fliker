@@ -1,7 +1,25 @@
 require('dotenv').config()
 export default {
+  // devtools: { enabled: true },
+  // build: {
+  //   extend(config, ctx) {
+  //     if (ctx.isDev) {
+  //       config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+  //     }
+  //   }
+  // },
+  // configureWebpack: {
+  //   devtool: 'source-map'
+  // },
+  // site: {
+  //   debug: true,
+  // },
+  // sourcemap: {
+  //   server: true,
+  //   client: true
+  // },
   ssr: false,
-
+  // cache: false,
   env: {
     appName: process.env.APP_NAME || 'FlickerPage',
     serverUrl: process.env.APP_URL,
@@ -105,7 +123,7 @@ export default {
   recaptcha: {
     version: 2,
     siteKey: process.env.RECAPTCHA_SITE_KEY,
-  }, 
+  },
   server: {
     host: '127.0.0.1'
   }

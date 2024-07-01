@@ -40,7 +40,7 @@
             </li>
             <infinite-loading :distance="100" :identifier="infiniteId" @infinite="search">
                 <div slot="no-more"></div>
-                <div class="text-center" style="color: #C3C3C3;" slot="no-results">No messages found!</div>
+                <div class="text-center mt-2" style="color: #C3C3C3;" slot="no-results">No messages found!</div>
                 <div slot="spinner" class="pt-3 pt-md-4">
                     <img src="~assets/images/logo_loading.gif" width="40" alt="" />
                 </div>

@@ -1,0 +1,51 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "client: chrome",
+      "runtimeExecutable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+      "url": "http://localhost:3000",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "webRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "webpack:///./src/*": "${webRoot}/*",
+        "webpack:///./comComponents/*": "${webRoot}/comComponents/*",
+        "webpack:///./pages/*": "${webRoot}/pages/*",
+        "webpack:///./layouts/*": "${webRoot}/layouts/*",
+        "webpack:///./store/*": "${webRoot}/store/*"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "server: nuxt",
+      "args": [
+        "dev"
+      ],
+      "osx": {
+        "program": "${workspaceFolder}/node_modules/.bin/nuxt"
+      },
+      "linux": {
+        "program": "${workspaceFolder}/node_modules/.bin/nuxt"
+      },
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/nuxt/bin/nuxt.js"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "fullstack: nuxt",
+      "configurations": [
+        "server: nuxt",
+        "client: chrome"
+      ]
+    }
+  ]
+}
+

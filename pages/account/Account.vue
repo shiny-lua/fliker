@@ -9,7 +9,7 @@
 <script>
 export default {
     middleware: 'auth',
-    head () {
+    head() {
         return { title: 'Account' }
     },
     computed: {
@@ -19,3 +19,9 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.row {
+    margin-inline: 0px !important;
+}
+</style>

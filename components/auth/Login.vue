@@ -106,6 +106,7 @@ export default {
         data = response.data;
       } catch (e) {
         let errors = e.response.data.errors;
+
         if (errors.must_verify_email) {
           const auth_user = errors.user_data[0];
           const payload = {

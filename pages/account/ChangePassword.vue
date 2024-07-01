@@ -1,9 +1,9 @@
 <template>
     <div class="col-md-8 col-lg-6">
-        <div class="card card-body card-shadow">
+        <div class="card card-body fp-card card-shadow ">
             <h5 class="my-4 font-weight-bold text-center">Change Password</h5>
             <div v-if="password_form.successful">
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center justify-content-center">
                     <fa icon="check-circle" class="text-success" />
                     <p class="mb-0 ml-2" style="font-weight: 500;">Your password has been updated successfully!</p>
                 </div>

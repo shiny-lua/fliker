@@ -118,7 +118,6 @@ export default {
 </script>
 <style lang="scss" scoped>
     .chat-list {
-        height: calc(100% - 72px);
         overflow-y: auto;
     }
     .nav-chat-type {
@@ -142,6 +141,12 @@ export default {
                 font-size: 12px;
                 padding-bottom: 2px;
             }
+        }
+        @media (max-width: 640px) {
+            flex-direction: column;
+        }
+        @media (max-width: 600px) {
+            flex-direction: row;
         }
     }
     .header-icon {

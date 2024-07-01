@@ -4,7 +4,7 @@
             <h4 class="mt-3 mb-2 fp-text-color">Start your journey</h4>
             <h4 class="fp-text-color mb-3 text-center">with <span style="color: #FF22A1">FlickerPage</span></h4>
         </div>
-        <div class="d-flex">
+        <div class="d-flex align-items-center">
             <div>
                 <div class="mb-4 slugs fp-text-color-main">
                     <span v-for="slug in slugs" :key="slug" class="pr-2">#{{ slug }}</span>

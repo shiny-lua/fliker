@@ -1,5 +1,5 @@
 <template>
-    <div class="col-lg-12">
+    <div class="col-lg-12 px-lg-0">
         <div class="filter form-inline mb-3">
             <h5 class="page-title mb-0 mr-auto">Manage Classifieds</h5>
             <div class="d-flex align-items-center">

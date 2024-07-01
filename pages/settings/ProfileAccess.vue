@@ -1,9 +1,9 @@
 <template>
     <div class="settings-profile-visibility">
         <div class="settings-card fp-card mb-3">
-            <div class="d-md-flex align-items-center mb-md-3">
+            <div class="d-flex align-items-center mb-3">
                 <h6 class="mb-md-0">Who can see my profile?</h6>
-                <div class="profile-status ml-md-4">
+                <div class="profile-status ml-4">
                     <profile-status v-if="user"
                         :user="user"
                         page="settings"

@@ -87,7 +87,7 @@
                 </a>
               </div>
             </li>
-            <li v-if="auth_user" class="nav-item top-notification ml-lg-3">
+            <li v-if="auth_user" class="nav-item top-notification ml-3">
               <top-notification />
             </li>
             <li v-if="auth_user" class="nav-item d-md-none ml-1">

@@ -82,6 +82,7 @@ export default {
         } else {
           const category_id = this.$route.query.category_id;
           let category = this.categories.find((i) => i.id === category_id);
+          console.log("category", category)
           this.select(category);
         }
       }

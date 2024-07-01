@@ -43,19 +43,21 @@
             v-on:click="emptyAutoMotiveFilters()"
             >All</span
           >
-          <VueSlickCarousel v-bind="sliderSettings">
-            <div
-              v-for="item in automotive_categories"
-              :key="item.id"
-              :class="{
-                'fp-filter-item mr-2 mb-2': true,
-                active: filter.automotive_categories.includes(item.id),
-              }"
-              @click="selectAutomotiveHome(item)"
-            >
-              {{ item.name }}
-            </div>
-          </VueSlickCarousel>
+          <template v-if="automotive_categories?.length > 0">
+            <VueSlickCarousel v-bind="sliderSettings">
+              <div
+                v-for="item in automotive_categories"
+                :key="item.id"
+                :class="{
+                  'fp-filter-item mr-2 mb-2': true,
+                  active: filter.automotive_categories.includes(item.id),
+                }"
+                @click="selectAutomotiveHome(item)"
+              >
+                {{ item.name }}
+              </div>
+            </VueSlickCarousel>
+          </template>
         </div>
 
         <!-- <div
@@ -125,28 +127,30 @@
           <span
             :class="{
               'fp-filter-item mr-2 mb-2': true,
-              active: filter.sub_categories.length === 0,
+              active: filter.sub_categories?.length === 0,
             }"
             v-on:click="emptyFilters()"
             >All</span
           >
-          <VueSlickCarousel
-            v-bind="sliderSettings"
-            ref="subCatSlick"
-            :key="selected_category.id"
-          >
-            <div
-              v-for="item in selected_category.sub_categories"
-              :key="item.id"
-              :class="{
-                'fp-filter-item mr-2 mb-2': true,
-                active: filter.sub_categories.includes(item.id),
-              }"
-              @click="selectSubCategory(item)"
+          <template v-if="selected_category?.sub_categories?.length > 0">
+            <VueSlickCarousel
+              v-bind="sliderSettings"
+              ref="subCatSlick"
+              :key="selected_category.id"
             >
-              {{ item.name }}
-            </div>
-          </VueSlickCarousel>
+              <div
+                v-for="item in selected_category.sub_categories"
+                :key="item.id"
+                :class="{
+                  'fp-filter-item mr-2 mb-2': true,
+                  active: filter.sub_categories.includes(item.id),
+                }"
+                @click="selectSubCategory(item)"
+              >
+                {{ item.name }}
+              </div>
+            </VueSlickCarousel>
+          </template>
         </div>
 
         <!-- filtered sub categories start-->
@@ -188,7 +192,7 @@
       >
         {{ location.city }} and near by
       </p>
-      <div class="row row-cols-2 row-cols-md-4 mx-n1 mx-md-n2">
+      <div class="auto-grid">
         <div
           class="col mb-2 mb-md-3 px-1 px-md-2"
           v-for="(post, index) in posts"
@@ -326,7 +330,7 @@ export default {
     },
     selected_sub_categories: function (newVal) {
       let sub_categories = newVal.map((i) => i.id);
-      this.filter.sub_categories = sub_categories;
+      this.filter.sub_categories = sub_categories ? sub_categories : [];
       this.triggerSearchPosts();
     },
     location: async function (newLocation) {
@@ -420,7 +424,6 @@ export default {
       }
     },
     async selectCategory(item) {
-      console.log("item", item);
       this.show_more_category = false;
       this.filter.is_automotive = "";
       this.filter.sub_categories = [];
@@ -565,7 +568,11 @@ export default {
     cursor: pointer;
   }
 }
-
+.auto-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  transition: all .35s ease 0s;
+}
 .ads-index {
   @media (min-width: 601px) {
     display: flex;
