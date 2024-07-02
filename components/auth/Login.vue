@@ -1,5 +1,5 @@
 <template>
-  <div class="row log-container">
+  <div class="row pt-3 pt-md-3 justify-content-center mb-5 log-container">
     <div class="col-md-6 col-lg-5 d-none d-md-block">
       <login-card />
     </div>
@@ -214,14 +214,12 @@ h3 {
 .log-container {
   display: flex;
   justify-content: center;
-  margin-top: 150px;
+
+  margin-top: 70px;
 
   @media (max-width: 600px) {
-    margin-top: 70px;
-  }
+    margin-top: 0px;
 
-  @media (max-height: 700px) {
-    margin-top: 70px;
   }
 }
 
