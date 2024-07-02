@@ -4,46 +4,21 @@
       <div class="post-images-descriptions">
         <div v-if="lightBoxImages.length" class="carousel">
           <div class="indicator">
-            <img
-              v-for="(image, index) in lightBoxImages"
-              :src="image.src"
-              :key="index"
-              @click="changeCarousel(index)"
-              :class="{ active: indexOfImage == index }"
-              alt=""
-            />
+            <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
+                 :class="{ active: indexOfImage == index }" alt="" />
           </div>
           <div class="slider">
-            <VueSlickCarousel
-              ref="carousel"
-              v-bind="slickSettings"
-              @afterChange="afterChange"
-            >
-              <div
-                class="text-center"
-                v-for="(img, index) in lightBoxImages"
-                :key="index"
-                @click="openGallery(index)"
-              >
-                <img
-                  class="slider-img img-slide mx-auto"
-                  :src="img.src"
-                  alt=""
-                />
+            <VueSlickCarousel ref="carousel" v-bind="slickSettings" @afterChange="afterChange">
+              <div class="text-center" v-for="(img, index) in lightBoxImages" :key="index" @click="openGallery(index)">
+                <img class="slider-img img-slide mx-auto" :src="img.src" alt="" />
               </div>
             </VueSlickCarousel>
           </div>
         </div>
-        <div class="d-md-none">
+        <div class="md-slide">
           <div v-if="lightBoxImages.length" class="m-indicator mt-2">
-            <img
-              v-for="(image, index) in lightBoxImages"
-              :src="image.src"
-              :key="index"
-              @click="changeCarousel(index)"
-              :class="{ active: indexOfImage == index }"
-              alt=""
-            />
+            <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
+                 :class="{ active: indexOfImage == index }" alt="" />
           </div>
           <div class="fp-card user-detail-container fp-border-color-1 p-2 mt-3">
             <post-user-detail :post="post" />
@@ -54,46 +29,30 @@
           <p class="post-description">
             {{
               descriptionExpand
-                ? post.description
-                : post.description.substring(0, 700)
+              ? post.description
+              : post.description.substring(0, 700)
             }}
           </p>
           <div class="mb-3" v-if="post.description.length > 700">
-            <a
-              href="javascript:;"
-              class="fp-text-active"
-              @click="descriptionExpand = !descriptionExpand"
-              >({{ descriptionExpand ? "Less..." : "More..." }})</a
-            >
+            <a href="javascript:;" class="fp-text-active" @click="descriptionExpand = !descriptionExpand">({{
+              descriptionExpand ? "Less..." : "More..." }})</a>
           </div>
         </div>
         <div class="quick-info">
           <div v-if="post.category && post.category.name == 'Jobs'">
-            <p
-              class="mb-0"
-              v-if="post.job_options && post.job_options.includes('EOE')"
-            >
+            <p class="mb-0" v-if="post.job_options && post.job_options.includes('EOE')">
               <fa icon="check-square" /> We are e-verified and Equal Opportunity
               Employer(EOE)
             </p>
-            <p
-              class="mb-0"
-              v-if="post.job_options && post.job_options.includes('Invite')"
-            >
+            <p class="mb-0" v-if="post.job_options && post.job_options.includes('Invite')">
               <fa icon="check-square" /> Invite people with disabilities for
               this position
             </p>
-            <p
-              class="mb-0"
-              v-if="post.job_options && post.job_options.includes('VISA')"
-            >
+            <p class="mb-0" v-if="post.job_options && post.job_options.includes('VISA')">
               <fa icon="check-square" /> Work visa sponsership available for
               this position
             </p>
-            <p
-              class="mb-0"
-              v-if="post.job_options && post.job_options.includes('Direct')"
-            >
+            <p class="mb-0" v-if="post.job_options && post.job_options.includes('Direct')">
               <fa icon="check-square" /> Direct applicants only. No third party
               recruiters allowed apply.
             </p>
@@ -105,32 +64,16 @@
         <hr />
         <quick-information :post="post"></quick-information>
 
-        <div
-          v-if="map_center"
-          class="map-container mt-3 mr-lg-3"
-          style="height: 300px"
-        >
-          <gmap-map
-            ref="mapRef"
-            :options="{ streetViewControl: false }"
-            :center="map_center"
-            :zoom="11"
-            map-type-id="roadmap"
-            style="width: 100%; height: 100%"
-          >
-            <gmap-circle
-              :center="map_center"
-              :radius="6000"
-              :visible="true"
-              :editable="true"
-              :options="{
-                fillColor: 'green',
-                fillOpacity: 0.3,
-                strokeColor: 'green',
-                strokeOpacity: 0.5,
-                strokeWeight: 2,
-              }"
-            />
+        <div v-if="map_center" class="map-container mt-3 mr-lg-3" style="height: 300px">
+          <gmap-map ref="mapRef" :options="{ streetViewControl: false }" :center="map_center" :zoom="11"
+                    map-type-id="roadmap" style="width: 100%; height: 100%">
+            <gmap-circle :center="map_center" :radius="6000" :visible="true" :editable="true" :options="{
+              fillColor: 'green',
+              fillOpacity: 0.3,
+              strokeColor: 'green',
+              strokeOpacity: 0.5,
+              strokeWeight: 2,
+            }" />
           </gmap-map>
         </div>
         <p class="mt-1 mb-0 fp-text-color-main" style="font-weight: 400">
@@ -142,11 +85,7 @@
     <div class="mt-auto detail_footer">
       <div v-if="post.id" class="mt-4">
         <span class="text-secondary">Post ID: {{ post.id }}</span>
-        <a
-          href="javascript:;"
-          class="ml-3"
-          @click="$modal.show('ads_post_report_modal')"
-        >
+        <a href="javascript:;" class="ml-3" @click="$modal.show('ads_post_report_modal')">
           <fp-icon name="alert-rectangle" class="fp-fs-20 fp-text-color-main" />
           Report post
         </a>
@@ -155,25 +94,14 @@
           Share
         </a>
       </div>
-      <div
-        v-if="disclaimer_text"
-        class="mt-1 mb-0 fp-text-active"
-        style="font-weight: 400"
-        v-html="disclaimer_text"
-      ></div>
+      <div v-if="disclaimer_text" class="mt-1 mb-0 fp-text-active" style="font-weight: 400" v-html="disclaimer_text">
+      </div>
     </div>
 
-    <light-box
-      ref="adsLightBox"
-      :media="lightBoxImages"
-      :show-light-box="false"
-    ></light-box>
+    <light-box ref="adsLightBox" :media="lightBoxImages" :show-light-box="false"></light-box>
 
     <fp-modal name="ads_post_report_modal" title="Report Us">
-      <post-report-form
-        :post_id="post.id"
-        @sent="$modal.hide('ads_post_report_modal')"
-      />
+      <post-report-form :post_id="post.id" @sent="$modal.hide('ads_post_report_modal')" />
     </fp-modal>
   </div>
 </template>
@@ -371,24 +299,30 @@ export default {
   }
 }
 
-.m-indicator {
-  display: flex;
-  overflow-x: auto;
-
-  img {
-    width: 70px;
-    height: 70px;
-    cursor: pointer;
-    margin-bottom: 5px;
-    margin-right: 5px;
-    border-radius: 4px;
-    opacity: 0.75;
-
-    &.active {
-      opacity: 1;
-    }
+.md-slide {
+  display: none;
+  @media (max-width: 600px) {
+    display: block;
   }
 }
+.m-indicator {
+    display: flex;
+    overflow-x: auto;
+
+    img {
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+      margin-bottom: 5px;
+      margin-right: 5px;
+      border-radius: 4px;
+      opacity: 0.75;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
 
 .post-description {
   white-space: pre-line;
@@ -400,6 +334,7 @@ export default {
 .detail_footer {
   a {
     font-weight: 400;
+
     &:hover {
       color: #64748b;
     }
@@ -410,6 +345,7 @@ export default {
   margin-top: 20px;
   font-weight: 500;
 }
+
 .modal-phone-number {
   .icon-phone {
     display: inline-block;
@@ -418,9 +354,11 @@ export default {
     border: solid 2px;
     border-radius: 100px;
   }
+
   .number {
     font-size: 16px;
   }
+
   .warning {
     line-height: 1;
     font-size: 13.6px;
@@ -433,17 +371,19 @@ export default {
   overflow: hidden;
 }
 
-@media (min-width: 901px) {
+@media (min-width: 991px) {
   .post-information {
     width: 340px;
     border-left-style: solid;
     border-left-width: 1px;
     padding-left: 16px;
   }
+
   .post-images-descriptions {
     width: calc(100% - 340px);
   }
 }
+
 .user-detail-container {
   @media (max-width: 600px) {
     padding-left: 0;

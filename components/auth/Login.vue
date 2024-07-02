@@ -219,6 +219,10 @@ h3 {
   @media (max-width: 600px) {
     margin-top: 70px;
   }
+
+  @media (max-height: 700px) {
+    margin-top: 70px;
+  }
 }
 
 .btn-group {

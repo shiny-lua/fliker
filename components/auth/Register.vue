@@ -524,6 +524,10 @@ export default {
   @media (max-width: 600px) {
     margin-top: 0px;
   }
+  
+  @media (max-height: 700px) {
+    margin-top: 70px;
+  }
 }
 
 .row {

@@ -37,12 +37,13 @@
                 </div>
             </div>
             <div v-if="post.location" class="post-user-detail-item">
-                <div class="post-user-detail-field">
+                <!-- <div class="post-user-detail-field">
                     <fp-icon name="location" class="fp-fs-20" />
                 </div>
                 <div class="post-user-detail-name">
                     {{ post.location.full_address ? post.location.full_address : post.location.display_address }}
-                </div>
+                </div> -->
+                stress
             </div>
             <div v-if="post.automotive_seller.business_hours" class="post-user-detail-item">
                 <div class="post-user-detail-field">
@@ -90,7 +91,7 @@
                     {{ post.business_hours }}
                 </div>
             </div>
-            <div v-if="post.business_location && post.business_address.full_address" class="post-user-detail-item">
+            <div v-if="post.business_location && post.business_location.full_address" class="post-user-detail-item">
                 <div class="post-user-detail-field">
                     <fp-icon name="globe" class="fp-fs-20" />
                 </div>

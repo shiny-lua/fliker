@@ -326,9 +326,6 @@ body {
     }
     .vm--modal {
         overflow: unset;
-        @media (min-width: 601px) {
-            top: 220px !important;
-        }
     }
     &:not(.middle-on-mobile) {
         .vm--modal {
