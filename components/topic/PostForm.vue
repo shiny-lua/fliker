@@ -35,7 +35,7 @@
                 <label for="" class="mb-1">Choose Tag</label>
                 <multiselect
                     v-model="selected_topic"
-                    :options="topics"
+                    :options="filteredTopics"
                     :preserve-search="true"
                     placeholder="Ex. #technology, #business... etc"
                     track-by="id"
@@ -112,9 +112,15 @@ export default {
             auth_user: 'auth/user',
             topics: 'topics/topics',
         }),
+        filteredTopics() {
+            if (this.topics && Array.isArray(this.topics) && this.topics.length > 0) {
+                return this.topics
+            } else {
+                return [];
+            }
+        }
     },
     mounted() {
-        console.log('here is topics', this.topics)
         this.$store.dispatch('topics/getTopics');
         if (this.mode == 'edit') {
             this.getDetail();

@@ -70,7 +70,11 @@ const routes = [
     component: page("ads/Activate.vue"),
   },
 
-  { path: "/topics", name: "topic", component: page("topic/TopicIndex.vue") },
+  {
+    path: "/topics",
+    name: "topic",
+    component: page("topic/TopicIndex.vue"),
+  },
   {
     path: "/topics/detail/:slug",
     name: "topic.detail",

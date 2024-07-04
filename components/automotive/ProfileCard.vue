@@ -16,318 +16,209 @@
 
       <div v-if="lightBoxImages.length" class="carousel">
         <div class="indicator">
-          <img
-            v-for="(image, index) in lightBoxImages"
-            :src="image.src"
-            :key="index"
-            @click="changeCarousel(index)"
-            :class="{ active: indexOfImage == index }"
-            alt=""
-          />
+          <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
+               :class="{ active: indexOfImage == index }" alt="" />
         </div>
         <div class="slider">
-          <VueSlickCarousel
-            ref="carousel"
-            v-bind="slickSettings"
-            @afterChange="afterChange"
-          >
-            <div
-              class="text-center"
-              v-for="(img, index) in lightBoxImages"
-              :key="index"
-              @click="openGallery(index)"
-            >
+          <VueSlickCarousel ref="carousel" v-bind="slickSettings" @afterChange="afterChange">
+            <div class="text-center" v-for="(img, index) in lightBoxImages" :key="index" @click="openGallery(index)">
               <img class="slider-img img-slide mx-auto" :src="img.src" alt="" />
             </div>
           </VueSlickCarousel>
         </div>
       </div>
 
+      <div class="md-slide">
+        <div v-if="lightBoxImages.length" class="m-indicator mt-2">
+          <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
+               :class="{ active: indexOfImage == index }" alt="" />
+        </div>
+        <div class="fp-card user-detail-container fp-border-color-1 p-2 mt-3">
+          <post-user-detail :post="post" />
+        </div>
+      </div>
       <div class="automotive-profile-card-content">
         <h5 class="automotive-profile-title">
           {{ profile.name }}
           <template v-if="!auth_user || auth_user.id !== profile.user_id">
-            <span
-              class="online-offline ml-2"
-              :class="{ online: profile.is_online }"
-            ></span>
+            <span class="online-offline ml-2" :class="{ online: profile.is_online }"></span>
             <span style="font-size: 13px">{{
               profile.is_online ? "Online" : "Offline"
             }}</span>
           </template>
         </h5>
-        <div class="d-flex flex-wrap align-items-center mb-3">
-          <span v-if="!isMyProfile" class="mr-3"
-            >{{ profile.posts_count }} Items</span
-          >
-          <span class="mr-3"
-            >{{ $nFormatter(profile.user.followers_count) }} Followers</span
-          >
-          <span class="profile-rating d-flex mt-2 mt-md-0 align-items-center">
-            <star-rating
-              :rating="profile.rating"
-              :star-size="15"
-              :show-rating="false"
-              class="mt-n1"
-              read-only
-            />&nbsp;
-            <a
-              href="javascript:;"
-              class="fp-text-color"
-              @click.prevent="openReviewModal()"
-              >{{ $nFormatter(profile.review_count) }}
-              {{ profile.review_count > 1 ? "Reviews" : "Review" }}</a
-            >
-            <a
-              v-if="!isMyProfile && auth_user"
-              href="javascript:;"
-              class="fp-text-color ml-1"
-              @click.prevent="addNewReview()"
-            >
-              (Write review)
-            </a>
-          </span>
-        </div>
-        <div class="business-info fp-border-color-1">
-          <div class="row mx-n1 mb-3">
-            <label class="col-md-6 px-1">
-              <fp-icon name="clock" class="fp-fs-20" />
-              Business Hours
-            </label>
-            <div class="col-md-6 px-1">
-              <p class="mb-0 automotive-profile-detail">
-                {{ profile.business_hours }}
+        <div class="info">
+          <div>
+            <div class="d-flex flex-wrap align-items-center mb-3">
+              <span v-if="!isMyProfile" class="mr-3">{{ profile.posts_count }} Items</span>
+              <span class="mr-3">{{ $nFormatter(profile.user.followers_count) }} Followers</span>
+              <span class="profile-rating d-flex mt-2 mt-md-0 align-items-center">
+                <star-rating :rating="profile.rating" :star-size="15" :show-rating="false" class="mt-n1"
+                             read-only />&nbsp;
+                <a href="javascript:;" class="fp-text-color" @click.prevent="openReviewModal()">{{
+                  $nFormatter(profile.review_count) }}
+                  {{ profile.review_count > 1 ? "Reviews" : "Review" }}</a>
+                <a v-if="!isMyProfile && auth_user" href="javascript:;" class="fp-text-color ml-1"
+                   @click.prevent="addNewReview()">
+                  (Write review)
+                </a>
+              </span>
+            </div>
+            <div class="business-info align-items-center">
+              <div class="d-flex align-items-center">
+                <label class="">
+                  <fp-icon name="clock" class="fp-fs-20" />
+                  Business Hours
+                </label>
+                <p class="mb-0 automotive-profile-detail">
+                  {{ profile.business_hours }}
+                </p>
+              </div>
+              <div>
+                <label class="">
+                  <fp-icon name="location" class="fp-fs-20" />
+                  Location
+                </label>
+                <!-- <div class="" v-if="profile.location.full_address">
+                  <p class="cursor-pointer mb-0 automotive-profile-detail" @click="openGoogleMap()">{{
+                    profile.location.full_address }}</p>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="automotive-profile-actions">
+            <div v-if="isMyProfile" class="btn-group">
+              <div>
+                <div class="dropup dropdown-automotive-profile mb-2 w-100">
+                  <a href="javascript:;" class="btn btn-automotive-profile w-100 fp-text-color fp-btn-outline dropdown-toggle"
+                     data-toggle="dropdown">
+                    <fp-icon name="user" class="fp-fs-18" />
+                    <span class="d-none d-md-inline">Seller Profile</span>
+                    <span class="d-inline d-md-none">Profile</span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a href="javascript:;" class="dropdown-item" @click.prevent="editProfile"
+                       :class="{ disabled: profile.status === 'inactive' }">
+                      <fp-icon name="edit" class="fp-fs-18" />
+                      Edit
+                    </a>
+                    <a href="javascript:;" class="dropdown-item" @click.prevent="changeStatus('deleted')"
+                       :class="{ disabled: profile.status === 'inactive' }">
+                      <fp-icon name="trash" class="fp-fs-18" />
+                      Delete
+                    </a>
+                    <a href="javascript:;" class="dropdown-item" @click.prevent="
+                      changeStatus(
+                        profile.status === 'active' ? 'inactive' : 'active'
+                      )
+                      ">
+                      <fp-icon name="power" class="fp-fs-18" />
+                      {{ profile.status === "active" ? "Deactivate" : "Activate" }}
+                    </a>
+                  </div>
+                </div>
+                <div class="w-100">
+                  <div v-if="profile.subscribed" class="dropup dropdown-automotive-profile mb-2">
+                    <a href="javascript:;" class="btn btn-automotive-profile fp-text-color w-100 fp-btn-outline dropdown-toggle"
+                       data-toggle="dropdown">
+                      <fp-icon name="star-circle" class="fp-fs-18" />
+                      Subscription
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item" href="javascript:;" @click.prevent="cancelSubscription()">
+                        <fp-icon name="close" class="fp-fs-16" />
+                        Cancel Subscription
+                      </a>
+                      <router-link :to="{ name: 'automotive.update_subscription' }" class="dropdown-item">
+                        <fp-icon name="refresh" class="fp-fs-18" />
+                        Update Plan
+                      </router-link>
+                    </div>
+                  </div>
+                  <router-link v-else :to="{ name: 'automotive.subscribe' }"
+                               class="btn btn-automotive-profile fp-text-color fp-btn-outline mb-2 w-100"><fp-icon
+                             name="setting" class="fp-fs-18" /> Subscrib</router-link>
+                </div>
+              </div>
+              <a href="javascript:;" class="btn btn-automotive-profile fp-text-color fp-btn-outline mb-2"
+                 :class="{ disabled: profile.status === 'inactive' }" @click.prevent="addInventory()">
+                <fp-icon name="plus" class="fp-fs-18" />
+                <span class="d-md-inline">Add Inventory</span>
+              </a>
+            </div>
+            <div v-else class="btn-group">
+              <div class="">
+                <a class="btn btn-automotive-profile fp-text-color fp-btn-outline w-100"
+                   @click.prevent="openContactInfoModal">
+                  <fp-icon name="phone" class="fp-fs-20" />
+                  Contact
+                </a>
+                <a class="btn btn-automotive-profile fp-text-color fp-btn-outline w-100" @click.prevent="openChat">
+                  <fp-icon name="email" class="fp-fs-22" />
+                  Message
+                </a>
+              </div>
+              <a class="btn btn-automotive-profile fp-text-color fp-btn-outline " @click.prevent="openEnquiryModal">
+                <fp-icon name="share" class="fp-fs-20" />
+                Enquiry Now
+              </a>
+            </div>
+            <div v-if="isMyProfile" class="plan-info d-flex justify-content-around mt-1">
+              <p class="mb-0" v-if="profile.subscribed">
+                <fp-icon name="plan" class="fp-fs-24" />&nbsp;
+                {{ profile.subscription.plan.name }}({{
+                  profile.subscription.plan.max_items
+                }})
+              </p>
+              <p class="mb-0">
+                <fp-icon name="items" class="fp-fs-24" />&nbsp;
+                {{ profile.posts_count }} Total Items
+              </p>
+              <p class="mb-0">
+                <fp-icon name="active-items" class="fp-fs-24" />&nbsp;
+                {{ profile.active_posts_count }} Active
+              </p>
+              <p v-if="profile.posts_count - profile.active_posts_count" class="mb-0">
+                <fp-icon name="active-items" class="fp-fs-24" />&nbsp;
+                {{ profile.posts_count - profile.active_posts_count }} Inactive
               </p>
             </div>
-          </div>
-          <div class="row mx-n1 mb-3">
-            <label class="col-md-6 px-1">
-              <fp-icon name="location" class="fp-fs-20" />
-              Location
-            </label>
-            <!-- <div class="col-md-6 px-1">
-                            <p class="cursor-pointer mb-0 automotive-profile-detail" @click="openGoogleMap()">{{ profile.location.full_address }}</p>
-                        </div> -->
-          </div>
-        </div>
-        <div class="mt-3 automotive-profile-actions fp-bg-color-1">
-          <div
-            v-if="isMyProfile"
-            class="d-flex align-items-center justify-content-between flex-wrap"
-          >
-            <div class="dropup dropdown-automotive-profile mb-2">
-              <a
-                href="javascript:;"
-                class="btn btn-automotive-profile fp-text-color fp-btn-outline dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <fp-icon name="user" class="fp-fs-18" />
-                <span class="d-none d-md-inline">Seller Profile</span>
-                <span class="d-inline d-md-none">Profile</span>
-              </a>
-              <div class="dropdown-menu">
-                <a
-                  href="javascript:;"
-                  class="dropdown-item"
-                  @click.prevent="editProfile"
-                  :class="{ disabled: profile.status === 'inactive' }"
-                >
-                  <fp-icon name="edit" class="fp-fs-18" />
-                  Edit
-                </a>
-                <a
-                  href="javascript:;"
-                  class="dropdown-item"
-                  @click.prevent="changeStatus('deleted')"
-                  :class="{ disabled: profile.status === 'inactive' }"
-                >
-                  <fp-icon name="trash" class="fp-fs-18" />
-                  Delete
-                </a>
-                <a
-                  href="javascript:;"
-                  class="dropdown-item"
-                  @click.prevent="
-                    changeStatus(
-                      profile.status === 'active' ? 'inactive' : 'active'
-                    )
-                  "
-                >
-                  <fp-icon name="power" class="fp-fs-18" />
-                  {{ profile.status === "active" ? "Deactivate" : "Activate" }}
-                </a>
-              </div>
-            </div>
-            <div
-              v-if="profile.subscribed"
-              class="dropup dropdown-automotive-profile mb-2"
-            >
-              <a
-                href="javascript:;"
-                class="btn btn-automotive-profile fp-text-color fp-btn-outline dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <fp-icon name="star-circle" class="fp-fs-18" />
-                Subscription
-              </a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a
-                  class="dropdown-item"
-                  href="javascript:;"
-                  @click.prevent="cancelSubscription()"
-                >
-                  <fp-icon name="close" class="fp-fs-16" />
-                  Cancel Subscription
-                </a>
-                <router-link
-                  :to="{ name: 'automotive.update_subscription' }"
-                  class="dropdown-item"
-                >
-                  <fp-icon name="refresh" class="fp-fs-18" />
-                  Update Plan
-                </router-link>
-              </div>
-            </div>
-            <router-link
-              v-else
-              :to="{ name: 'automotive.subscribe' }"
-              class="btn btn-automotive-profile fp-text-color fp-btn-outline mb-2"
-              ><fp-icon name="setting" class="fp-fs-18" /> Subscrib</router-link
-            >
-            <a
-              href="javascript:;"
-              class="btn btn-automotive-profile fp-text-color fp-btn-outline mb-2"
-              :class="{ disabled: profile.status === 'inactive' }"
-              @click.prevent="addInventory()"
-            >
-              <fp-icon name="plus" class="fp-fs-18" />
-              <span class="d-none d-md-inline">Add Inventory</span>
-              <span class="d-inline d-md-none">Add</span>
-            </a>
-          </div>
-          <div v-else class="d-flex justify-content-between mt-3">
-            <a
-              class="btn btn-automotive-profile fp-text-color fp-btn-outline"
-              @click.prevent="openContactInfoModal"
-            >
-              <fp-icon name="phone" class="fp-fs-20" />
-              Contact
-            </a>
-            <a
-              class="btn btn-automotive-profile fp-text-color fp-btn-outline ml-2"
-              @click.prevent="openEnquiryModal"
-            >
-              <fp-icon name="share" class="fp-fs-20" />
-              Enquiry Now
-            </a>
-            <a
-              class="btn btn-automotive-profile fp-text-color fp-btn-outline ml-2"
-              @click.prevent="openChat"
-            >
-              <fp-icon name="email" class="fp-fs-22" />
-              Message
-            </a>
-          </div>
-          <div
-            v-if="isMyProfile"
-            class="plan-info d-flex justify-content-around mt-1"
-          >
-            <p class="mb-0" v-if="profile.subscribed">
-              <fp-icon name="plan" class="fp-fs-24" />&nbsp;
-              {{ profile.subscription.plan.name }}({{
-                profile.subscription.plan.max_items
-              }})
-            </p>
-            <p class="mb-0">
-              <fp-icon name="items" class="fp-fs-24" />&nbsp;
-              {{ profile.posts_count }} Total Items
-            </p>
-            <p class="mb-0">
-              <fp-icon name="active-items" class="fp-fs-24" />&nbsp;
-              {{ profile.active_posts_count }} Active
-            </p>
-            <p
-              v-if="profile.posts_count - profile.active_posts_count"
-              class="mb-0"
-            >
-              <fp-icon name="active-items" class="fp-fs-24" />&nbsp;
-              {{ profile.posts_count - profile.active_posts_count }} Inactive
-            </p>
           </div>
         </div>
       </div>
     </div>
-    <fp-modal
-      ref="enquiryModal"
-      name="enquiryModal"
-      :title="`Contact ${profile.name}`"
-    >
+    <fp-modal ref="enquiryModal" name="enquiryModal" :title="`Contact ${profile.name}`">
       <form action="" @submit.prevent="sendEnquiryMessage">
         <div class="form-group">
           <label>Full Name <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter your full name"
-            required
-            maxlength="50"
-            v-model="enquiry_form.name"
-          />
+          <input type="text" class="form-control" placeholder="Enter your full name" required maxlength="50"
+                 v-model="enquiry_form.name" />
         </div>
         <div class="form-group">
           <label>Phone Number <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Your phone number"
-            required
-            maxlength="20"
-            v-model="enquiry_form.phone_number"
-          />
+          <input type="text" class="form-control" placeholder="Your phone number" required maxlength="20"
+                 v-model="enquiry_form.phone_number" />
         </div>
         <div class="form-group">
           <label>Email Address <span class="text-danger">*</span></label>
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Your email address"
-            required
-            maxlength="80"
-            v-model="enquiry_form.email"
-          />
+          <input type="email" class="form-control" placeholder="Your email address" required maxlength="80"
+                 v-model="enquiry_form.email" />
         </div>
         <div class="form-group">
           <label>Message <span class="text-danger">*</span></label>
-          <textarea
-            rows="4"
-            class="form-control"
-            v-model="enquiry_form.message"
-            maxlength="500"
-            required
-            placeholder="Enter short message"
-          ></textarea>
+          <textarea rows="4" class="form-control" v-model="enquiry_form.message" maxlength="500" required
+                    placeholder="Enter short message"></textarea>
         </div>
         <div>
-          <button
-            type="submit"
-            class="btn fp-btn-gradient px-4"
-            :class="{ 'btn-loading': enquiry_form.busy }"
-            :disabled="enquiry_form.busy"
-          >
+          <button type="submit" class="btn fp-btn-gradient px-4" :class="{ 'btn-loading': enquiry_form.busy }"
+                  :disabled="enquiry_form.busy">
             Send
           </button>
         </div>
       </form>
     </fp-modal>
-    <review-modal
-      ref="writeReviewModal"
-      :url="reviewUrl"
-      :profile-name="profile.name"
-      :profile-image="profileImg"
-      :params="reviewFormData"
-      @submit="reviewSubmitted"
-      @closed="initReviewParams"
-    />
+    <review-modal ref="writeReviewModal" :url="reviewUrl" :profile-name="profile.name" :profile-image="profileImg"
+                  :params="reviewFormData" @submit="reviewSubmitted" @closed="initReviewParams" />
     <fp-modal ref="reviewModal" name="reviewModal">
       <template #header>
         <div class="review-modal-header">
@@ -337,41 +228,20 @@
               {{ profile.name }}
             </p>
             <div class="d-flex">
-              <star-rating
-                :rating="profile.rating"
-                :star-size="15"
-                :show-rating="false"
-                read-only
-              />
-              <span class="ml-1" style="margin-top: 2px"
-                >({{ profile.review_count }}
-                {{ profile.review_count > 1 ? "reviews" : "review" }})</span
-              >
-              <a
-                v-if="auth_user && !isMyProfile"
-                href="javascript:;"
-                class="ml-3 fp-text-color-primary"
-                style="margin-top: 2px"
-                @click.prevent="addNewReview()"
-                >Write a review</a
-              >
+              <star-rating :rating="profile.rating" :star-size="15" :show-rating="false" read-only />
+              <span class="ml-1" style="margin-top: 2px">({{ profile.review_count }}
+                {{ profile.review_count > 1 ? "reviews" : "review" }})</span>
+              <a v-if="auth_user && !isMyProfile" href="javascript:;" class="ml-3 fp-text-color-primary"
+                 style="margin-top: 2px" @click.prevent="addNewReview()">Write a review</a>
             </div>
           </div>
         </div>
       </template>
       <template>
-        <profile-reviews
-          ref="profileReviews"
-          :profile="profile"
-          @edit-review="editReview"
-        />
+        <profile-reviews ref="profileReviews" :profile="profile" @edit-review="editReview" />
       </template>
     </fp-modal>
-    <fp-modal
-      ref="contactModal"
-      name="contactModal"
-      :title="`Contact ${profile.name}`"
-    >
+    <fp-modal ref="contactModal" name="contactModal" :title="`Contact ${profile.name}`">
       <div v-if="recaptchaSuccess" class="contact-info-container">
         <label class="control-label mb-0">Email</label>
         <div class="contact-info-item fp-border-color-1">
@@ -727,10 +597,39 @@ export default {
 <style lang="scss" scoped>
 .automotive-profile-card {
   border-radius: 12px;
+
+  .md-slide {
+    display: none;
+
+    @media (max-width: 600px) {
+      display: block;
+    }
+  }
+
+  .m-indicator {
+    display: flex;
+    overflow-x: auto;
+
+    img {
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+      margin-bottom: 5px;
+      margin-right: 5px;
+      border-radius: 4px;
+      opacity: 0.75;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+
   @media (max-width: 600px) {
     padding: 0;
     background-color: transparent;
   }
+
   &-image {
     position: relative;
     display: flex;
@@ -740,17 +639,20 @@ export default {
     width: 58%;
     overflow: hidden;
     max-height: 350px;
+
     @media (max-width: 600px) {
       border-radius: 12px;
       width: 100%;
       margin-bottom: 16px;
       max-height: 200px;
     }
+
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .automotive-seller-type {
       position: absolute;
       right: 0;
@@ -758,6 +660,7 @@ export default {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
+
       .profile-type {
         border-style: solid;
         border-width: 1px;
@@ -771,92 +674,144 @@ export default {
       }
     }
   }
+
   &-content {
     width: 45%;
     border-radius: 0 12px 12px 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 991px) {
+      width: 100%;
+    }
+
     @media (max-width: 600px) {
       border-radius: 0;
       width: 100%;
       padding: 0;
       background-color: none;
     }
+
     .automotive-profile-title {
       font-weight: 500;
       font-size: 18px;
       margin-bottom: 16px;
     }
+
     @media (min-width: 600px) {
       .required-input-container::before {
         display: none;
       }
     }
-    .business-info {
-      border-style: solid;
-      border-width: 1px;
-      padding: 12px 8px 0;
-      border-radius: 10px;
-    }
+
     .dropdown-automotive-profile {
       display: inline-block;
+
       .dropdown-toggle {
         &::after {
           display: none;
         }
       }
     }
+
     p.business_hours {
       white-space: pre-line;
       padding-left: 16px;
+
       svg {
         margin-left: -18px;
       }
     }
+
     .btn-automotive-profile {
       font-size: 13px;
     }
+
     .dropdown-menu {
       border-radius: 12px;
       padding: 4px 12px;
+
       .dropdown-item {
         font-size: 13.6px;
         padding: 8px 0;
         border-bottom: 1px solid #0000001a;
+
         &:last-child {
           border-bottom: none;
         }
+
         &:hover {
           background-color: unset;
         }
       }
     }
+
     .plan-info {
       font-size: 13.6px;
     }
+
     .automotive-profile-detail {
       white-space: pre-wrap;
+
       @media (max-width: 600px) {
         padding-left: 24px;
       }
     }
+
     .automotive-profile-actions {
       @media (max-width: 600px) {
+        background-color: transparent;
         padding: 12px 8px;
-        margin: 0 -8px;
       }
     }
   }
 }
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+
+  &>:first-child {
+    display: flex;
+    gap: .5em;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  @media (max-width: 991px) {
+    flex-direction: row;
+
+    &>:first-child {
+      width: 100%;
+    }
+
+    &>:last-child {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    background-color: transparent;
+  }
+}
+
 .review-modal-header {
   display: flex;
   align-items: center;
   margin: -6px 0 -8px;
+
   img {
     object-fit: cover;
     border-radius: 100%;
   }
+
   p {
     flex-grow: 1;
     max-width: calc(100% - 40px);
@@ -868,6 +823,7 @@ export default {
     padding: 0 10px;
   }
 }
+
 .contact-info-container {
   .contact-info-item {
     border-style: solid;
@@ -875,19 +831,27 @@ export default {
     border-radius: 8px;
     padding: 8px;
     margin-bottom: 16px;
+
     a {
       font-size: 14.4px;
     }
   }
 }
+
 [data-theme="dark"] {
   .automotive-profile-card-content {
     // background-color: #00162D;
   }
 }
+
 .carousel {
   display: flex;
-  width: calc(100% - 420px);
+  width: calc(100% - 320px);
+
+  @media (max-width: 991px) {
+    width: 100%;
+
+  }
 
   .indicator {
     max-height: 400px;
@@ -943,6 +907,7 @@ export default {
     }
   }
 }
+
 .m-indicator {
   display: flex;
   overflow-x: auto;

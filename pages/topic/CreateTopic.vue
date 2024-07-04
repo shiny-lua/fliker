@@ -17,6 +17,13 @@ export default {
     components: {
         TopicForm,
     },
+    mounted() {
+        if (!this.$store.getters["auth/user"]) {
+            this.login("/topics/post");
+        } else {
+            window.addEventListener("scroll", this.handleScroll);
+        }
+    },
     computed: {
         auth_user() {
             return this.$store.getters["auth/user"];
@@ -24,8 +31,9 @@ export default {
     },
     methods: {
         showTermsAndGuideLines() {
-            this.$router.push({name: 'terms_of_use'});
+            this.$router.push({ name: 'terms_of_use' });
         }
     }
 }
 </script>
+

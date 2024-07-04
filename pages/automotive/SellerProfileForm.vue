@@ -6,21 +6,18 @@
           <h5 class="fp-text-color mt-2">
             {{
               is_update
-                ? "Update Your Automotive Seller Profile"
-                : "Create Your Automotive Seller Profile"
+              ? "Update Your Automotive Seller Profile"
+              : "Create Your Automotive Seller Profile"
             }}
           </h5>
         </div>
         <div v-if="!is_update" class="mb-4">
-          <step-header
-            :steps="[
-              'Create Profile',
-              'Select Plan',
-              'Pay & Activate',
-              'Add Inventory',
-            ]"
-            :selected="0"
-          ></step-header>
+          <step-header :steps="[
+            'Create Profile',
+            'Select Plan',
+            'Pay & Activate',
+            'Add Inventory',
+          ]" :selected="0"></step-header>
         </div>
         <div class="seller-profile-form-card fp-card p-3 p-md-4">
           <form action="" class="post" @submit.prevent="submit">
@@ -28,58 +25,30 @@
               <div class="col-lg-6 px-2 mb-3">
                 <label for="" class="mb-1">
                   Business/Seller Name <span class="text-danger">*</span>
-                  <span
-                    v-if="is_update"
-                    class="ml-1"
-                    v-tooltip="update_info_text"
-                  >
+                  <span v-if="is_update" class="ml-1" v-tooltip="update_info_text">
                     <fa :icon="['far', 'question-circle']" />
                   </span>
                 </label>
                 <div class="d-flex align-items-center">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Ex. RGroup"
-                    v-model="form.name"
-                    required
-                    maxlength="40"
-                    :disabled="is_update"
-                  />
+                  <input type="text" class="form-control" placeholder="Ex. RGroup" v-model="form.name" 
+                         maxlength="40" :disabled="is_update" required/>
                 </div>
               </div>
 
               <div class="col-lg-6 px-2 mb-3 automotive-seller-type">
                 <label class="mb-1">Seller Type</label>
-                <multiselect
-                  v-model="form.type"
-                  :options="sellerTypes"
-                  :preserve-search="true"
-                  :multiple="true"
-                  placeholder="Select"
-                  :show-labels="false"
-                ></multiselect>
+                <multiselect v-model="form.type" :options="sellerTypes" :preserve-search="true" :multiple="true"
+                             placeholder="Select" :show-labels="false"></multiselect>
               </div>
             </div>
             <div class="row mx-n2">
               <div class="col-lg-6 px-2">
                 <div class="form-group">
-                  <label for="" class="mb-1"
-                    >About Seller <span class="text-danger">*</span></label
-                  >
+                  <label for="" class="mb-1">About Seller <span class="text-danger">*</span></label>
                   <div>
-                    <textarea
-                      name="detail"
-                      rows="5"
-                      class="form-control"
-                      v-model="form.detail"
-                      required
-                      maxlength="10000"
-                      placeholder="Describe your business briefly.."
-                    ></textarea>
-                    <p
-                      class="d-flex justify-content-between text-muted mb-0 mt-2"
-                    >
+                    <textarea name="detail" rows="5" class="form-control" v-model="form.detail"  maxlength="10000"
+                              placeholder="Describe your business briefly.." required></textarea>
+                    <p class="d-flex justify-content-between text-muted mb-0 mt-2">
                       <span>Entered: {{ detail_words }} Characters</span>
                       <span>Between 250 - 10000 Characters</span>
                     </p>
@@ -88,62 +57,34 @@
 
                 <div class="form-group">
                   <label for="" class="mb-1">Contact Information</label>
-                  <div
-                    class="fp-card w-100 fp-border-color-1"
-                    style="border: solid 1px"
-                  >
+                  <div class="fp-card w-100 fp-border-color-1" style="border: solid 1px">
                     <div class="form-group mb-2">
                       <label for="" class="mb-1">Email</label>
                       <div class="required-input-container">
-                        <input
-                          type="email"
-                          class="form-control"
-                          v-model="form.email"
-                          placeholder="Enter email address"
-                          maxlength="80"
-                          required
-                        />
+                        <input type="email" class="form-control" v-model="form.email" placeholder="Enter email address"
+                               maxlength="80" required />
                       </div>
                     </div>
                     <div class="form-group mb-2">
                       <label for="" class="mb-1">Phone</label>
                       <div class="required-input-container">
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="form.phone_number"
-                          placeholder="Enter phone number"
-                          maxlength="20"
-                          required
-                        />
+                        <input type="text" class="form-control" v-model="form.phone_number"
+                               placeholder="Enter phone number" maxlength="20" required />
                       </div>
                     </div>
                     <div class="form-group mb-2">
                       <label for="" class="mb-1">Web Link</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="form.weblink"
-                        placeholder="Any web links (Optional)"
-                        maxlength="150"
-                      />
-                      <span class="invalid-feedback"
-                        >* DO NOT input long URL
-                        <fa
-                          :icon="['far', 'question-circle']"
-                          v-tooltip="
-                            `Input links to your site homepage, about, contact forms, and others. Avoid long URLs.`
-                          "
-                      /></span>
+                      <input type="text" class="form-control" v-model="form.weblink"
+                             placeholder="Any web links (Optional)" maxlength="150"/>
+                      <span class="invalid-feedback">* DO NOT input long URL
+                        <fa :icon="['far', 'question-circle']" v-tooltip="`Input links to your site homepage, about, contact forms, and others. Avoid long URLs.`
+                          " />
+                      </span>
                     </div>
                     <div class="">
                       <div class="form-check">
                         <label class="form-check-label font-weight-500">
-                          <input
-                            type="checkbox"
-                            class="form-check-input"
-                            v-model="form.enable_chat"
-                          />
+                          <input type="checkbox" class="form-check-input" v-model="form.enable_chat" required/>
                           Enable Online Chat
                         </label>
                       </div>
@@ -153,120 +94,64 @@
               </div>
               <div class="col-lg-6 px-2">
                 <div class="form-group">
-                  <label class="mb-1"
-                    >What do you want to sell?
-                    <span class="text-danger">*</span></label
-                  >
-                  <multiselect
-                    v-model="selected_categories"
-                    :options="categories"
-                    :preserve-search="true"
-                    placeholder="Search categories"
-                    track-by="id"
-                    label="name"
-                    :multiple="true"
-                    :show-labels="false"
-                    :class="{
-                      multiple: true,
-                      'has-error':
-                        form.categories.length === 0 &&
-                        form.errors.has('categories'),
-                    }"
-                  ></multiselect>
+                  <label class="mb-1">What do you want to sell?
+                    <span class="text-danger">*</span></label>
+                  <multiselect v-model="selected_categories" :options="categories" :preserve-search="true"
+                               placeholder="Search categories" track-by="id" label="name" :multiple="true"
+                               :show-labels="false" :class="{
+                                 multiple: true,
+                                 'has-error':
+                                   form.categories.length === 0 &&
+                                   form.errors.has('categories'),
+                               }"></multiselect>
                   <has-error :form="form" field="categories" />
                 </div>
                 <div class="form-group">
-                  <label for="" class="mb-1"
-                    >Business/Seller Location
-                    <span class="text-danger">*</span></label
-                  >
+                  <label for="" class="mb-1">Business/Seller Location
+                    <span class="text-danger">*</span></label>
                   <div class="d-flex align-items-center">
-                    <div
-                      class="fp-card w-100 fp-border-color-1"
-                      style="border: solid 1px"
-                    >
+                    <div class="fp-card w-100 fp-border-color-1" style="border: solid 1px">
                       <div class="row mx-n1">
                         <div class="col-12 mb-2 mb-md-3 px-1">
                           <label class="mb-1">
                             Street Address
-                            <span
-                              v-if="is_update"
-                              class="ml-1"
-                              v-tooltip="update_info_text"
-                            >
+                            <span v-if="is_update" class="ml-1" v-tooltip="update_info_text">
                               <fa :icon="['far', 'question-circle']" />
                             </span>
                           </label>
-                          <gmap-autocomplete
-                            class="form-control w-100"
-                            :value="form.location.address"
-                            @place_changed="updateAddress"
-                            placeholder="Enter street address"
-                            style="max-width: 100%"
-                            :disabled="is_update"
-                            @keypress.enter="$event.preventDefault()"
-                          ></gmap-autocomplete>
-                          <p
-                            v-if="
-                              form.location.address == '' && showLocationError
-                            "
-                            class="text-danger mb-0"
-                          >
+                          <gmap-autocomplete class="form-control w-100" :value="form.location.address"
+                                             @place_changed="updateAddress" placeholder="Enter street address"
+                                             style="max-width: 100%" :disabled="is_update"
+                                             @keypress.enter="$event.preventDefault()"></gmap-autocomplete>
+                          <!-- @keypress.enter="$event.preventDefault()" -->
+                          <p v-if="form.location.address == '' && showLocationError
+                            " class="text-danger mb-0">
                             Street address is required
                           </p>
                         </div>
                         <div class="col-md-4 mb-2 mb-md-3 px-1">
                           <label class="mb-1">Zip Code</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="form.location.zipcode"
-                            placeholder="Zipcode"
-                            :disabled="is_update"
-                            required
-                          />
-                          <p
-                            v-if="
-                              form.location.zipcode == '' && showLocationError
-                            "
-                            class="text-danger mb-0"
-                          >
+                          <input type="text" class="form-control" v-model="form.location.zipcode" placeholder="Zipcode"
+                                 :disabled="is_update" required />
+                          <p v-if="form.location.zipcode == '' && showLocationError
+                            " class="text-danger mb-0">
                             Zipcode is required
                           </p>
                         </div>
                         <div class="col-md-4 mb-2 mb-md-3 px-1">
                           <label class="mb-1">City</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="form.location.city"
-                            placeholder="City"
-                            :disabled="is_update"
-                            required
-                          />
-                          <p
-                            v-if="form.location.city == '' && showLocationError"
-                            class="text-danger mb-0"
-                          >
+                          <input type="text" class="form-control" v-model="form.location.city" placeholder="City"
+                                 :disabled="is_update" required />
+                          <p v-if="form.location.city == '' && showLocationError" class="text-danger mb-0">
                             City is required
                           </p>
                         </div>
                         <div class="col-md-4 mb-2 mb-md-3 px-1">
                           <label class="mb-1">State</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="form.location.state"
-                            placeholder="State"
-                            :disabled="is_update"
-                            required
-                          />
-                          <p
-                            v-if="
-                              form.location.state == '' && showLocationError
-                            "
-                            class="text-danger mb-0"
-                          >
+                          <input type="text" class="form-control" v-model="form.location.state" placeholder="State"
+                                 :disabled="is_update" required />
+                          <p v-if="form.location.state == '' && showLocationError
+                            " class="text-danger mb-0">
                             State is required
                           </p>
                         </div>
@@ -275,18 +160,9 @@
                   </div>
                 </div>
                 <div class="form-group mb-2">
-                  <label for="" class="mb-1"
-                    >Business Hours <span class="text-danger">*</span></label
-                  >
-                  <textarea
-                    name="business_hours"
-                    rows="5"
-                    class="form-control"
-                    maxlength="80"
-                    v-model="form.business_hours"
-                    required
-                    placeholder="Enter business open hours"
-                  ></textarea>
+                  <label for="" class="mb-1">Business Hours <span class="text-danger">*</span></label>
+                  <textarea name="business_hours" rows="5" class="form-control" maxlength="80"
+                            v-model="form.business_hours" placeholder="Enter business open hours" required></textarea>
                 </div>
               </div>
             </div>
@@ -339,19 +215,12 @@
             </div> -->
 
             <div>
-              <button
-                type="submit"
-                class="btn fp-btn-gradient"
-                :class="{ 'btn-loading': form.busy }"
-                :disabled="form.busy"
-              >
+              <button type="submit" class="btn fp-btn-gradient" :class="{ 'btn-loading': form.busy }"
+                      :disabled="form.busy">
                 {{ is_update ? "Update Profile" : "Create & Subscribe" }}
               </button>
-              <router-link
-                :to="{ name: 'automotive.seller_profile' }"
-                class="btn fp-btn-outline ml-2"
-                >Cancel</router-link
-              >
+              <router-link :to="{ name: 'automotive.seller_profile' }"
+                           class="btn fp-btn-outline ml-2">Cancel</router-link>
             </div>
           </form>
         </div>
@@ -397,7 +266,7 @@ export default {
           state: "",
           zipcode: "",
           county: "",
-          address: "",
+          address: "Spa City USA",
           full_address: "",
           latitude: "",
           longitude: "",
@@ -414,11 +283,9 @@ export default {
     };
   },
   computed: {
-    // detail_words: function () {
-    //   let detail = this.form.detail.replace(/\n/g, ' ')
-    //   let arr = detail.split(" ");
-    //   return arr.filter((i) => i !== "").length;
-    // },
+    detail_words() {
+      return this.form.detail ? this.form.detail.replace(/\n/g, ' ').split(' ').filter((i) => i !== '').length : 0;
+    },
     sellerTypes() {
       return [
         "Auto Auction",
@@ -440,10 +307,8 @@ export default {
       this.form.categories = value.map((i) => i.id);
     },
     "form.detail": function (val) {
-      //   let detail = val.replace(/\n/g, " ");
-      //   let arr = detail.split(" ");
       if (!this.form.detail) return 0;
-      this.detail_words = this.form.detail.length;
+      // this.detail_words = this.form.detail.length;
     },
   },
   mounted() {
@@ -457,6 +322,9 @@ export default {
       );
       this.categories = response.data.data;
     },
+    // handleEnterPress() {
+    //   console.log('Enter key pressed');
+    // },
     loadProfile() {
       this.axios
         .post(`${process.env.adsApiUrl}/automotive/get_seller_profile`, {
@@ -466,6 +334,7 @@ export default {
           if (response.data.status == "Success") {
             let result = response.data.data;
             if (result) {
+              console.log(response.data.data)
               this.loadForm(result);
               this.profile = result;
               this.is_update = true;
@@ -495,37 +364,39 @@ export default {
       }
     },
     updateAddress(place) {
-      this.form.location.latitude = place.geometry["location"].lat();
-      this.form.location.longitude = place.geometry["location"].lng();
-      for (var i = 0; i < place.address_components.length; i++) {
-        for (var j = 0; j < place.address_components[i].types.length; j++) {
-          if (place.address_components[i].types[j] === "postal_code") {
-            this.form.location.zipcode = place.address_components[i].long_name;
-          }
-          if (
-            place.address_components[i].types[j] ===
-            "administrative_area_level_1"
-          ) {
-            this.form.location.state = place.address_components[i].short_name;
-          }
-          if (
-            place.address_components[i].types[j] ===
-            "administrative_area_level_2"
-          ) {
-            let county = place.address_components[i].short_name;
-            county = county.replace(" County", "");
-            this.form.location.county = county;
-          }
-          if (place.address_components[i].types[j] === "locality") {
-            this.form.location.city = place.address_components[i].long_name;
-          }
-          if (place.address_components[i].types[j] === "country") {
-            this.form.location.country = place.address_components[i].short_name;
+      if (place && place.geometry && place.geometry.location) {
+        this.form.location.latitude = place.geometry["location"].lat();
+        this.form.location.longitude = place.geometry["location"].lng();
+        for (var i = 0; i < place.address_components.length; i++) {
+          for (var j = 0; j < place.address_components[i].types.length; j++) {
+            if (place.address_components[i].types[j] === "postal_code") {
+              this.form.location.zipcode = place.address_components[i].long_name;
+            }
+            if (
+              place.address_components[i].types[j] ===
+              "administrative_area_level_1"
+            ) {
+              this.form.location.state = place.address_components[i].short_name;
+            }
+            if (
+              place.address_components[i].types[j] ===
+              "administrative_area_level_2"
+            ) {
+              let county = place.address_components[i].short_name;
+              county = county.replace(" County", "");
+              this.form.location.county = county;
+            }
+            if (place.address_components[i].types[j] === "locality") {
+              this.form.location.city = place.address_components[i].long_name;
+            }
+            if (place.address_components[i].types[j] === "country") {
+              this.form.location.country = place.address_components[i].short_name;
+            }
           }
         }
+        this.form.location.address = place.name;
+        this.form.location.full_address = place.formatted_address;
       }
-      this.form.location.address = place.name;
-      this.form.location.full_address = place.formatted_address;
     },
     handleFile(event) {
       const file = event.target.files[0];
@@ -587,7 +458,6 @@ export default {
         return false;
       }
       try {
-        // condition to handle multiple images
         this.loading = true;
         const uploadedImages = [];
         const totalImages = this.coverImages.length;
@@ -599,12 +469,14 @@ export default {
           this.progress = Math.floor((count / totalImages) * 100);
           // this.$refs.progresStatus.style.width = this.progress + "%";
         }
-
-        this.formData.image = uploadedImages;
+        
+        this.form.image = uploadedImages;
+        console.log(this.form)
         this.loading = false;
         const response = await this.form.post(
           `${process.env.adsApiUrl}/automotive/save_seller_profile`
         );
+        console.log(response)
         if (response.data.status === "Success") {
           this.loadForm(response.data.data);
           this.profile = response.data.data;
@@ -627,7 +499,27 @@ export default {
           }, 1000);
         }
       } catch (error) {
-        console.log(error);
+        console.log("seller_profile_form_error", error);
+      }
+    },
+    async uploadImage(image) {
+      try {
+        const formData = new FormData();
+        formData.append("image", image.file);
+        console.log("image:", image)
+        console.log("formData:", formData)
+        const response = await this.axios.post(
+          `${process.env.adsApiUrl}/post/upload_image`,
+          formData
+        );
+        if (response.data.status === "Success") {
+          return response.data.data;
+        } else {
+          throw new Error("Image upload failed");
+        }
+      } catch (error) {
+        console.error("Image upload error:", error);
+        throw error;
       }
     },
   },
@@ -639,6 +531,7 @@ export default {
   font-weight: 500;
   white-space: nowrap;
 }
+
 .cover-image {
   display: flex;
   align-items: center;
@@ -653,11 +546,13 @@ export default {
   border-radius: 10px;
   cursor: pointer;
   overflow: hidden;
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
   .btn-delete {
     position: absolute;
     top: 3px;
@@ -669,23 +564,28 @@ export default {
     border-radius: 4px;
   }
 }
+
 .required-input-container {
   &::before {
     left: -10px;
   }
 }
+
 .automotive-seller-type::v-deep {
   .multiselect {
     height: unset !important;
   }
+
   .multiselect__tags {
     padding-top: 6px !important;
     min-height: 38px;
     height: unset !important;
   }
+
   .multiselect__tag {
     margin-bottom: 2px;
   }
+
   .multiselect__placeholder {
     margin-bottom: 5px !important;
   }

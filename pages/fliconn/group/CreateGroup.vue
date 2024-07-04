@@ -21,3 +21,9 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.row {
+    margin-inline: 0px;
+}
+</style>
