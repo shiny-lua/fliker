@@ -2,10 +2,7 @@
   <div class="row justify-content-center pt-3 pt-md-4">
     <div class="col-lg-12">
       <div v-if="automotive_seller == null"></div>
-      <div
-        v-else-if="automotive_seller.status === 'deleted'"
-        class="center-align"
-      >
+      <div v-else-if="automotive_seller.status === 'deleted'" class="center-align">
         <img src="~assets/images/deleted.png" width="500" />
         <h6 class="mt-3">Automotive seller profile has been deleted.</h6>
       </div>
@@ -13,10 +10,21 @@
         <profile-card :profile="automotive_seller" />
       </div>
       <div v-if="automotive_seller" class="related-posts mt-3">
-        <div
-          v-if="automotive_seller.categories.length"
-          class="profile-categories mb-2"
-        >
+        <div v-if="automotive_seller.categories.length" class="profile-categories mb-2">
+          <div>
+            <span :class="{
+              'fp-filter-item': true,
+              active: !filter.automotive_category_id,
+            }" @click="displayAll()">All</span>
+          </div>
+          <div v-for="(item, index) in automotive_seller.categories" :key="index">
+            <div class="fp-filter-item" @click="selectCategory(item)" :class="{
+              'fp-filter-item mr-2 mb-2': true,
+              active: filter.automotive_category_id === item.id,
+            }">
+              {{ item.name }}
+            </div>
+          </div>
           <!-- <div
             class="category-item fp-borer-color-1 fp-text-color-main mb-2 mb-md-0"
             :class="
@@ -29,75 +37,45 @@
           </div> -->
 
           <!--  New category slider design start -->
-          <div style="display: flex">
-            <span
-              :class="{
+          <!-- 
+          <VueSlickCarousel v-bind="sliderSettings">
+            <div>
+              <span :class="{
                 'fp-filter-item mr-2 mb-2': true,
                 active: !filter.automotive_category_id,
-              }"
-              @click="displayAll()"
-              >All</span
-            >
-            <VueSlickCarousel v-bind="sliderSettings" ref="subCatSlick">
-              <div
-                v-for="(item, index) in automotive_seller.categories"
-                :key="index"
-                :class="{
-                  'fp-filter-item mr-2 mb-2': true,
-                  active: filter.automotive_category_id === item.id,
-                }"
-                @click="selectCategory(item)"
-              >
+              }" @click="displayAll()">All</span>
+            </div>
+            <div v-for="(item, index) in automotive_seller.categories" :key="index" class="carousel-item">
+              <div class="fp-filter-item" :class="{ active: filter.automotive_category_id === item.id }"
+                @click="selectCategory(item)">
                 {{ item.name }}
               </div>
-            </VueSlickCarousel>
-            <!-- New category slider design end -->
-          </div>
+            </div>
+          </VueSlickCarousel> -->
         </div>
         <!-- Sub category chips start -->
-        <div class="container mb-2" v-if="selectedCategory">
+        <div class="" v-if="selectedCategory">
           <div>
-            <span
-              class="information-item"
-              v-for="(item, index) in selectedCategory.sub_categories"
-              :key="index"
-              :class="{
-                'fp-filter-item mr-2 mb-2': true,
-                active: filter.automotive_sub_category_id.includes(item.id),
-              }"
-              @click="selectSubCategory(item)"
-            >
+            <span class="information-item" v-for="(item, index) in selectedCategory.sub_categories" :key="index" :class="{
+              'fp-filter-item mr-2 mb-2': true,
+              active: filter.automotive_sub_category_id.includes(item.id),
+            }" @click="selectSubCategory(item)">
               {{ item.name }}
             </span>
           </div>
         </div>
         <!-- sub category chips end -->
-        <div
-          class="posts mb-5"
-          :class="automotive_seller.categories.length && 'has-categories'"
-        >
+        <div class="posts mb-5" :class="automotive_seller.categories.length && 'has-categories'">
           <div class="row mx-n1 mx-md-n2">
-            <div
-              v-for="(item, index) in posts"
-              :key="index"
-              class="col-md-3"
-              :class="{
-                'col-6 mb-2 mb-md-3 px-1 px-md-2': true,
-                // 'col-lg-4': automotive_seller.categories.length,
-                // 'col-lg-3': automotive_seller.categories.length == 0,
-              }"
-            >
-              <Post
-                :post="item"
-                :is_admin="auth_user && item.user_id === auth_user.id"
-              />
+            <div v-for="(item, index) in posts" :key="index" class="col-md-3" :class="{
+              'col-6 mb-2 mb-md-3 px-1 px-md-2': true,
+              // 'col-lg-4': automotive_seller.categories.length,
+              // 'col-lg-3': automotive_seller.categories.length == 0,
+            }">
+              <Post :post="item" :is_admin="auth_user && item.user_id === auth_user.id" />
             </div>
           </div>
-          <infinite-loading
-            :distance="1"
-            :identifier="infiniteId"
-            @infinite="searchPosts"
-          >
+          <infinite-loading :distance="1" :identifier="infiniteId" @infinite="searchPosts">
             <div slot="no-more"></div>
             <div slot="no-results">No inventory found!</div>
           </infinite-loading>
@@ -148,7 +126,7 @@ export default {
           {
             breakpoint: 900,
             settings: {
-              arrows: false,
+              arrows: true,
               slidesToScroll: 1,
               variableWidth: true,
             },
@@ -156,7 +134,7 @@ export default {
           {
             breakpoint: 480,
             settings: {
-              arrows: false,
+              arrows: true,
               slidesToScroll: 1,
               variableWidth: true,
             },
@@ -181,11 +159,11 @@ export default {
       const slug = this.$route.params.slug;
       let params = slug
         ? {
-            slug: slug,
-          }
+          slug: slug,
+        }
         : {
-            user_id: this.auth_user ? this.auth_user.id : null,
-          };
+          user_id: this.auth_user ? this.auth_user.id : null,
+        };
       try {
         const response = await this.axios.post(
           `${process.env.adsApiUrl}/automotive/get_seller_profile`,
@@ -269,47 +247,59 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.row {
+  margin-inline: 0px;
+}
+
 .related-posts {
-  @media (min-width: 769px) {
-    .profile-categories {
-      width: 100%;
-      align-self: start;
-    }
-    .posts.has-categories {
-      // width: calc(100% - 266px);
-      // margin-left: auto;
-    }
+  .profile-categories {
+    display: flex;
+    gap: 1em;
   }
 }
+
 .category-item {
   a.active {
     text-decoration: underline;
   }
+
   .sub-cat-item {
     display: block;
     font-size: 13.6px;
+
     &.active {
       text-decoration: underline;
     }
   }
 }
+
+.carousel {
+  display: flex;
+  gap: 2em;
+}
+
 .center-align {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%; /* Make sure the parent container has a defined height */
+  height: 100%;
+  /* Make sure the parent container has a defined height */
   text-align: center;
-  margin: 0 auto; /* Center the div horizontally */
+  margin: 0 auto;
+  /* Center the div horizontally */
 }
 
 .center-align img {
-  max-width: 100%; /* Ensure the image is responsive */
+  max-width: 100%;
+  /* Ensure the image is responsive */
 }
 
 .center-align h6 {
-  margin-top: 1rem; /* Adjust the margin as needed */
+  margin-top: 1rem;
+  /* Adjust the margin as needed */
 }
+
 .fp-filter-item {
   border-radius: 36px;
 }

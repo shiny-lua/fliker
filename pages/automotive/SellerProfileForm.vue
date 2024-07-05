@@ -334,7 +334,7 @@ export default {
           if (response.data.status == "Success") {
             let result = response.data.data;
             if (result) {
-              console.log(response.data.data)
+              // console.log(response.data.data)
               this.loadForm(result);
               this.profile = result;
               this.is_update = true;
@@ -444,25 +444,26 @@ export default {
       }
     },
     async submit() {
-      if (
-        this.form.location.address == "" ||
-        this.form.location.zipcode == "" ||
-        this.form.location.city == "" ||
-        this.form.location.state == ""
-      ) {
-        this.showLocationError = true;
-        return false;
-      }
-      if (this.detail_words < 250) {
-        this.$toast.error("Description should be at least 250 Characters");
-        return false;
-      }
+      // if (
+      //   this.form.location.address == "" ||
+      //   this.form.location.zipcode == "" ||
+      //   this.form.location.city == "" ||
+      //   this.form.location.state == ""
+      // ) {
+      //   this.showLocationError = true;
+      //   return false;
+      // }
+      // if (this.detail_words < 250) {
+      //   this.$toast.error("Description should be at least 250 Characters");
+      //   return false;
+      // }
       try {
         this.loading = true;
         const uploadedImages = [];
         const totalImages = this.coverImages.length;
         let count = 0;
         for (const image of this.coverImages) {
+          console.log("result", image)
           const uploadedImage = await this.uploadImage(image);
           uploadedImages.push(uploadedImage);
           count++;
@@ -471,12 +472,11 @@ export default {
         }
         
         this.form.image = uploadedImages;
-        console.log(this.form)
         this.loading = false;
         const response = await this.form.post(
           `${process.env.adsApiUrl}/automotive/save_seller_profile`
         );
-        console.log(response)
+        // console.log(response)
         if (response.data.status === "Success") {
           this.loadForm(response.data.data);
           this.profile = response.data.data;
@@ -506,13 +506,20 @@ export default {
       try {
         const formData = new FormData();
         formData.append("image", image.file);
-        console.log("image:", image)
-        console.log("formData:", formData)
         const response = await this.axios.post(
           `${process.env.adsApiUrl}/post/upload_image`,
           formData
         );
+
+        console.log("--------------------------------------")
+        console.log("formData", formData)
+        console.log("--------------------------------------")
+
+        console.log("response", response)
+        console.log("--------------------------------------")
+
         if (response.data.status === "Success") {
+          console.log("resp", response.data.data)
           return response.data.data;
         } else {
           throw new Error("Image upload failed");

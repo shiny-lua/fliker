@@ -43,7 +43,6 @@
                 <div class="post-user-detail-name">
                     {{ post.location.full_address ? post.location.full_address : post.location.display_address }}
                 </div> -->
-                stress
             </div>
             <div v-if="post.automotive_seller.business_hours" class="post-user-detail-item">
                 <div class="post-user-detail-field">

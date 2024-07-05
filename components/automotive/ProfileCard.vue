@@ -33,7 +33,7 @@
           <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
                :class="{ active: indexOfImage == index }" alt="" />
         </div>
-        <div class="fp-card user-detail-container fp-border-color-1 p-2 mt-3">
+        <div v-if="post" class="fp-card user-detail-container p-2 mt-3">
           <post-user-detail :post="post" />
         </div>
       </div>
@@ -840,7 +840,7 @@ export default {
 
 [data-theme="dark"] {
   .automotive-profile-card-content {
-    // background-color: #00162D;
+    /* background-color: #00162D; */
   }
 }
 
