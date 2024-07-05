@@ -206,6 +206,7 @@ h3 {
   align-items: center;
   justify-content: center;
 
+  
   &.btn-direct-open {
     font-size: 14px;
   }
