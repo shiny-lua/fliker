@@ -179,6 +179,7 @@ export default {
                 this.showError = true;
                 this.errors = {};
                 this.error_code = '';
+                console.log("error", error)
                 if (error.code.includes('number')) this.errors.cardNumber = error.message;
                 if (error.code.includes('cvc')) this.errors.cvc = error.message;
                 if (error.code.includes('expiry')) this.errors.expiry = error.message;

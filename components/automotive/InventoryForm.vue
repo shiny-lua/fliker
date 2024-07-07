@@ -10,10 +10,10 @@
           <div v-if="this.isSellerProfile" class="fp-card form-step-content d-lg-flex">
             <div class="category-container mb-4 mb-lg-0">
               <div>
-                <p class="fp-text-color-main mb-2">
+                <h6 class="fp-text-color-main mb-2">
                   Select Post Category <span class="text-danger">*</span>
-                </p>
-                <div class="border round-10 fp-border-color-1 p-2">
+                </h6>
+                <div class="border round-10 fp-border-color-1">
                   <div v-for="(item, index) in categories" :key="index" :class="{
                     'category button-view mr-lg-0': true,
                     active: item.id == formData.automotive_category_id,
@@ -25,21 +25,19 @@
               </div>
             </div>
             <div class="sub-category-container">
-              <p class="fp-text-color-main ">
-                Select or Add New Sub-Category (Optional)
-              </p>
+              <h6 class="fp-text-color-main mb-4">
+                Select or Create new Sub-Category (Optional)
+              </h6>
               <form class="mb-2" @submit.prevent="saveSubCategory()">
                 <input ref="subCatName" type="text" class="form-control" placeholder="Ex. EV/Hybrid Models" maxlength="50"
                   required />
-                <button type="submit" class="btn fp-btn-gradient ml-2" ref="subcatSubmitbtn">
+                <button type="submit" class="btn fp-btn-gradient" ref="subcatSubmitbtn">
                   <fp-icon name="plus" class="fp-fs-20" /> Add
                 </button>
               </form>
-              <div v-if="formData.automotive_category" class="d-flex flex-wrap">
+              <div v-if="formData.automotive_category" class="d-flex flex-wrap pt-3">
                 <div v-for="(item, index) in formData.automotive_category
-                  .sub_categories" :key="index" :class="{
-    'category button-view': true,
-    active: item.id == formData.automotive_sub_category_id,
+                  .sub_categories" :key="index" class="content-group" :class="{active: item.id == formData.automotive_sub_category_id,
   }" @click="selectSubCategory(item)">
                   {{ item.name }}
                   <div class="icon-wrapper">
@@ -1289,7 +1287,6 @@ export default {
 <style lang="scss" scoped>
 .form-content {
   width: 100%;
-  max-width: 850px;
   margin: 0 auto;
 }
 
@@ -1297,7 +1294,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1em;
-  width: 300px;
+  width: 100%;
 
   @media (max-width: 991px) {
     width: 100%;
@@ -1315,22 +1312,25 @@ export default {
 .sub-category-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   form {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+
     gap: 1em;
 
     input {
-      max-width: 500px;
+      width: 100%;
     }
   }
 }
 
 .form-step-content {
   justify-content: center;
-  gap: 2em;
-  padding-inline: 100px;
+  gap: 3em;
+  padding: 70px;
 
   @media (max-width: 600px) {
     padding: 0;
@@ -1457,7 +1457,14 @@ export default {
     }
   }
 }
-
+.content-group {
+  display: flex;
+  gap: 1em;
+  border: solid 1px #64748b;
+  border-radius: .5em;
+  margin-right: 1.5em;
+  padding: 1em 1.5em;
+}
 .form-submitted::v-deep {
   .step-footer {
     display: none;
@@ -1584,4 +1591,5 @@ export default {
 
 .category.button-view.fp-text-default.category.button-view.mr-lg-0 {
   margin: 10px;
-}</style>
+}
+</style>

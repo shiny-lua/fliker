@@ -568,10 +568,17 @@ export default {
     cursor: pointer;
   }
 }
-.auto-grid{
+.auto-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  transition: all .35s ease 0s;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 1rem;
+  transition: all 0.35s ease 0s;
+}
+
+@media (max-width: 480px) {
+  .auto-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
 }
 .ads-index {
   @media (min-width: 601px) {

@@ -1,6 +1,6 @@
 <template>
   <div class="automotive-profile-card custom-width fp-card p-0">
-    <div class="d-lg-flex">
+    <div class="d-lg-flex p-2">
       <!-- <div class="automotive-profile-card-image">
         <img :src="profile.image.src_url" alt="" v-if="profile.image" />
         <h6 v-else>No Cover Image Available</h6>
@@ -14,23 +14,23 @@
         </div>
       </div> -->
 
-      <div v-if="lightBoxImages.length" class="carousel">
+      <div v-if="profile.image.length" class="carousel">
         <div class="indicator">
-          <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
+          <img v-for="(image, index) in profile.image" :src="image.src_url" :key="index" @click="changeCarousel(index)"
                :class="{ active: indexOfImage == index }" alt="" />
         </div>
         <div class="slider">
           <VueSlickCarousel ref="carousel" v-bind="slickSettings" @afterChange="afterChange">
-            <div class="text-center" v-for="(img, index) in lightBoxImages" :key="index" @click="openGallery(index)">
-              <img class="slider-img img-slide mx-auto" :src="img.src" alt="" />
+            <div class="text-center" v-for="(img, index) in profile.image" :key="index" @click="openGallery(index)">
+              <img class="slider-img img-slide mx-auto" :src="img.src_url" alt="" />
             </div>
           </VueSlickCarousel>
         </div>
       </div>
 
       <div class="md-slide">
-        <div v-if="lightBoxImages.length" class="m-indicator mt-2">
-          <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
+        <div v-if="profile.image.length" class="m-indicator mt-2">
+          <img v-for="(image, index) in profile.image" :src="image.src_url" :key="index" @click="changeCarousel(index)"
                :class="{ active: indexOfImage == index }" alt="" />
         </div>
         <div v-if="post" class="fp-card user-detail-container p-2 mt-3">
@@ -319,12 +319,6 @@ export default {
         id: "",
         profile_id: this.profile.id,
       },
-      imagesFOrLightBox: [
-        "https://cisp.cachefly.net/assets/articles/images/resized/0001081147_resized_blueprintcarwireframe1022.jpg",
-        "https://img.freepik.com/premium-photo/car-dark-background-futuristic-autonomous-vehicle-car-hud_607202-4625.jpg?size=626&ext=jpg&ga=GA1.1.1826414947.1699142400&semt=ais",
-        "https://www.eetimes.eu/wp-content/uploads/2023/12/Software-defined-vehicle_SDV_TTTech-Auto.jpg?resize=640%2C360",
-        "https://graphitehitech.com/wp-content/uploads/2021/01/automotive1.jpeg",
-      ],
       recaptchaSuccess: false,
       recaptcha_site_key: process.env.recaptchaSiteKey,
     };
@@ -348,20 +342,6 @@ export default {
     },
     reviewUrl() {
       return `${process.env.adsApiUrl}/automotive/review/submit`;
-    },
-    lightBoxImages() {
-      // return this.profile.images.map((image) => {
-      //   return {
-      //     src: image.src_url,
-      //     alt: this.profile.name,
-      //   };
-      // });
-      return this.imagesFOrLightBox.map((image) => {
-        return {
-          src: image,
-          alt: this.profile.name,
-        };
-      });
     },
   },
   mounted() {
@@ -707,7 +687,7 @@ export default {
 
     .dropdown-automotive-profile {
       display: inline-block;
-
+      width: 100%;
       .dropdown-toggle {
         &::after {
           display: none;
@@ -837,10 +817,16 @@ export default {
     }
   }
 }
+.automotive-profile-card-content {
+  @media (max-width: 991px) {
+    padding-top: 1em;
+  }
+}
 
 [data-theme="dark"] {
   .automotive-profile-card-content {
     /* background-color: #00162D; */
+    
   }
 }
 
