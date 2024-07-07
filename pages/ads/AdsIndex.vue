@@ -27,7 +27,7 @@
         />
       </div>
       <div
-        class="sub-category-container sticky-header"
+        class="sub-category-container sticky-header mb-0"
         :class="show_more_category && 'expanded'"
       >
         <div
