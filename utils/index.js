@@ -39,3 +39,8 @@ export function scrollBehavior (to, from, savedPosition) {
 
   return position
 }
+
+export const sliceText = (text, len) => {
+  if (!text) return ''
+  return (text.length > len ? text.slice(0, len) + '...' : text)
+}

@@ -45,7 +45,11 @@
       <div class="location-time fp-text-color-main">
         <div class="location">
           <fp-icon name="location" class="fp-fs-18" />
-          &nbsp;{{ post.location.city }}
+          &nbsp;{{ sliceTexts() }}
+        </div>
+        <div class="location-mb">
+          <fp-icon name="location" class="fp-fs-18" />
+          &nbsp;{{ sliceTextsMb() }}
         </div>
         <div class="time">
           <fp-icon name="calendar-1" class="fp-fs-18" />
@@ -119,6 +123,8 @@
 <script>
 import Swal from "sweetalert2";
 import { mapGetters } from "vuex";
+import { sliceText } from "../../utils/index";
+
 export default {
   props: ["post", "is_admin", "is_automotive"],
   computed: {
@@ -298,6 +304,12 @@ export default {
         maximumFractionDigits: 0,
       });
     },
+    sliceTexts() {
+      return sliceText(this.post.location.city, 10)
+    },
+    sliceTextsMb() {
+      return sliceText(this.post.location.city, 6)
+    }
   },
 };
 </script>
@@ -370,6 +382,7 @@ export default {
     margin-top: 5px;
   }
   .location,
+  .location-mb,
   .time {
     font-family: "Inter", sans-serif;
     font-size: 12.6px;
@@ -379,6 +392,25 @@ export default {
     display: flex;
     align-items: center;
     line-height: 15px;
+  }
+  .location {
+    @media (max-width: 420px) {
+      display: none;
+    }
+    @media (max-width: 329px) {
+      display: flex;
+    }
+  }
+
+  .location-mb {
+    display: none;
+    @media (max-width: 420px) {
+      display: flex;
+      align-items: center;;
+    }
+    @media (max-width: 329px) {
+      display: none;
+    }
   }
   .profile-page-link {
     text-align: center;
