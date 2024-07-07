@@ -571,13 +571,12 @@ export default {
 .auto-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 1rem;
   transition: all 0.35s ease 0s;
 }
 
 @media (max-width: 480px) {
   .auto-grid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
 .ads-index {

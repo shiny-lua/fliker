@@ -823,12 +823,6 @@ export default {
   }
 }
 
-[data-theme="dark"] {
-  .automotive-profile-card-content {
-    /* background-color: #00162D; */
-    
-  }
-}
 
 .carousel {
   display: flex;
