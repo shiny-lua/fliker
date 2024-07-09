@@ -135,12 +135,6 @@ export default {
       descriptionExpand: false,
       slickSettings: {
         arrows: false,
-        edgeFriction: 0.35,
-        infinite: true,
-        speed: 500,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        slidesToShow: 1,
         slidesToScroll: 1,
         pauseOnHover: true,
       },
@@ -244,7 +238,7 @@ export default {
 
 .carousel {
   display: flex;
-
+  height: 300px;
   .indicator {
     max-height: 400px;
     overflow-y: auto;
@@ -285,7 +279,7 @@ export default {
 
     .img-slide {
       min-width: 300px;
-      height: 400px;
+      height: 300px;
       max-width: 100%;
       object-fit: contain;
       //   border-radius: 8px;

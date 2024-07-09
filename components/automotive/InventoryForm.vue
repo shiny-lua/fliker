@@ -11,7 +11,7 @@
             <div class="category-container mb-4 mb-lg-0">
               <div class="w-100  mb-4">
                 <div>
-                  <h6 class="fp-text-color-main">
+                  <h6 class="fp-text-color-main mb-4">
                     Select Post Category <span class="text-danger">*</span>
 
                   </h6>
