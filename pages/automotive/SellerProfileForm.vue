@@ -19,7 +19,7 @@
             'Add Inventory',
           ]" :selected="0"></step-header>
         </div>
-        <div class="seller-profile-form-card fp-card p-3 p-md-4">
+        <div class="seller-profile-form-card fp-card p-3 p-md-4 mb-md-4">
           <form action="" class="post" @submit.prevent="submit">
             <div class="row mx-n2">
               <div class="col-lg-6 px-2 mb-3">
@@ -30,8 +30,8 @@
                   </span>
                 </label>
                 <div class="d-flex align-items-center">
-                  <input type="text" class="form-control" placeholder="Ex. RGroup" v-model="form.name" 
-                         maxlength="40" :disabled="is_update" required/>
+                  <input type="text" class="form-control" placeholder="Ex. RGroup" v-model="form.name" maxlength="40"
+                         :disabled="is_update" required />
                 </div>
               </div>
 
@@ -46,7 +46,7 @@
                 <div class="form-group">
                   <label for="" class="mb-1">About Seller <span class="text-danger">*</span></label>
                   <div>
-                    <textarea name="detail" rows="5" class="form-control" v-model="form.detail"  maxlength="10000"
+                    <textarea name="detail" rows="5" class="form-control" v-model="form.detail" maxlength="10000"
                               placeholder="Describe your business briefly.." required></textarea>
                     <p class="d-flex justify-content-between text-muted mb-0 mt-2">
                       <span>Entered: {{ detail_words }} Characters</span>
@@ -75,7 +75,7 @@
                     <div class="form-group mb-2">
                       <label for="" class="mb-1">Web Link</label>
                       <input type="text" class="form-control" v-model="form.weblink"
-                             placeholder="Any web links (Optional)" maxlength="150"/>
+                             placeholder="Any web links (Optional)" maxlength="150" />
                       <span class="invalid-feedback">* DO NOT input long URL
                         <fa :icon="['far', 'question-circle']" v-tooltip="`Input links to your site homepage, about, contact forms, and others. Avoid long URLs.`
                           " />
@@ -84,7 +84,7 @@
                     <div class="">
                       <div class="form-check">
                         <label class="form-check-label font-weight-500">
-                          <input type="checkbox" class="form-check-input" v-model="form.enable_chat" required/>
+                          <input type="checkbox" class="form-check-input" v-model="form.enable_chat" required />
                           Enable Online Chat
                         </label>
                       </div>
@@ -197,24 +197,19 @@
                     accept="image/*"
                   />
                 </label>
-                <div
-                  class="text-center mt-3"
-                  v-if="form.progress && form.image"
-                >
-                  <div class="progress mx-auto" style="height: 8px">
-                    <div
-                      class="progress-bar progress-bar-striped progress-bar-animated"
-                      :style="{ width: `${form.progress.percentage}%` }"
-                    ></div>
-                  </div>
-                  <p class="mt-1">
-                    {{ form.progress.percentage }}% uploaded... please wait
-                  </p>
-                </div>
+                
               </div>
             </div> -->
-
-            <div>
+            <div class="text-center mt-3" v-if="progress && form.image">
+              <div class="progress mx-auto" style="height: 8px">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" :style="{ width: `${progress}%` }">
+                </div>
+              </div>
+              <p class="mt-1">
+                {{ progress }}% uploaded... please wait
+              </p>
+            </div>
+            <div class="btn-group">
               <button type="submit" class="btn fp-btn-gradient" :class="{ 'btn-loading': form.busy }"
                       :disabled="form.busy">
                 {{ is_update ? "Update Profile" : "Create & Subscribe" }}
@@ -274,6 +269,7 @@ export default {
         image: [],
         categories: [],
       }),
+      progress: 0,
       imageData: [],
       profile: null,
       form_submitted: false,
@@ -468,9 +464,10 @@ export default {
           uploadedImages.push(uploadedImage);
           count++;
           this.progress = Math.floor((count / totalImages) * 100);
+          console.log(this.progress)
           // this.$refs.progresStatus.style.width = this.progress + "%";
         }
-        
+
         this.form.image = uploadedImages;
         this.loading = false;
         const response = await this.form.post(
@@ -510,13 +507,6 @@ export default {
           `${process.env.adsApiUrl}/post/upload_image`,
           formData
         );
-
-        console.log("--------------------------------------")
-        console.log("formData", formData)
-        console.log("--------------------------------------")
-
-        console.log("response", response)
-        console.log("--------------------------------------")
 
         if (response.data.status === "Success") {
           console.log("resp", response.data.data)
@@ -595,6 +585,16 @@ export default {
 
   .multiselect__placeholder {
     margin-bottom: 5px !important;
+  }
+}
+
+.seller-profile-form-card {
+  @media (max-width: 767px) {
+    margin-bottom: 6em;
+  }
+
+  @media (max-width: 600px) {
+    margin-bottom: 0em;
   }
 }
 </style>

@@ -66,7 +66,7 @@
             </div>
             <div class="business-info align-items-center">
               <div class="d-flex align-items-center">
-                <label class="">
+                <label class="mb-0">
                   <fp-icon name="clock" class="fp-fs-20" />
                   Business Hours
                 </label>
@@ -706,6 +706,7 @@ export default {
 
     .btn-automotive-profile {
       font-size: 13px;
+      border-radius: 10px;
     }
 
     .dropdown-menu {
@@ -728,7 +729,7 @@ export default {
     }
 
     .plan-info {
-      font-size: 13.6px;
+      font-size: 12px;
     }
 
     .automotive-profile-detail {

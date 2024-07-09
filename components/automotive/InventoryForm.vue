@@ -3,25 +3,37 @@
     form_submitted: step == last_step && form_submitted,
     loading: loading,
   }">
-    <form-wizard v-if="profileLoaded" @onNextStep="nextStep()" @onPreviousStep="previousStep()" @onComplete="submit()"
-      previousButtonText="Back" nextButtonText="Next" submitButtonText="Submit">
+    <form-wizard v-if="profileLoaded" @onPreviousStep="previousStep()" @onComplete="submit()" previousButtonText="Back"
+                 nextButtonText="Next" submitButtonText="Submit">
       <tab-content title="Select Category">
         <div class="form-content">
-          <div v-if="this.isSellerProfile" class="fp-card form-step-content d-lg-flex">
+          <div v-if="this.isSellerProfile" class="fp-card step-card form-step-content  d-lg-flex">
             <div class="category-container mb-4 mb-lg-0">
-              <div>
-                <h6 class="fp-text-color-main mb-2">
+              <div class="w-100">
+                <h6 class="fp-text-color-main mb-4">
                   Select Post Category <span class="text-danger">*</span>
                 </h6>
-                <div class="border round-10 fp-border-color-1">
-                  <div v-for="(item, index) in categories" :key="index" :class="{
-                    'category button-view mr-lg-0': true,
-                    active: item.id == formData.automotive_category_id,
-                    'mb-0': index === categories.length - 1,
-                  }" @click="selectCategory(item)">
-                    {{ item.name }}
+                <div class="post">
+                  <div class="post-category">
+                    <div v-for="(item, index) in categories" :key="index" :class="{
+                      'category button-view mr-lg-0': true,
+                      active: item.id == formData.automotive_category_id,
+                      'mb-0': index === categories.length - 1,
+                    }" @click="selectCategory(item)">
+                      {{ item.name }}
+                    </div>
                   </div>
+                  <VueSlickCarousel v-bind="sliderSettings">
+                    <div v-for="(item, index) in categories" :key="index" :class="{
+                      'category button-view mr-lg-0': true,
+                      active: item.id == formData.automotive_category_id,
+                      'mb-0': index === categories.length - 1,
+                    }" @click="selectCategory(item)">
+                      {{ item.name }}
+                    </div>
+                  </VueSlickCarousel>
                 </div>
+
               </div>
             </div>
             <div class="sub-category-container">
@@ -30,15 +42,16 @@
               </h6>
               <form class="mb-2" @submit.prevent="saveSubCategory()">
                 <input ref="subCatName" type="text" class="form-control" placeholder="Ex. EV/Hybrid Models" maxlength="50"
-                  required />
+                       required />
                 <button type="submit" class="btn fp-btn-gradient" ref="subcatSubmitbtn">
                   <fp-icon name="plus" class="fp-fs-20" /> Add
                 </button>
               </form>
               <div v-if="formData.automotive_category" class="d-flex flex-wrap pt-3">
                 <div v-for="(item, index) in formData.automotive_category
-                  .sub_categories" :key="index" class="content-group" :class="{active: item.id == formData.automotive_sub_category_id,
-  }" @click="selectSubCategory(item)">
+                  .sub_categories" :key="index" class="content-group"
+                     :class="{ active: item.id == formData.automotive_sub_category_id, }"
+                     @click="selectSubCategory(item)">
                   {{ item.name }}
                   <div class="icon-wrapper">
                     <fa :icon="['far', 'edit']" @click="editSubCategory(item)" />
@@ -49,7 +62,7 @@
             </div>
           </div>
 
-          <div v-else-if="!this.isSellerProfile" class="fp-card fp-sm-no-card">
+          <div v-else-if="!this.isSellerProfile" class="fp-card step-card fp-sm-no-card">
             <h6 class="text-md-center mb-3 mb-md-4">
               Post in<span class="rule">(Required)</span>
             </h6>
@@ -58,13 +71,16 @@
                 'category button-view mr-lg-0': true,
                 active: item.id == formData.automotive_category_id,
               }" @click="selectCategory(item)">
-                {{ item.name }}
+                <div v-if="item && item.name">
+                  {{ item.name }}
+                </div>
                 <!-- <span v-if="item.price">({{ item.price_with_currency }})</span> -->
               </div>
             </div>
           </div>
 
           <div v-if="hasError('category')" class="text-danger">
+            <div>{{ $v.formData.automotive_category.required }}</div>
             <div class="error" v-if="!$v.formData.automotive_category.required">
               The category is required
             </div>
@@ -73,11 +89,11 @@
       </tab-content>
       <tab-content title="Post Details">
         <div class="form-content">
-          <div class="fp-card form-step-content">
+          <div class="fp-card step-card form-step-content">
             <div class="form-group">
               <label class="control-label">Post subject or title <span class="text-danger">*</span></label>
               <input type="text" class="form-control" placeholder="Enter post subject ..." v-model="formData.title"
-                maxlength="120" />
+                     maxlength="120" />
               <div v-if="hasError('title')" class="text-danger">
                 <div class="error" v-if="!$v.formData.title.required">
                   The title is required
@@ -87,7 +103,7 @@
             <div class="form-group mb-0">
               <label class="control-label">Description</label>
               <textarea rows="8" class="form-control" v-model="formData.description" placeholder="Enter post details ..."
-                maxlength="100000"></textarea>
+                        maxlength="100000"></textarea>
               <div class="text-right mt-1">
                 <span class="fp-text-color-main">{{ description_chars }}/ 100000</span>
               </div>
@@ -96,459 +112,453 @@
         </div>
       </tab-content>
       <tab-content title="Other details">
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <div class="fp-card form-step-content">
-              <!-- No Category -->
-              <div v-if="!formData.automotive_category ||
-                formData.automotive_category.name === 'New/Used Parts'
-                " class="row mx-n2">
-                <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
-                  placeholder="Ex. Hybrid Battery Set" required :hasError="hasError('automotive_item_name')" />
-                <ItemSelect class="col-lg-6 px-2" label="Sale by" v-model="formData.sale_by" :options="[
-                  { value: 'Individual/Owner', text: 'Individual/Owner' },
-                  { value: 'Local Store', text: 'Local Store' },
-                  { value: 'Dealer', text: 'Dealer' },
-                  { value: 'Wholesale Market', text: 'Wholesale Market' },
-                  { value: 'Other', text: 'Other' },
-                ]" />
-                <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                  { value: 'New', text: 'New' },
-                  { value: 'Excellent', text: 'Excellent' },
-                  { value: 'Good', text: 'Good' },
-                  { value: 'Average', text: 'Average' },
-                  { value: 'Non-drivable', text: 'Non-drivable' },
-                  { value: 'For parts only', text: 'For parts only' },
-                ]" />
-                <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
-                  placeholder="Ex. 1,050" />
-                <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                  maxLength="20" placeholder="Ex. Ford" />
-                <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
-                  maxLength="20" placeholder="Ex. OK190803023" />
-                <ItemTextArea class="col-12 px-2" label="Additional Info" v-model="formData.business_hours"
-                  maxLength="200" placeholder="Explan more details.." :showMax="true" />
-              </div>
-              <div v-if="formData.automotive_category.name === 'ATV/UTV'" class="mt-2">
-                <h6>Basic Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name"
-                      placeholder="Ex. Polaris RZR Pro" maxLength="50" required
-                      :hasError="hasError('automotive_item_name')" />
-                    <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                      maxLength="20" placeholder="Ex. Polaris" />
-                    <ItemInput class="col-lg-6 px-2" label="Model" v-model="formData.automotive_model" maxLength="20"
-                      placeholder="Ex. RZR Pro R Ultimate" />
-                    <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
-                      placeholder="Ex. 2022" />
-                    <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
-                      placeholder="Ex. White" />
-                    <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                      { value: 'New', text: 'New' },
-                      { value: 'Excellent', text: 'Excellent' },
-                      { value: 'Good', text: 'Good' },
-                      { value: 'Average', text: 'Average' },
-                      { value: 'Non-drivable', text: 'Non-drivable' },
-                      { value: 'For parts only', text: 'For parts only' },
-                    ]" />
-                    <ItemInput class="col-lg-6 px-2" label="Category" v-model="formData.automotive_class"
-                      placeholder="Ex. Sport Utility" maxLength="30" />
-                    <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
-                      placeholder="Ex. 1,050" />
-                  </div>
+        <div class="form-content">
+          <div class="fp-card step-card form-step-content">
+            <!-- No Category -->
+            <div v-if="!formData.automotive_category ||
+              formData.automotive_category.name === 'New/Used Parts'
+              " class="row mx-n2">
+              <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
+                         placeholder="Ex. Hybrid Battery Set" required :hasError="hasError('automotive_item_name')" />
+              <ItemSelect class="col-lg-6 px-2" label="Sale by" v-model="formData.sale_by" :options="[
+                { value: 'Individual/Owner', text: 'Individual/Owner' },
+                { value: 'Local Store', text: 'Local Store' },
+                { value: 'Dealer', text: 'Dealer' },
+                { value: 'Wholesale Market', text: 'Wholesale Market' },
+                { value: 'Other', text: 'Other' },
+              ]" />
+              <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                { value: 'New', text: 'New' },
+                { value: 'Excellent', text: 'Excellent' },
+                { value: 'Good', text: 'Good' },
+                { value: 'Average', text: 'Average' },
+                { value: 'Non-drivable', text: 'Non-drivable' },
+                { value: 'For parts only', text: 'For parts only' },
+              ]" />
+              <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
+                          placeholder="Ex. 1,050" />
+              <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer" maxLength="20"
+                         placeholder="Ex. Ford" />
+              <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
+                         maxLength="20" placeholder="Ex. OK190803023" />
+              <ItemTextArea class="col-12 px-2" label="Additional Info" v-model="formData.business_hours" maxLength="200"
+                            placeholder="Explan more details.." :showMax="true" />
+            </div>
+            <div v-if="formData.automotive_category.name === 'ATV/UTV'" class="mt-2">
+              <h6>Basic Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name"
+                             placeholder="Ex. Polaris RZR Pro" maxLength="50" required
+                             :hasError="hasError('automotive_item_name')" />
+                  <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
+                             maxLength="20" placeholder="Ex. Polaris" />
+                  <ItemInput class="col-lg-6 px-2" label="Model" v-model="formData.automotive_model" maxLength="20"
+                             placeholder="Ex. RZR Pro R Ultimate" />
+                  <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
+                             placeholder="Ex. 2022" />
+                  <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
+                             placeholder="Ex. White" />
+                  <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                    { value: 'New', text: 'New' },
+                    { value: 'Excellent', text: 'Excellent' },
+                    { value: 'Good', text: 'Good' },
+                    { value: 'Average', text: 'Average' },
+                    { value: 'Non-drivable', text: 'Non-drivable' },
+                    { value: 'For parts only', text: 'For parts only' },
+                  ]" />
+                  <ItemInput class="col-lg-6 px-2" label="Category" v-model="formData.automotive_class"
+                             placeholder="Ex. Sport Utility" maxLength="30" />
+                  <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
+                              placeholder="Ex. 1,050" />
                 </div>
-                <h6>Specific Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="20"
-                      placeholder="Ex. 4DNNUT1L28X75321N" />
-                    <ItemInput class="col-lg-6 px-2" label="Odometer" v-model="formData.automotive_odometer"
-                      maxLength="20" placeholder="Ex. 850 miles" />
-                    <ItemInput class="col-lg-6 px-2" label="Engine Power" v-model="formData.automotive_engine"
-                      maxLength="30" placeholder="Ex. 150HP" />
-                    <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
-                      maxLength="20" placeholder="Ex. Diesel" />
-                    <ItemInput class="col-lg-6 px-2" label="Dimensions" v-model="formData.automotive_dimensions"
-                      maxLength="50" placeholder="Ex. 165 x 72.7 x 68.5 in" />
-                    <ItemInput class="col-lg-6 px-2" label="Wheel Size" v-model="formData.automotive_wheel_size"
-                      maxLength="20" placeholder="Ex. 135 in." />
-                    <ItemInput class="col-lg-6 px-2" label="Overall Weight" v-model="formData.automotive_overall_weight"
-                      maxLength="30" placeholder="Ex. 1,858Lb (843kg)" />
-                    <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
-                      placeholder="Ex. Navigation" />
-                    <div class="col-12 px-2">
-                      <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
-                        formData.automotive_features.length
-                        ">
-                        <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
-                          {{ item }}
-                          <fp-icon name="times" class="btn-remove fp-fs-16" @click="removeFeature(item)" />
-                        </span>
-                      </div>
+              </div>
+              <h6>Specific Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="20"
+                             placeholder="Ex. 4DNNUT1L28X75321N" />
+                  <ItemInput class="col-lg-6 px-2" label="Odometer" v-model="formData.automotive_odometer" maxLength="20"
+                             placeholder="Ex. 850 miles" />
+                  <ItemInput class="col-lg-6 px-2" label="Engine Power" v-model="formData.automotive_engine"
+                             maxLength="30" placeholder="Ex. 150HP" />
+                  <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
+                             maxLength="20" placeholder="Ex. Diesel" />
+                  <ItemInput class="col-lg-6 px-2" label="Dimensions" v-model="formData.automotive_dimensions"
+                             maxLength="50" placeholder="Ex. 165 x 72.7 x 68.5 in" />
+                  <ItemInput class="col-lg-6 px-2" label="Wheel Size" v-model="formData.automotive_wheel_size"
+                             maxLength="20" placeholder="Ex. 135 in." />
+                  <ItemInput class="col-lg-6 px-2" label="Overall Weight" v-model="formData.automotive_overall_weight"
+                             maxLength="30" placeholder="Ex. 1,858Lb (843kg)" />
+                  <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
+                           placeholder="Ex. Navigation" />
+                  <div class="col-12 px-2">
+                    <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
+                      formData.automotive_features.length
+                      ">
+                      <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
+                        {{ item }}
+                        <fp-icon name="times" class="btn-remove fp-fs-16" @click="removeFeature(item)" />
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-if="formData.automotive_category.name === '2-Wheels/Bicycles'" class="mt-2">
-                <h6>Basic Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name"
-                      maxLength="50" placeholder="Ex. Mountain Bike" required
-                      :hasError="hasError('automotive_item_name')" />
-                    <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                      placeholder="Polygon" maxLength="20" />
-                    <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
-                      maxLength="20" placeholder="Ex. Performer" />
-                    <PriceInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
-                      :withCurrency="false" placeholder="Ex. 2015" />
-                    <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
-                      placeholder="Ex. Red" />
-                    <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                      { value: 'New', text: 'New' },
-                      { value: 'Excellent', text: 'Excellent' },
-                      { value: 'Good', text: 'Good' },
-                      { value: 'Average', text: 'Average' },
-                      { value: 'Non-drivable', text: 'Non-drivable' },
-                      { value: 'For parts only', text: 'For parts only' },
-                    ]" />
-                    <ItemInput class="col-lg-6 px-2" label="Bicycle Type" v-model="formData.automotive_class"
-                      maxLength="30" placeholder="Ex. Mountain" />
-                    <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
-                      placeholder="Ex. 1,050" />
-                  </div>
+            </div>
+            <div v-if="formData.automotive_category.name === '2-Wheels/Bicycles'" class="mt-2">
+              <h6>Basic Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
+                             placeholder="Ex. Mountain Bike" required :hasError="hasError('automotive_item_name')" />
+                  <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
+                             placeholder="Polygon" maxLength="20" />
+                  <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
+                             maxLength="20" placeholder="Ex. Performer" />
+                  <PriceInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
+                              :withCurrency="false" placeholder="Ex. 2015" />
+                  <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
+                             placeholder="Ex. Red" />
+                  <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                    { value: 'New', text: 'New' },
+                    { value: 'Excellent', text: 'Excellent' },
+                    { value: 'Good', text: 'Good' },
+                    { value: 'Average', text: 'Average' },
+                    { value: 'Non-drivable', text: 'Non-drivable' },
+                    { value: 'For parts only', text: 'For parts only' },
+                  ]" />
+                  <ItemInput class="col-lg-6 px-2" label="Bicycle Type" v-model="formData.automotive_class" maxLength="30"
+                             placeholder="Ex. Mountain" />
+                  <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
+                              placeholder="Ex. 1,050" />
                 </div>
-                <h6>Specific Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="Frame Size" v-model="formData.automotive_vin" maxLength="30"
-                      placeholder="Ex. XL" />
-                    <ItemInput class="col-lg-6 px-2" label="Wheel Size" v-model="formData.automotive_wheel_size"
-                      maxLength="20" placeholder="Ex. 27.5 in" />
-                    <ItemInput class="col-lg-6 px-2" label="Frame Material" v-model="formData.automotive_engine"
-                      maxLength="30" placeholder="Ex. Aluminium" />
-                    <ItemInput class="col-lg-6 px-2" label="Brake Type" v-model="formData.automotive_fuel_type"
-                      maxLength="20" placeholder="Ex. Disc" />
-                    <ItemInput class="col-lg-6 px-2" label="Suspension" v-model="formData.automotive_dimensions"
-                      maxLength="50" placeholder="Ex. Rear" />
-                    <ItemInput class="col-lg-6 px-2" label="Assist" v-model="formData.automotive_assist" maxLength="20"
-                      placeholder="Ex. Peddle" />
-                    <ItemInput class="col-lg-6 px-2" label="Handle Bar" v-model="formData.automotive_overall_weight"
-                      maxLength="30" placeholder="Ex. Riser" />
-                    <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
-                      placeholder="Ex. Navigation" />
-                    <div class="col-12 px-2 px-lg-5">
-                      <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
-                        formData.automotive_features.length
-                        ">
-                        <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
-                          {{ item }}
-                          <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
-                        </span>
-                      </div>
+              </div>
+              <h6>Specific Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="Frame Size" v-model="formData.automotive_vin" maxLength="30"
+                             placeholder="Ex. XL" />
+                  <ItemInput class="col-lg-6 px-2" label="Wheel Size" v-model="formData.automotive_wheel_size"
+                             maxLength="20" placeholder="Ex. 27.5 in" />
+                  <ItemInput class="col-lg-6 px-2" label="Frame Material" v-model="formData.automotive_engine"
+                             maxLength="30" placeholder="Ex. Aluminium" />
+                  <ItemInput class="col-lg-6 px-2" label="Brake Type" v-model="formData.automotive_fuel_type"
+                             maxLength="20" placeholder="Ex. Disc" />
+                  <ItemInput class="col-lg-6 px-2" label="Suspension" v-model="formData.automotive_dimensions"
+                             maxLength="50" placeholder="Ex. Rear" />
+                  <ItemInput class="col-lg-6 px-2" label="Assist" v-model="formData.automotive_assist" maxLength="20"
+                             placeholder="Ex. Peddle" />
+                  <ItemInput class="col-lg-6 px-2" label="Handle Bar" v-model="formData.automotive_overall_weight"
+                             maxLength="30" placeholder="Ex. Riser" />
+                  <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
+                           placeholder="Ex. Navigation" />
+                  <div class="col-12 px-2 px-lg-5">
+                    <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
+                      formData.automotive_features.length
+                      ">
+                      <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
+                        {{ item }}
+                        <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-if="formData.automotive_category.name === 'Boats/Streamers'" class="mt-2">
-                <h6>Basic Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name"
-                      maxLength="50" required placeholder="Ex. Sailboat" :hasError="hasError('automotive_item_name')" />
-                    <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="20"
-                      placeholder="Ex. ABC6689B606" />
-                    <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                      placeholder="Catalina" maxLength="20" />
-                    <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
-                      placeholder="Ex. 38AN" maxLength="20" />
-                    <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
-                      placeholder="Ex. 1978" />
-                    <ItemInput class="col-lg-6 px-2" label="Class" v-model="formData.automotive_class" maxLength="30"
-                      placeholder="Ex. Daysailer" />
-                    <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                      { value: 'New', text: 'New' },
-                      { value: 'Excellent', text: 'Excellent' },
-                      { value: 'Good', text: 'Good' },
-                      { value: 'Average', text: 'Average' },
-                      { value: 'Non-drivable', text: 'Non-drivable' },
-                      { value: 'For parts only', text: 'For parts only' },
-                    ]" />
-                    <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
-                      placeholder="Ex. 12,600" />
-                  </div>
+            </div>
+            <div v-if="formData.automotive_category.name === 'Boats/Streamers'" class="mt-2">
+              <h6>Basic Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
+                             required placeholder="Ex. Sailboat" :hasError="hasError('automotive_item_name')" />
+                  <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="20"
+                             placeholder="Ex. ABC6689B606" />
+                  <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
+                             placeholder="Catalina" maxLength="20" />
+                  <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
+                             placeholder="Ex. 38AN" maxLength="20" />
+                  <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
+                             placeholder="Ex. 1978" />
+                  <ItemInput class="col-lg-6 px-2" label="Class" v-model="formData.automotive_class" maxLength="30"
+                             placeholder="Ex. Daysailer" />
+                  <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                    { value: 'New', text: 'New' },
+                    { value: 'Excellent', text: 'Excellent' },
+                    { value: 'Good', text: 'Good' },
+                    { value: 'Average', text: 'Average' },
+                    { value: 'Non-drivable', text: 'Non-drivable' },
+                    { value: 'For parts only', text: 'For parts only' },
+                  ]" />
+                  <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
+                              placeholder="Ex. 12,600" />
                 </div>
-                <h6>Measurements</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="Engine Hours" v-model="formData.business_hours" maxLength="20"
-                      placeholder="Ex. 1726" />
-                    <ItemInput class="col-lg-6 px-2" label="LOA/LWL" v-model="formData.automotive_odometer" maxLength="20"
-                      placeholder="Ex. 66.25ft/ 59ft" />
-                    <ItemInput class="col-lg-6 px-2" label="Cruising Speed" v-model="formData.automotive_speed"
-                      maxLength="30" placeholder="Ex. 10 KN" />
-                    <ItemInput class="col-lg-6 px-2" label="Dry Weight" v-model="formData.automotive_dimensions"
-                      maxLength="20" placeholder="Ex. 68234 LB" />
-                    <ItemInput class="col-lg-6 px-2" label="Fuel Tank" v-model="formData.automotive_fuel_tank"
-                      maxLength="50" placeholder="Ex. 109 Gal" />
-                    <ItemInput class="col-lg-6 px-2" label="Water Tank" v-model="formData.automotive_wheel_size"
-                      maxLength="20" placeholder="Ex. 132 Gal" />
-                  </div>
+              </div>
+              <h6>Measurements</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="Engine Hours" v-model="formData.business_hours" maxLength="20"
+                             placeholder="Ex. 1726" />
+                  <ItemInput class="col-lg-6 px-2" label="LOA/LWL" v-model="formData.automotive_odometer" maxLength="20"
+                             placeholder="Ex. 66.25ft/ 59ft" />
+                  <ItemInput class="col-lg-6 px-2" label="Cruising Speed" v-model="formData.automotive_speed"
+                             maxLength="30" placeholder="Ex. 10 KN" />
+                  <ItemInput class="col-lg-6 px-2" label="Dry Weight" v-model="formData.automotive_dimensions"
+                             maxLength="20" placeholder="Ex. 68234 LB" />
+                  <ItemInput class="col-lg-6 px-2" label="Fuel Tank" v-model="formData.automotive_fuel_tank"
+                             maxLength="50" placeholder="Ex. 109 Gal" />
+                  <ItemInput class="col-lg-6 px-2" label="Water Tank" v-model="formData.automotive_wheel_size"
+                             maxLength="20" placeholder="Ex. 132 Gal" />
                 </div>
-                <h6>Propulsion</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="Engine Make" v-model="formData.automotive_engine_make"
-                      maxLength="20" placeholder="Ex. Volvo" />
-                    <ItemInput class="col-lg-6 px-2" label="Engine Model" v-model="formData.automotive_engine"
-                      maxLength="20" placeholder="Ex. D4" />
-                    <ItemInput class="col-lg-6 px-2" label="Make Year" v-model="formData.automotive_make_year"
-                      maxLength="20" placeholder="Ex. 1999" />
-                    <ItemInput class="col-lg-6 px-2" label="Total Power" v-model="formData.automotive_total_power"
-                      maxLength="20" placeholder="Ex. 180HP" />
-                    <ItemInput class="col-lg-6 px-2" label="Engine Type" v-model="formData.automotive_engine_type"
-                      maxLength="20" placeholder="Ex. Inboard" />
-                    <ItemInput class="col-lg-6 px-2" label="Drive Type" v-model="formData.automotive_drive_type"
-                      maxLength="20" placeholder="Ex. Direct" />
-                    <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
-                      maxLength="20" placeholder="Ex. Diesel" />
-                    <ItemInput class="col-lg-6 px-2" label="Propeller Type" v-model="formData.automotive_propeller_type"
-                      maxLength="20" placeholder="Ex. 3-Blade" />
-                  </div>
+              </div>
+              <h6>Propulsion</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="Engine Make" v-model="formData.automotive_engine_make"
+                             maxLength="20" placeholder="Ex. Volvo" />
+                  <ItemInput class="col-lg-6 px-2" label="Engine Model" v-model="formData.automotive_engine"
+                             maxLength="20" placeholder="Ex. D4" />
+                  <ItemInput class="col-lg-6 px-2" label="Make Year" v-model="formData.automotive_make_year"
+                             maxLength="20" placeholder="Ex. 1999" />
+                  <ItemInput class="col-lg-6 px-2" label="Total Power" v-model="formData.automotive_total_power"
+                             maxLength="20" placeholder="Ex. 180HP" />
+                  <ItemInput class="col-lg-6 px-2" label="Engine Type" v-model="formData.automotive_engine_type"
+                             maxLength="20" placeholder="Ex. Inboard" />
+                  <ItemInput class="col-lg-6 px-2" label="Drive Type" v-model="formData.automotive_drive_type"
+                             maxLength="20" placeholder="Ex. Direct" />
+                  <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
+                             maxLength="20" placeholder="Ex. Diesel" />
+                  <ItemInput class="col-lg-6 px-2" label="Propeller Type" v-model="formData.automotive_propeller_type"
+                             maxLength="20" placeholder="Ex. 3-Blade" />
                 </div>
-                <div>
-                  <div class="row mx-n2">
-                    <ItemAdd class="col-lg-12 px-2" label="Additional Features/Options"
-                      v-model="formData.automotive_features" placeholder="Ex. TV/DVD" labelColClass="col-lg-4"
-                      inputColClass="col-lg-4" />
-                    <div class="col-12 px-2">
-                      <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
-                        formData.automotive_features.length
-                        ">
-                        <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
-                          {{ item }}
-                          <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
-                        </span>
-                      </div>
+              </div>
+              <div>
+                <div class="row mx-n2">
+                  <ItemAdd class="col-lg-12 px-2" label="Additional Features/Options"
+                           v-model="formData.automotive_features" placeholder="Ex. TV/DVD" labelColClass="col-lg-4"
+                           inputColClass="col-lg-4" />
+                  <div class="col-12 px-2">
+                    <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
+                      formData.automotive_features.length
+                      ">
+                      <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
+                        {{ item }}
+                        <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-if="formData.automotive_category.name === 'Cars/Trucks/SUV'" class="mt-2">
-                <h6>Basic Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name"
-                      maxLength="50" required :hasError="hasError('automotive_item_name')"
-                      placeholder="Ex. Ford Fusion Hybrid" />
-                    <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                      maxLength="20" placeholder="Ex. Ford" />
-                    <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
-                      maxLength="20" placeholder="Ex. Fusion" />
-                    <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
-                      placeholder="Ex. 2015" />
-                    <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
-                      placeholder="Ex. Red" />
-                    <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                      { value: 'New', text: 'New' },
-                      { value: 'Excellent', text: 'Excellent' },
-                      { value: 'Good', text: 'Good' },
-                      { value: 'Average', text: 'Average' },
-                      { value: 'Non-drivable', text: 'Non-drivable' },
-                      { value: 'For parts only', text: 'For parts only' },
-                    ]" />
-                    <ItemInput class="col-lg-6 px-2" label="No.of Owners" v-model="formData.automotive_class"
-                      placeholder="Ex. 1" maxLength="4" />
-                    <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
-                      placeholder="Ex. 12,000" />
-                  </div>
+            </div>
+            <div v-if="formData.automotive_category.name === 'Cars/Trucks/SUV'" class="mt-2">
+              <h6>Basic Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
+                             required :hasError="hasError('automotive_item_name')" placeholder="Ex. Ford Fusion Hybrid" />
+                  <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
+                             maxLength="20" placeholder="Ex. Ford" />
+                  <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
+                             maxLength="20" placeholder="Ex. Fusion" />
+                  <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
+                             placeholder="Ex. 2015" />
+                  <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
+                             placeholder="Ex. Red" />
+                  <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                    { value: 'New', text: 'New' },
+                    { value: 'Excellent', text: 'Excellent' },
+                    { value: 'Good', text: 'Good' },
+                    { value: 'Average', text: 'Average' },
+                    { value: 'Non-drivable', text: 'Non-drivable' },
+                    { value: 'For parts only', text: 'For parts only' },
+                  ]" />
+                  <ItemInput class="col-lg-6 px-2" label="No.of Owners" v-model="formData.automotive_class"
+                             placeholder="Ex. 1" maxLength="4" />
+                  <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
+                              placeholder="Ex. 12,000" />
                 </div>
-                <h6>Specific Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="20"
-                      placeholder="Ex. 1ZOSX543F4120" />
-                    <ItemInput class="col-lg-6 px-2" label="Title" v-model="formData.automotive_title" maxLength="30"
-                      placeholder="Ex. Clean" />
-                    <ItemInput class="col-lg-6 px-2" label="Odometer" v-model="formData.automotive_odometer"
-                      maxLength="20" placeholder="Ex. 112,000" />
-                    <ItemInput class="col-lg-6 px-2" label="Transmission" v-model="formData.automotive_transmission"
-                      maxLength="50" placeholder="Ex. Automatic" />
-                    <ItemInput class="col-lg-6 px-2" label="MPG" v-model="formData.automotive_mpg" maxLength="30"
-                      placeholder="Ex.25 City/ 30 Hwy" />
-                    <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
-                      maxLength="30" placeholder="Ex. Regular" />
-                    <ItemInput class="col-lg-6 px-2" label="Engine" v-model="formData.automotive_engine" maxLength="30"
-                      placeholder="Ex. 4Cyl/ 2.0L" />
-                    <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
-                      placeholder="Ex. Back Camera" />
-                    <div class="col-12 px-2 px-lg-5">
-                      <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
-                        formData.automotive_features.length
-                        ">
-                        <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
-                          {{ item }}
-                          <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
-                        </span>
-                      </div>
+              </div>
+              <h6>Specific Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="20"
+                             placeholder="Ex. 1ZOSX543F4120" />
+                  <ItemInput class="col-lg-6 px-2" label="Title" v-model="formData.automotive_title" maxLength="30"
+                             placeholder="Ex. Clean" />
+                  <ItemInput class="col-lg-6 px-2" label="Odometer" v-model="formData.automotive_odometer" maxLength="20"
+                             placeholder="Ex. 112,000" />
+                  <ItemInput class="col-lg-6 px-2" label="Transmission" v-model="formData.automotive_transmission"
+                             maxLength="50" placeholder="Ex. Automatic" />
+                  <ItemInput class="col-lg-6 px-2" label="MPG" v-model="formData.automotive_mpg" maxLength="30"
+                             placeholder="Ex.25 City/ 30 Hwy" />
+                  <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
+                             maxLength="30" placeholder="Ex. Regular" />
+                  <ItemInput class="col-lg-6 px-2" label="Engine" v-model="formData.automotive_engine" maxLength="30"
+                             placeholder="Ex. 4Cyl/ 2.0L" />
+                  <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
+                           placeholder="Ex. Back Camera" />
+                  <div class="col-12 px-2 px-lg-5">
+                    <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
+                      formData.automotive_features.length
+                      ">
+                      <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
+                        {{ item }}
+                        <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-if="formData.automotive_category.name ===
-                'Electric Vehicles/Inventions'
-                " class="row mx-n2 mt-2">
-                <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
-                  placeholder="Ex. Electric Bike" required :hasError="hasError('automotive_item_name')" />
-                <ItemSelect class="col-lg-6 px-2" label="Sale by" v-model="formData.sale_by" :options="[
-                  { value: 'Individual/Owner', text: '' },
-                  { value: 'Local Store', text: 'Local Store' },
-                  { value: 'Dealer', text: 'Dealer' },
-                  { value: 'Wholesale Market', text: 'Wholesale Market' },
-                  { value: 'Other', text: 'Other' },
-                ]" />
-                <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                  maxLength="20" placeholder="Ex. Make" />
-                <ItemInput class="col-lg-6 px-2" label="Model" v-model="formData.automotive_model" maxLength="20"
-                  placeholder="Ex. Model" />
-                <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                  { value: 'New', text: 'New' },
-                  { value: 'Excellent', text: 'Excellent' },
-                  { value: 'Good', text: 'Good' },
-                  { value: 'Average', text: 'Average' },
-                  { value: 'Non-drivable', text: 'Non-drivable' },
-                  { value: 'For parts only', text: 'For parts only' },
-                ]" />
-                <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
-                  placeholder="Ex. 2,099" />
-                <ItemTextArea class="col-12 px-2" label="Additional Info" v-model="formData.business_hours"
-                  maxLength="150" placeholder="Explan more details.." labelColClass="col-lg-2"
-                  inputColClass="col-lg-10" />
-              </div>
-              <div v-if="formData.automotive_category.name === 'Motorbikes/Scooters'
-                " class="mt-2">
-                <h6>Basic Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name"
-                      maxLength="50" required :hasError="hasError('automotive_item_name')"
-                      placeholder="Ex. Kawasaki ZRX" />
-                    <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                      maxLength="20" placeholder="Ex. Kawasaki" />
-                    <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
-                      maxLength="20" placeholder="Ex. 1100 ZRX" />
-                    <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
-                      placeholder="Ex. 2001" />
-                    <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
-                      placeholder="Ex. Green" />
-                    <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                      { value: 'New', text: 'New' },
-                      { value: 'Excellent', text: 'Excellent' },
-                      { value: 'Good', text: 'Good' },
-                      { value: 'Average', text: 'Average' },
-                      { value: 'Non-drivable', text: 'Non-drivable' },
-                      { value: 'For parts only', text: 'For parts only' },
-                    ]" />
-                    <ItemInput class="col-lg-6 px-2" label="Bike Type" v-model="formData.automotive_class"
-                      placeholder="Ex. Sport" maxLength="20" />
-                    <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
-                      placeholder="Ex. 6,080" />
-                  </div>
+            </div>
+            <div v-if="formData.automotive_category.name ===
+              'Electric Vehicles/Inventions'
+              " class="row mx-n2 mt-2">
+              <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
+                         placeholder="Ex. Electric Bike" required :hasError="hasError('automotive_item_name')" />
+              <ItemSelect class="col-lg-6 px-2" label="Sale by" v-model="formData.sale_by" :options="[
+                { value: 'Individual/Owner', text: '' },
+                { value: 'Local Store', text: 'Local Store' },
+                { value: 'Dealer', text: 'Dealer' },
+                { value: 'Wholesale Market', text: 'Wholesale Market' },
+                { value: 'Other', text: 'Other' },
+              ]" />
+              <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer" maxLength="20"
+                         placeholder="Ex. Make" />
+              <ItemInput class="col-lg-6 px-2" label="Model" v-model="formData.automotive_model" maxLength="20"
+                         placeholder="Ex. Model" />
+              <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                { value: 'New', text: 'New' },
+                { value: 'Excellent', text: 'Excellent' },
+                { value: 'Good', text: 'Good' },
+                { value: 'Average', text: 'Average' },
+                { value: 'Non-drivable', text: 'Non-drivable' },
+                { value: 'For parts only', text: 'For parts only' },
+              ]" />
+              <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
+                          placeholder="Ex. 2,099" />
+              <ItemTextArea class="col-12 px-2" label="Additional Info" v-model="formData.business_hours" maxLength="150"
+                            placeholder="Explan more details.." labelColClass="col-lg-2" inputColClass="col-lg-10" />
+            </div>
+            <div v-if="formData.automotive_category.name === 'Motorbikes/Scooters'
+              " class="mt-2">
+              <h6>Basic Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
+                             required :hasError="hasError('automotive_item_name')" placeholder="Ex. Kawasaki ZRX" />
+                  <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
+                             maxLength="20" placeholder="Ex. Kawasaki" />
+                  <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
+                             maxLength="20" placeholder="Ex. 1100 ZRX" />
+                  <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
+                             placeholder="Ex. 2001" />
+                  <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
+                             placeholder="Ex. Green" />
+                  <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                    { value: 'New', text: 'New' },
+                    { value: 'Excellent', text: 'Excellent' },
+                    { value: 'Good', text: 'Good' },
+                    { value: 'Average', text: 'Average' },
+                    { value: 'Non-drivable', text: 'Non-drivable' },
+                    { value: 'For parts only', text: 'For parts only' },
+                  ]" />
+                  <ItemInput class="col-lg-6 px-2" label="Bike Type" v-model="formData.automotive_class"
+                             placeholder="Ex. Sport" maxLength="20" />
+                  <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="7"
+                              placeholder="Ex. 6,080" />
                 </div>
-                <h6>Specific Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="30"
-                      placeholder="Ex. 121ZOS676XN788120" />
-                    <ItemInput class="col-lg-6 px-2" label="Title" v-model="formData.automotive_title" maxLength="30"
-                      placeholder="Ex. Clean" />
-                    <ItemInput class="col-lg-6 px-2" label="Odometer" v-model="formData.automotive_odometer"
-                      maxLength="20" placeholder="Ex. 16500" />
-                    <ItemInput class="col-lg-6 px-2" label="Transmission" v-model="formData.automotive_transmission"
-                      maxLength="50" placeholder="Ex. Automatic" />
-                    <ItemInput class="col-lg-6 px-2" label="MPG" v-model="formData.automotive_mpg" maxLength="30"
-                      placeholder="Ex. 30 City/ 44 Hwy" />
-                    <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
-                      maxLength="30" placeholder="Ex. Regular" />
-                    <ItemInput class="col-lg-6 px-2" label="Engine" v-model="formData.automotive_engine" maxLength="30"
-                      placeholder="Ex. 106HP/ 8700RPM" />
-                    <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
-                      placeholder="Ex. Navigation" />
-                    <div class="col-12 px-2 px-lg-5">
-                      <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
-                        formData.automotive_features.length
-                        ">
-                        <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
-                          {{ item }}
-                          <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
-                        </span>
-                      </div>
+              </div>
+              <h6>Specific Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="30"
+                             placeholder="Ex. 121ZOS676XN788120" />
+                  <ItemInput class="col-lg-6 px-2" label="Title" v-model="formData.automotive_title" maxLength="30"
+                             placeholder="Ex. Clean" />
+                  <ItemInput class="col-lg-6 px-2" label="Odometer" v-model="formData.automotive_odometer" maxLength="20"
+                             placeholder="Ex. 16500" />
+                  <ItemInput class="col-lg-6 px-2" label="Transmission" v-model="formData.automotive_transmission"
+                             maxLength="50" placeholder="Ex. Automatic" />
+                  <ItemInput class="col-lg-6 px-2" label="MPG" v-model="formData.automotive_mpg" maxLength="30"
+                             placeholder="Ex. 30 City/ 44 Hwy" />
+                  <ItemInput class="col-lg-6 px-2" label="Fuel Type" v-model="formData.automotive_fuel_type"
+                             maxLength="30" placeholder="Ex. Regular" />
+                  <ItemInput class="col-lg-6 px-2" label="Engine" v-model="formData.automotive_engine" maxLength="30"
+                             placeholder="Ex. 106HP/ 8700RPM" />
+                  <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
+                           placeholder="Ex. Navigation" />
+                  <div class="col-12 px-2 px-lg-5">
+                    <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
+                      formData.automotive_features.length
+                      ">
+                      <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
+                        {{ item }}
+                        <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-if="formData.automotive_category.name === 'RV/Campers/Trailers'
-                " class="mt-2">
-                <h6>Basic Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name"
-                      maxLength="50" required :hasError="hasError('automotive_item_name')" placeholder="Ex. RV" />
-                    <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
-                      maxLength="20" placeholder="Ex. Keystone" />
-                    <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
-                      maxLength="20" placeholder="Ex. Hideout LHS 243RB" />
-                    <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
-                      placeholder="Ex. 2022" />
-                    <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
-                      placeholder="Ex. White" />
-                    <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
-                      { value: 'New', text: 'New' },
-                      { value: 'Excellent', text: 'Excellent' },
-                      { value: 'Good', text: 'Good' },
-                      { value: 'Average', text: 'Average' },
-                      { value: 'Non-drivable', text: 'Non-drivable' },
-                      { value: 'For parts only', text: 'For parts only' },
-                    ]" />
-                    <ItemInput class="col-lg-6 px-2" label="Class" v-model="formData.automotive_class"
-                      placeholder="Ex. Travel Trailer" maxLength="20" />
-                    <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="10"
-                      placeholder="Ex. 29,995" />
-                  </div>
+            </div>
+            <div v-if="formData.automotive_category.name === 'RV/Campers/Trailers'
+              " class="mt-2">
+              <h6>Basic Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12 mb-4">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="For Sale" v-model="formData.automotive_item_name" maxLength="50"
+                             required :hasError="hasError('automotive_item_name')" placeholder="Ex. RV" />
+                  <ItemInput class="col-lg-6 px-2" label="Make" v-model="formData.automotive_make_manufacturer"
+                             maxLength="20" placeholder="Ex. Keystone" />
+                  <ItemInput class="col-lg-6 px-2" label="Model/Serial Number" v-model="formData.automotive_model"
+                             maxLength="20" placeholder="Ex. Hideout LHS 243RB" />
+                  <ItemInput class="col-lg-6 px-2" label="Year" v-model="formData.automotive_year" maxLength="4"
+                             placeholder="Ex. 2022" />
+                  <ItemInput class="col-lg-6 px-2" label="Color" v-model="formData.automotive_color" maxLength="20"
+                             placeholder="Ex. White" />
+                  <ItemSelect class="col-lg-6 px-2" label="Condition" v-model="formData.condition" :options="[
+                    { value: 'New', text: 'New' },
+                    { value: 'Excellent', text: 'Excellent' },
+                    { value: 'Good', text: 'Good' },
+                    { value: 'Average', text: 'Average' },
+                    { value: 'Non-drivable', text: 'Non-drivable' },
+                    { value: 'For parts only', text: 'For parts only' },
+                  ]" />
+                  <ItemInput class="col-lg-6 px-2" label="Class" v-model="formData.automotive_class"
+                             placeholder="Ex. Travel Trailer" maxLength="20" />
+                  <PriceInput class="col-lg-6 px-2" label="Asking Price" v-model="formData.cost" maxLength="10"
+                              placeholder="Ex. 29,995" />
                 </div>
-                <h6>Specific Details</h6>
-                <div class="fp-border-color-1 p-2 p-md-3 border round-12">
-                  <div class="row mx-n2">
-                    <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="30"
-                      placeholder="Ex. 121ZOS676XN788120" />
-                    <ItemInput class="col-lg-6 px-2" label="Gross Weight" v-model="formData.automotive_title"
-                      maxLength="30" placeholder="Ex. 5,975LB" />
-                    <ItemInput class="col-lg-6 px-2" label="Sleeping Capacity"
-                      v-model="formData.automotive_overall_weight" maxLength="30" placeholder="Ex. Sleeps 4 people" />
-                    <ItemInput class="col-lg-6 px-2" label="Air Condition" v-model="formData.automotive_odometer"
-                      maxLength="20" placeholder="Ex. Yes" />
-                    <ItemInput class="col-lg-6 px-2" label="Total Length" v-model="formData.automotive_dimensions"
-                      maxLength="50" placeholder="Ex. 28 ft" />
-                    <ItemInput class="col-lg-6 px-2" label="Self Contained" v-model="formData.automotive_mpg"
-                      maxLength="30" placeholder="Ex. No" />
-                    <ItemInput class="col-lg-6 px-2" label="Floor Plan" v-model="formData.automotive_fuel_type"
-                      maxLength="30" placeholder="Ex. Yes" />
-                    <ItemInput class="col-lg-6 px-2" label="Awnings" v-model="formData.automotive_assist" maxLength="30"
-                      placeholder="Ex. 1" />
-                    <ItemInput class="col-lg-6 px-2" label="Generator" v-model="formData.automotive_engine" maxLength="30"
-                      placeholder="Ex. No" />
-                    <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
-                      placeholder="Ex. TV" />
-                    <div class="col-12 px-2 px-lg-5">
-                      <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
-                        formData.automotive_features.length
-                        ">
-                        <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
-                          {{ item }}
-                          <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
-                        </span>
-                      </div>
+              </div>
+              <h6>Specific Details</h6>
+              <div class="fp-border-color-1 p-2 p-md-3 border round-12">
+                <div class="row mx-n2">
+                  <ItemInput class="col-lg-6 px-2" label="VIN #" v-model="formData.automotive_vin" maxLength="30"
+                             placeholder="Ex. 121ZOS676XN788120" />
+                  <ItemInput class="col-lg-6 px-2" label="Gross Weight" v-model="formData.automotive_title" maxLength="30"
+                             placeholder="Ex. 5,975LB" />
+                  <ItemInput class="col-lg-6 px-2" label="Sleeping Capacity" v-model="formData.automotive_overall_weight"
+                             maxLength="30" placeholder="Ex. Sleeps 4 people" />
+                  <ItemInput class="col-lg-6 px-2" label="Air Condition" v-model="formData.automotive_odometer"
+                             maxLength="20" placeholder="Ex. Yes" />
+                  <ItemInput class="col-lg-6 px-2" label="Total Length" v-model="formData.automotive_dimensions"
+                             maxLength="50" placeholder="Ex. 28 ft" />
+                  <ItemInput class="col-lg-6 px-2" label="Self Contained" v-model="formData.automotive_mpg" maxLength="30"
+                             placeholder="Ex. No" />
+                  <ItemInput class="col-lg-6 px-2" label="Floor Plan" v-model="formData.automotive_fuel_type"
+                             maxLength="30" placeholder="Ex. Yes" />
+                  <ItemInput class="col-lg-6 px-2" label="Awnings" v-model="formData.automotive_assist" maxLength="30"
+                             placeholder="Ex. 1" />
+                  <ItemInput class="col-lg-6 px-2" label="Generator" v-model="formData.automotive_engine" maxLength="30"
+                             placeholder="Ex. No" />
+                  <ItemAdd class="col-lg-6 px-2" label="Features" v-model="formData.automotive_features"
+                           placeholder="Ex. TV" />
+                  <div class="col-12 px-2 px-lg-5">
+                    <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.automotive_features &&
+                      formData.automotive_features.length
+                      ">
+                      <span class="information-item" v-for="(item, index) in formData.automotive_features" :key="index">
+                        {{ item }}
+                        <fa icon="times" class="btn-remove" @click="removeFeature(item)" />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -561,7 +571,16 @@
         <div class="row justify-content-center">
           <div class="col-lg-9">
             <fp-uploader v-model="formData.images" :url="uploadImageUrl" :remove-url="removeImageUrl"
-              @removed="imageRemoved" />
+                         @removed="imageRemoved" />
+            <div class="text-center mt-3" v-if="progress && formData.images">
+              <div class="progress mx-auto" style="height: 8px">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" :style="{ width: `${progress}%` }">
+                </div>
+              </div>
+              <p class="mt-1">
+                {{ progress }}% uploaded... please wait
+              </p>
+            </div>
           </div>
         </div>
       </tab-content>
@@ -576,17 +595,17 @@
                     <div class="form-group">
                       <label class="mb-2">Address </label>
                       <gmap-autocomplete class="form-control w-100" :value="formData.address"
-                        @place_changed="updateAddress" placeholder="Enter street address(Optional)"
-                        style="max-width: 100%" @keypress.enter="$event.preventDefault()"
-                        :options="gmapAutocompleteOptions" />
+                                         @place_changed="updateAddress" placeholder="Enter street address(Optional)"
+                                         style="max-width: 100%" @keypress.enter="$event.preventDefault()"
+                                         :options="gmapAutocompleteOptions" />
                     </div>
                     <div class="row mx-n1">
                       <div class="col-md-6 px-1 mb-3">
                         <label class="mb-2">Zip Code <sup class="text-danger">*</sup></label>
                         <gmap-autocomplete class="form-control w-100" :value="formData.zipcode"
-                          @place_changed="updateAddress" @input="formData.zipcode = $event.target.value"
-                          placeholder="Enter zip/city" style="max-width: 100%"
-                          :options="gmapAutocompleteOptions"></gmap-autocomplete>
+                                           @place_changed="updateAddress" @input="formData.zipcode = $event.target.value"
+                                           placeholder="Enter zip/city" style="max-width: 100%"
+                                           :options="gmapAutocompleteOptions"></gmap-autocomplete>
                         <div v-if="hasError('zipcode')" class="text-danger">
                           <div class="error" v-if="!$v.formData.zipcode.required">
                             Zip Code is required.
@@ -602,7 +621,7 @@
                       <div class="col-md-6 px-1 mb-3">
                         <label class="mb-2">City <sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control" v-model="formData.city" placeholder="Enter city"
-                          readonly />
+                               readonly />
                         <div v-if="hasError('city')" class="text-danger">
                           <div class="error" v-if="!$v.formData.city.required">
                             City is required
@@ -612,7 +631,7 @@
                       <div class="col-md-12 px-1">
                         <label class="mb-2">State <sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control" v-model="formData.state" placeholder="Enter state"
-                          readonly />
+                               readonly />
                         <div v-if="hasError('state')" class="text-danger">
                           <div class="error" v-if="!$v.formData.state.required">
                             State is required
@@ -628,27 +647,27 @@
                     <div class="form-group">
                       <label class="mb-2">Email</label>
                       <input type="email" class="form-control" v-model="formData.contact_email" maxlength="100"
-                        placeholder="Email (Recommended)" />
+                             placeholder="Email (Recommended)" />
                     </div>
                     <div class="form-group">
                       <label for="" class="mb-2">Phone</label>
                       <input type="text" class="form-control" v-model="formData.contact_phone_number" maxlength="50"
-                        placeholder="Phone (Optional)" />
+                             placeholder="Phone (Optional)" />
                     </div>
                     <div class="form-group">
                       <label for="" class="mb-2">Web Link</label>
                       <input type="text" class="form-control" v-model="formData.contact_weblink" maxlength="300"
-                        placeholder="Any web links (Optional)" />
+                             placeholder="Any web links (Optional)" />
                     </div>
                     <div class="d-flex justify-content-between">
                       <div class="d-inline-flex custom-control custom-checkbox">
                         <input v-model="formData.enable_chat" type="checkbox" class="custom-control-input"
-                          id="enable_chat" />
+                               id="enable_chat" />
                         <label class="custom-control-label" for="enable_chat">Chat</label>
                       </div>
                       <div class="d-inline-flex custom-control custom-checkbox ml-auto">
                         <input v-model="formData.no_reply_to_this_post" type="checkbox" class="custom-control-input"
-                          id="no_reply_to_this_post" />
+                               id="no_reply_to_this_post" />
                         <label class="custom-control-label" for="no_reply_to_this_post">No reply to this post</label>
                       </div>
                     </div>
@@ -656,7 +675,7 @@
                 </div>
                 <div class="col-12 px-2">
                   <div class="border fp-border-color-1 round-10 overflow-hidden mt-3"
-                    style="height: calc(100% - 35px); min-height: 300px">
+                       style="height: calc(100% - 35px); min-height: 300px">
                     <GmapMap ref="mapRef" :options="{
                       mapTypeControl: false,
                       streetViewControl: false,
@@ -686,8 +705,8 @@
           <div class="mt-3 text-center">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input"
-                :class="{ invalid: !formData.isAccepted && clicked_submit }" id="is_accepted" name="accept"
-                v-model="formData.isAccepted" />
+                     :class="{ invalid: !formData.isAccepted && clicked_submit }" id="is_accepted" name="accept"
+                     v-model="formData.isAccepted" />
               <label class="custom-control-label fp-text-color-main" for="is_accepted">I have read and accept the
                 <a href="/learn/terms_of_use" class="fp-text-active" target="_blank">Terms of use</a>
                 and
@@ -720,6 +739,9 @@ import { FormWizard, TabContent, ValidationHelper } from "vue-step-wizard";
 import "vue-step-wizard/dist/vue-step-wizard.css";
 import { required, numeric, maxLength } from "vuelidate/lib/validators";
 import { mapGetters } from "vuex";
+import "vue-slick-carousel/dist/vue-slick-carousel.css";
+import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
+import VueSlickCarousel from "vue-slick-carousel";
 import PostDetail from "~/components/ads/PostDetail.vue";
 import ItemInput from "~/components/ads/form_elements/Input.vue";
 import PriceInput from "~/components/ads/form_elements/PriceInput.vue";
@@ -735,6 +757,7 @@ export default {
   mixins: [ValidationHelper],
   components: {
     FormWizard,
+    VueSlickCarousel,
     TabContent,
     PostDetail,
     ItemInput,
@@ -858,6 +881,37 @@ export default {
       progress: 0,
       gmapAutocompleteOptions: {
         componentRestrictions: { country: ["us", "ca"] },
+      },
+      sliderSettings: {
+        slidesToScroll: 1,
+        variableWidth: true,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              arrows: true,
+              slidesToScroll: 1,
+              variableWidth: true,
+            },
+          },
+          {
+            breakpoint: 900,
+            settings: {
+              arrows: true,
+              slidesToScroll: 1,
+              variableWidth: true,
+            },
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              arrows: true,
+              slidesToScroll: 1,
+              variableWidth: true,
+            },
+          },
+        ],
+        // centerPadding: "10px",
       },
     };
   },
@@ -1046,6 +1100,8 @@ export default {
         isAccepted: false,
         no_reply_to_this_post: post.no_reply_to_this_post,
       };
+      console.log("formdata")
+      console.log(this.formData)
     },
     selectCategory(item) {
       if (item && this.formData.automotive_category_id == item.id) {
@@ -1067,9 +1123,6 @@ export default {
     removeFeature(item) {
       let index = this.formData.automotive_features.indexOf(item);
       this.formData.automotive_features.splice(index, 1);
-    },
-    nextStep() {
-      this.step++;
     },
     previousStep() {
       this.step--;
@@ -1124,6 +1177,7 @@ export default {
         uploadedImages.push(uploadedImage);
         count++;
         this.progress = Math.floor((count / totalImages) * 100);
+        console.log("progress", this.progress)
         // this.$refs.progresStatus.style.width = this.progress + "%";
       }
 
@@ -1288,49 +1342,75 @@ export default {
 .form-content {
   width: 100%;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+
+  .step-card {
+    width: 900px;
+
+    @media (max-width: 991px) {
+      width: 100%;
+    }
+  }
 }
 
 .category-container {
   display: flex;
-  flex-direction: column;
-  gap: 1em;
-  width: 100%;
+  /* flex-direction: column; */
+  gap: .2em;
+  width: 40%;
 
   @media (max-width: 991px) {
     width: 100%;
   }
 
   @media (max-width: 600px) {
-    .category {
-      margin-right: 8px;
-      margin-bottom: 8px;
-      padding: 6px 8px;
-    }
+    display: flex;
+    flex-direction: column;
   }
 }
 
 .sub-category-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 60%;
 
   form {
     display: flex;
-    flex-direction: column;
     justify-content: center;
 
     gap: 1em;
+
+    button {
+      min-width: 85px;
+    }
 
     input {
       width: 100%;
     }
   }
+
+  @media (max-width: 991px) {
+    width: 100%;
+  }
 }
 
 .form-step-content {
   justify-content: center;
-  gap: 3em;
-  padding: 70px;
+  gap: 2em;
+  padding: 1.5em 2em;
+
+  @media (max-width: 991px) {
+    padding: 1.5em 2em;
+  }
+
+  @media (max-width: 769px) {
+    padding: 1.5em 2em;
+  }
 
   @media (max-width: 600px) {
     padding: 0;
@@ -1409,10 +1489,19 @@ export default {
   .step-body {
     padding: 1rem;
     border-radius: 1rem;
+    margin: 0 60px;
     border: none;
     border-radius: 0;
     box-shadow: none !important;
     background: none;
+
+    @media (max-width: 767px) {
+      margin-inline: 40px;
+    }
+
+    @media (max-width: 600px) {
+      margin: 0px;
+    }
   }
 
   .step-button {
@@ -1457,16 +1546,42 @@ export default {
     }
   }
 }
+
 .content-group {
   display: flex;
   gap: 1em;
   border: solid 1px #64748b;
   border-radius: .5em;
-  margin-right: 1.5em;
-  padding: 1em 1.5em;
+  margin-right: .5em;
+  margin-bottom: .5em;
+  padding: .5em .75em;
+  color: #8598B2 !important;
 }
+
 .form-submitted::v-deep {
   .step-footer {
+    display: none;
+  }
+}
+
+.post {
+  &>:last-child {
+    display: none;
+  }
+
+  @media (max-width: 991px) {
+    &>:last-child {
+      display: block;
+    }
+  }
+}
+
+.post-category {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+
+  @media (max-width: 991px) {
     display: none;
   }
 }
@@ -1526,6 +1641,10 @@ export default {
     margin-top: 0;
     padding-top: 0;
   }
+
+  &::v-deep .slick-slide {
+    margin-right: 7px !important;
+  }
 }
 
 [data-theme="dark"] {
@@ -1575,12 +1694,13 @@ export default {
 .category-container {
   display: flex;
 
-  @media (min-width: 601px) {
-    flex-wrap: wrap;
+  @media (max-width: 991px) {
+    width: 100%;
   }
 
   @media (max-width: 600px) {
     width: 100%;
+    flex-wrap: wrap;
     overflow: auto;
   }
 
@@ -1589,7 +1709,15 @@ export default {
   }
 }
 
-.category.button-view.fp-text-default.category.button-view.mr-lg-0 {
+.fp-text-default.category.button-view.mr-lg-0 {
   margin: 10px;
+
+  @media (max-width: 600px) {
+    margin: .3em 0em;
+  }
+}
+
+.category.button-view {
+  margin: 0;
 }
 </style>
