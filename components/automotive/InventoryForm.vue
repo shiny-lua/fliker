@@ -9,10 +9,18 @@
         <div class="form-content">
           <div v-if="this.isSellerProfile" class="fp-card step-card form-step-content  d-lg-flex">
             <div class="category-container mb-4 mb-lg-0">
-              <div class="w-100">
-                <h6 class="fp-text-color-main mb-4">
-                  Select Post Category <span class="text-danger">*</span>
-                </h6>
+              <div class="w-100  mb-4">
+                <div>
+                  <h6 class="fp-text-color-main">
+                    Select Post Category <span class="text-danger">*</span>
+
+                  </h6>
+                  <div v-if="hasError('automotive_category')" class="text-danger mt-1">
+                    <div class="error" v-if="!$v.formData.automotive_category.required">
+                      The category is required
+                    </div>
+                  </div>
+                </div>
                 <div class="post">
                   <div class="post-category">
                     <div v-for="(item, index) in categories" :key="index" :class="{
@@ -76,13 +84,6 @@
                 </div>
                 <!-- <span v-if="item.price">({{ item.price_with_currency }})</span> -->
               </div>
-            </div>
-          </div>
-
-          <div v-if="hasError('category')" class="text-danger">
-            <div>{{ $v.formData.automotive_category.required }}</div>
-            <div class="error" v-if="!$v.formData.automotive_category.required">
-              The category is required
             </div>
           </div>
         </div>
@@ -770,7 +771,7 @@ export default {
   },
   data() {
     let validationRules = [
-      {},
+      { automotive_category: { required } },
       { title: { required } },
       { automotive_item_name: { required } },
       {},
@@ -783,7 +784,7 @@ export default {
     ];
     if (this.hasSellerProfile) {
       validationRules = [
-        {},
+        { automotive_category: { required } },
         { title: { required } },
         { automotive_item_name: { required } },
         {},
