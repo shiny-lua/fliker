@@ -703,6 +703,29 @@
         <div>
           <h6 style="font-weight: 500">{{ formData.title }}</h6>
           <PostDetail :post="formData" />
+          <!-- <div v-if="profile.image.length" class="carousel">
+        <div class="indicator">
+          <img v-for="(image, index) in profile.image" :src="image.src_url" :key="index" @click="changeCarousel(index)"
+               :class="{ active: indexOfImage == index }" alt="" />
+        </div>
+        <div class="slider">
+          <VueSlickCarousel ref="carousel" v-bind="slickSettings" @afterChange="afterChange">
+            <div class="text-center" v-for="(img, index) in profile.image" :key="index" @click="openGallery(index)">
+              <img class="slider-img img-slide mx-auto" :src="img.src_url" alt="" />
+            </div>
+          </VueSlickCarousel>
+        </div>
+      </div>
+
+      <div class="md-slide">
+        <div v-if="profile.image.length" class="m-indicator mt-2">
+          <img v-for="(image, index) in profile.image" :src="image.src_url" :key="index" @click="changeCarousel(index)"
+               :class="{ active: indexOfImage == index }" alt="" />
+        </div>
+        <div v-if="post" class="fp-card user-detail-container p-2 mt-3">
+          <post-user-detail :post="post" />
+        </div>
+      </div> -->
           <div class="mt-3 text-center">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input"
@@ -1643,9 +1666,9 @@ export default {
     padding-top: 0;
   }
 
-  &::v-deep .slick-slide {
+  /* &::v-deep .slick-slide {
     margin-right: 7px !important;
-  }
+  } */
 }
 
 [data-theme="dark"] {
