@@ -13,7 +13,6 @@
                 <div>
                   <h6 class="fp-text-color-main mb-4">
                     Select Post Category <span class="text-danger">*</span>
-
                   </h6>
                   <div v-if="hasError('automotive_category')" class="text-danger mt-1">
                     <div class="error" v-if="!$v.formData.automotive_category.required">
@@ -31,15 +30,29 @@
                       {{ item.name }}
                     </div>
                   </div>
-                  <VueSlickCarousel v-bind="sliderSettings">
-                    <div v-for="(item, index) in categories" :key="index" :class="{
-                      'category button-view mr-lg-0': true,
-                      active: item.id == formData.automotive_category_id,
-                      'mb-0': index === categories.length - 1,
-                    }" @click="selectCategory(item)">
-                      {{ item.name }}
+
+                  <div>
+                    <div v-if="categories.length < 5" class="post-category-sm">
+                      <div v-for="(item, index) in categories" :key="index" :class="{
+                        'category button-view mr-lg-0': true,
+                        active: item.id == formData.automotive_category_id,
+                        'mb-0': index === categories.length - 1,
+                      }" @click="selectCategory(item)">
+                        {{ item.name }}
+                      </div>
                     </div>
-                  </VueSlickCarousel>
+
+                    <VueSlickCarousel v-else v-bind="sliderSettings">
+                      <div v-for="(item, index) in categories" :key="index" :class="{
+                        'category button-view mr-lg-0': true,
+                        active: item.id == formData.automotive_category_id,
+                        'mb-0': index === categories.length - 1,
+                      }" @click="selectCategory(item)">
+                        {{ item.name }}
+                      </div>
+                    </VueSlickCarousel>
+                  </div>
+
                 </div>
 
               </div>
@@ -1004,7 +1017,6 @@ export default {
           mode: "profile",
         })
         .then((response) => {
-          console.log(response)
           this.categories = response.data.data;
         });
       this.profileLoaded = false;
@@ -1124,14 +1136,16 @@ export default {
         isAccepted: false,
         no_reply_to_this_post: post.no_reply_to_this_post,
       };
-      console.log("formdata")
-      console.log(this.formData)
     },
     selectCategory(item) {
+
       if (item && this.formData.automotive_category_id == item.id) {
-        this.formData.automotive_category = null;
-        this.formData.automotive_category_id = null;
+        return
+        // this.formData.automotive_category = null;
+        // this.formData.automotive_category_id = null;
       } else {
+        const filterd_item = item.sub_categories.filter(i => i.automotive_seller_id === this.formData.automotive_seller_id)
+        item.sub_categories = filterd_item
         this.formData.automotive_category = item;
         this.formData.automotive_category_id = item.id;
       }
@@ -1201,7 +1215,6 @@ export default {
         uploadedImages.push(uploadedImage);
         count++;
         this.progress = Math.floor((count / totalImages) * 100);
-        console.log("progress", this.progress)
         // this.$refs.progresStatus.style.width = this.progress + "%";
       }
 
@@ -1608,6 +1621,12 @@ export default {
   @media (max-width: 991px) {
     display: none;
   }
+}
+
+.post-category-sm {
+  display: flex;
+  flex-direction: row;
+  gap: .5em;
 }
 
 .form-post.loading::v-deep {

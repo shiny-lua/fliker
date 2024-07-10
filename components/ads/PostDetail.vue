@@ -136,6 +136,7 @@ export default {
       slickSettings: {
         arrows: false,
         slidesToScroll: 1,
+        
         pauseOnHover: true,
       },
       disclaimer_text: "",
