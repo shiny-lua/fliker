@@ -1,59 +1,33 @@
 <template>
-  <div class="ads-index pt-md-3">
+  <div class="ads-index pt-md-3 pt-2">
     <div class="ads-index-left-panel">
       <div class="ads-index-left-card fp-card">
         <location class="mb-2" />
         <div>
-          <router-link
-            :to="{ name: 'ads.add' }"
-            class="btn fp-btn-gradient btn-block mb-1"
-          >
+          <router-link :to="{ name: 'ads.add' }" class="btn fp-btn-gradient btn-block mb-1">
             <fp-icon name="plus-square" class="fp-fs-20 mt-n-2px" /> &nbsp;Add a
             Post
           </router-link>
         </div>
-        <category-selector
-          @select="selectCategory"
-          @select-automotive="selectAutomotiveHome"
-        />
+        <category-selector @select="selectCategory" @select-automotive="selectAutomotiveHome" />
       </div>
     </div>
-    <div class="ads-posts pl-0 pl-lg-3">
+    <div class="ads-posts pl-0 pl-md-3">
       <div class="d-md-none mb-2">
-        <search-box
-          v-model="filter.keyword"
-          input-class="has-bg mobile-has-no-bg border-0"
-          :showIcon="false"
-        />
+        <search-box v-model="filter.keyword" input-class="has-bg mobile-has-no-bg border-0" :showIcon="false" />
       </div>
-      <div
-        class="sub-category-container sticky-header mb-0"
-        :class="show_more_category && 'expanded'"
-      >
-        <div
-          v-if="filter.is_automotive"
-          ref="subCatSelector"
-          style="display: flex"
-        >
-          <span
-            :class="{
-              'fp-filter-item mr-2 mb-2': true,
-              active: filter.automotive_categories.length === 0,
-            }"
-            v-on:click="emptyAutoMotiveFilters()"
-            >All</span
-          >
+      <div class="sub-category-container sticky-header mb-0" :class="show_more_category && 'expanded'">
+        <div v-if="filter.is_automotive" ref="subCatSelector" style="display: flex">
+          <span :class="{
+            'fp-filter-item mr-2 mb-2': true,
+            active: filter.automotive_categories.length === 0,
+          }" v-on:click="emptyAutoMotiveFilters()">All</span>
           <template v-if="automotive_categories?.length > 0">
             <VueSlickCarousel v-bind="sliderSettings">
-              <div
-                v-for="item in automotive_categories"
-                :key="item.id"
-                :class="{
-                  'fp-filter-item mr-2 mb-2': true,
-                  active: filter.automotive_categories.includes(item.id),
-                }"
-                @click="selectAutomotiveHome(item)"
-              >
+              <div v-for="item in automotive_categories" :key="item.id" :class="{
+                'fp-filter-item mr-2 mb-2': true,
+                active: filter.automotive_categories.includes(item.id),
+              }" @click="selectAutomotiveHome(item)">
                 {{ item.name }}
               </div>
             </VueSlickCarousel>
@@ -124,29 +98,16 @@
         </div> -->
 
         <div v-else-if="selected_category" style="display: flex">
-          <span
-            :class="{
-              'fp-filter-item mr-2 mb-2': true,
-              active: filter.sub_categories?.length === 0,
-            }"
-            v-on:click="emptyFilters()"
-            >All</span
-          >
+          <span :class="{
+            'fp-filter-item mr-2 mb-2': true,
+            active: filter.sub_categories?.length === 0,
+          }" v-on:click="emptyFilters()">All</span>
           <template v-if="selected_category?.sub_categories?.length > 0">
-            <VueSlickCarousel
-              v-bind="sliderSettings"
-              ref="subCatSlick"
-              :key="selected_category.id"
-            >
-              <div
-                v-for="item in selected_category.sub_categories"
-                :key="item.id"
-                :class="{
-                  'fp-filter-item mr-2 mb-2': true,
-                  active: filter.sub_categories.includes(item.id),
-                }"
-                @click="selectSubCategory(item)"
-              >
+            <VueSlickCarousel v-bind="sliderSettings" ref="subCatSlick" :key="selected_category.id">
+              <div v-for="item in selected_category.sub_categories" :key="item.id" :class="{
+                'fp-filter-item mr-2 mb-2': true,
+                active: filter.sub_categories.includes(item.id),
+              }" @click="selectSubCategory(item)">
                 {{ item.name }}
               </div>
             </VueSlickCarousel>
@@ -155,28 +116,16 @@
 
         <!-- filtered sub categories start-->
         <div v-if="this.filter.is_automotive == 1">
-          <span
-            class="information-item"
-            v-for="(item, index) in filter.automotive_categories"
-            :key="index"
-          >
+          <span class="information-item" v-for="(item, index) in filter.automotive_categories" :key="index">
             {{ automotive_categories.find((i) => i.id == item).name }}
             <!-- {{
               automotive_categories.find((i) => i.id == item).name
             }} -->
-            <fa
-              icon="times"
-              class="btn-remove"
-              @click="removeAutomotive(item)"
-            />
+            <fa icon="times" class="btn-remove" @click="removeAutomotive(item)" />
           </span>
         </div>
         <div v-else>
-          <span
-            class="information-item"
-            v-for="(item, index) in filter.sub_categories"
-            :key="index"
-          >
+          <span class="information-item" v-for="(item, index) in filter.sub_categories" :key="index">
             {{
               selected_category.sub_categories.find((i) => i.id == item).name
             }}
@@ -186,27 +135,15 @@
         <!-- filtered sub categories end-->
       </div>
 
-      <p
-        v-if="location && location.city"
-        class="location-near-by mt-2 mb-2 d-none d-md-block"
-      >
+      <p v-if="location && location.city" class="location-near-by mt-2 mb-2 d-none d-md-block">
         {{ location.city }} and near by
       </p>
       <div class="auto-grid">
-        <div
-          class="col mb-2 mb-md-3 px-1 px-md-2"
-          v-for="(post, index) in posts"
-          :key="index"
-        >
+        <div class="card" v-for="(post, index) in posts" :key="index">
           <Post :post="post" :is_automotive="filter.is_automotive" />
         </div>
       </div>
-      <infinite-loading
-        :distance="0"
-        :identifier="infiniteId"
-        @infinite="searchPosts"
-        class="mb-5"
-      >
+      <infinite-loading :distance="0" :identifier="infiniteId" @infinite="searchPosts" class="mb-5">
         <div slot="no-more"></div>
         <div slot="no-results">
           <no-results />
@@ -224,11 +161,8 @@
         <div class="fp-border-color-1 border-bottom pt-2 pb-3">
           <location :is_mobile="true" />
         </div>
-        <category-selector
-          @select="selectCategory"
-          @select-automotive="selectAutomotiveHome"
-          v-on:select="handleReInItSlick"
-        />
+        <category-selector @select="selectCategory" @select-automotive="selectAutomotiveHome"
+                           v-on:select="handleReInItSlick" />
       </div>
     </portal>
     <portal to="mobile-page-title">
@@ -537,14 +471,17 @@ export default {
   /* content: ""; */
   left: 0;
 }
+
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #ff22a1;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #002e5b;
 }
@@ -568,10 +505,43 @@ export default {
     cursor: pointer;
   }
 }
+
 .auto-grid {
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  transition: all 0.35s ease 0s;
+  transition: all 0.35s ease 0s; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1em;
+  width: 100%;
+
+  .card {
+    width: 24%;
+    border: none;
+    padding-inline: 0 !important;
+
+    @media (max-width: 991px) {
+      width: 31%;
+    }
+
+    @media (max-width: 767px) {
+      width: 48%;
+    }
+
+    @media (max-width: 623px) {
+      width: 47%;
+    }
+
+    @media (max-width: 601px) {
+      width: 48%;
+    }
+  }
+
+  @media (max-width: 380px) {
+    gap: .5em;
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -579,45 +549,64 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
+
 .ads-index {
   @media (min-width: 601px) {
     display: flex;
   }
+
   .ads-index-left-panel {
     width: 250px;
     min-width: 250px;
     position: fixed;
     overflow-y: auto;
     height: 90%;
+
     @media (max-width: 600px) {
       display: none;
     }
+
     .ads-index-left-card {
       &::v-deep {
         .btn-location {
           color: #64748b;
         }
+
         .address {
           color: #007bff;
         }
       }
     }
   }
+
   .ads-posts {
     flex-grow: 1;
-    @media (min-width: 601px) {
-      position: relative;
-      left: 250px;
-      max-width: calc(100% - 250px);
+    position: relative;
+    left: 250px;
+    max-width: calc(100% - 250px);
+
+    @media (max-width: 767px) {
+      margin-left: 0.5em;
+      padding-right: 1em;
     }
+
+    @media (max-width: 601px) {
+      margin-left: 0;
+      padding-right: 0;
+      left: 0;
+      max-width: 100%;
+    }
+
     .sub-category-selector {
       @media (min-width: 601px) {
         position: relative;
         padding-right: 80px;
       }
+
       @media (max-width: 600px) {
         white-space: nowrap;
       }
+
       .btn-more {
         position: absolute;
         top: 4px;
@@ -626,24 +615,30 @@ export default {
     }
   }
 }
+
 .location-near-by {
   color: #7f7f7f;
 }
+
 .sub-category-container {
   @media (min-width: 601px) {
     max-height: auto;
     overflow: hidden;
+
     &.expanded {
       max-height: unset;
+
       .sub-category-selector {
         padding-right: 0;
       }
     }
   }
+
   @media (max-width: 600px) {
     overflow: auto;
   }
 }
+
 .sidebar-menu::v-deep {
   .address {
     &:not(.show-address) {
@@ -652,6 +647,7 @@ export default {
     }
   }
 }
+
 .fp-filter-item {
   border-radius: 40px;
 }
@@ -666,15 +662,19 @@ export default {
   background: #f0f3f9;
   padding: 3px;
 }
+
 [data-theme="dark"] .sub-category-container.sticky-header {
   background: #18243f;
 }
+
 .post-card {
   border-radius: 0 !important;
 }
+
 .fp-card {
   border-radius: 0 !important;
 }
+
 ::v-deep .post-card .card-image-wrapper {
   border-radius: 0px 0px 0px 0px !important;
 }
@@ -684,6 +684,7 @@ export default {
 ::v-deep .slick-slider {
   display: grid !important;
 }
+
 ::v-deep .slick-prev,
 ::v-deep .slick-next {
   font-size: 0;
@@ -709,20 +710,25 @@ export default {
   outline: none;
   background: linear-gradient(93.93deg, #ff22a1 0%, #ffa3d8 100%) !important;
 }
+
 ::v-deep .slick-list {
   margin: 0 40px !important;
+
   @media screen and (max-width: 900px) {
     margin: 0 0px !important;
   }
 }
+
 ::v-deep .slick-track {
   display: flex !important;
   align-items: center;
   gap: 5px;
 }
+
 ::v-deep .slick-prev {
   left: 0;
 }
+
 ::v-deep .slick-next {
   right: 0;
 }
