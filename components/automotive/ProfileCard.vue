@@ -163,22 +163,22 @@
                 Enquiry Now
               </a>
             </div>
-            <div v-if="isMyProfile" class="plan-info d-flex justify-content-around mt-1">
-              <p class="mb-0" v-if="profile.subscribed">
+            <div v-if="isMyProfile" class="plan-info mt-1 mb-1">
+              <p class="mb-1" v-if="profile.subscribed">
                 <fp-icon name="plan" class="fp-fs-24" />&nbsp;
                 {{ profile.subscription.plan.name }}({{
                   profile.subscription.plan.max_items
                 }})
               </p>
-              <p class="mb-0">
+              <p class="mb-1">
                 <fp-icon name="items" class="fp-fs-24" />&nbsp;
                 {{ profile.posts_count }} Total Items
               </p>
-              <p class="mb-0">
+              <p class="mb-1">
                 <fp-icon name="active-items" class="fp-fs-24" />&nbsp;
                 {{ profile.active_posts_count }} Active
               </p>
-              <p v-if="profile.posts_count - profile.active_posts_count" class="mb-0">
+              <p v-if="profile.posts_count - profile.active_posts_count" class="mb-1">
                 <fp-icon name="active-items" class="fp-fs-24" />&nbsp;
                 {{ profile.posts_count - profile.active_posts_count }} Inactive
               </p>
@@ -729,6 +729,9 @@ export default {
     }
 
     .plan-info {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
       font-size: 12px;
     }
 

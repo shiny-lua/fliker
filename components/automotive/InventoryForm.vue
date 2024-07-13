@@ -1256,7 +1256,8 @@ export default {
           title: "Deleted",
           text: "Sub category deleted successfully",
         });
-        this.reload();
+        const filtered_sub_categories = this.formData.automotive_category.sub_categories.filter(i => i.id !== id) 
+        this.formData.automotive_category.sub_categories = filtered_sub_categories
       }
     },
     editSubCategory(item) {
@@ -1339,7 +1340,6 @@ export default {
             `${process.env.adsApiUrl}/automotive/sub_category/update/${this.formData.automotive_sub_category_id}`,
             postData
           );
-          this.isSubCategoryUpdate = false;
           this.$refs.subcatSubmitbtn.innerText = "Save";
         } else {
           response = await this.axios.post(
@@ -1352,7 +1352,7 @@ export default {
           const index = this.categories.findIndex(
             (i) => i.id === this.formData.automotive_category_id
           );
-          if (this.isEditing) {
+          if (this.isSubCategoryUpdate) {
             const subCatIndex = this.categories[index].sub_categories.findIndex(
               (sc) => sc.id === sub_category.id
             );
@@ -1368,7 +1368,7 @@ export default {
 
           this.$refs.subCatName.value = "";
           this.$refs.subcatSubmitbtn.innerText = "Add";
-          this.isEditing = false;
+          this.isSubCategoryUpdate = false;
         }
       } catch (error) { }
     },
