@@ -395,7 +395,7 @@
                           />
                           <button
                             type="submit"
-                            class="btn fp-btn-gradient ml-2"
+                            class="btn fp-btn-gradient ml-2 cus-btn"
                           >
                             <fa icon="plus" />&nbsp;Add
                           </button>
@@ -440,7 +440,7 @@
                           />
                           <button
                             type="submit"
-                            class="btn fp-btn-gradient ml-2"
+                            class="btn fp-btn-gradient ml-2 cus-btn"
                           >
                             <fa icon="plus" />&nbsp;Add
                           </button>
@@ -594,7 +594,7 @@
                         required
                         placeholder="Ex. Retirement benefits"
                       />
-                      <button type="submit" class="btn fp-btn-gradient ml-1">
+                      <button type="submit" class="btn fp-btn-gradient ml-1 cus-btn">
                         Add
                       </button>
                     </form>
@@ -802,7 +802,7 @@
                         maxlength="50"
                         placeholder="Ex. Spanish classes"
                       />
-                      <button type="submit" class="btn fp-btn-gradient ml-2">
+                      <button type="submit" class="btn fp-btn-gradient ml-2 cus-btn">
                         <fa icon="plus" />&nbsp;Add
                       </button>
                     </form>
@@ -1052,7 +1052,7 @@
                           />
                           <button
                             type="submit"
-                            class="btn fp-btn-gradient ml-2 no-wrap"
+                            class="btn fp-btn-gradient ml-2 cus-btn no-wrap"
                           >
                             <fa icon="plus" />&nbsp;Add
                           </button>
@@ -1093,7 +1093,7 @@
                           />
                           <button
                             type="submit"
-                            class="btn fp-btn-gradient ml-2"
+                            class="btn fp-btn-gradient ml-2 cus-btn"
                           >
                             <fa icon="plus" />&nbsp;Add
                           </button>
@@ -1534,7 +1534,7 @@
                           />
                           <button
                             type="submit"
-                            class="btn fp-btn-gradient ml-2"
+                            class="btn fp-btn-gradient ml-2 cus-btn"
                           >
                             <fa icon="plus" /> Add
                           </button>
@@ -2930,6 +2930,9 @@ export default {
   }
 }
 
+.cus-btn {
+  width: 95px;
+}
 .form-post::v-deep .form-submitted {
   .step-footer {
     display: none;

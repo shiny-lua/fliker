@@ -1,48 +1,32 @@
 <template>
     <div class="offer-item cursor-pointer">
         <div class="offer-image" @click="$refs.offerModal.open()">
-            <fp-image-slider v-if="offer.images.length"
-                 ref="imageSlider"
-                 :images="offer.images.map(i => i.src_url)"
-            />
+            <fp-image-slider v-if="offer.images.length" ref="imageSlider" :images="offer.images.map(i => i.src_url)" />
             <img v-else src="@/assets/images/fp-default-bg.webp" width="100%" height="100%" alt="" />
             <span v-if="offer.merchant_name" class="merchant" @click.stop="openMerchantProfile()">
-                <img v-if="offer.merchant.image_url"
-                     :src="offer.merchant.image_url"  
-                     width="25"
-                     height="25"
-                     class="rounded-circle"
-                     alt=""
-                />
+                <img v-if="offer.merchant.image_url" :src="offer.merchant.image_url" width="25" height="25"
+                     class="rounded-circle" alt="" />
                 {{ offer.merchant_name }}
             </span>
         </div>
         <div class="offer-information fp-card">
             <p class="offer-title" @click="$refs.offerModal.open()">{{ offer.name }}</p>
-            <div class="d-md-flex align-items-center">
-                <div class="d-flex align-items-center" @click="$refs.offerModal.open()">
+            <div class="offer-content" @click="$refs.offerModal.open()">
+                <div>
                     <del v-if="offer.original_price && offer.discount" class="old-price">${{ offer.original_price }}</del>
-                    <span class="price ml-2">${{ offer.price }}</span>
-                    <span v-if="offer.discount" class="off-percentage ml-2">{{ offer.discount }}% OFF</span>
+                    <span class="price ml-1">${{ offer.price }}</span>
                 </div>
-                <a href="javascript:;"
-                     class="btn btn-sm btn-get-offer ml-auto mt-2 mt-md-0"
-                      @click="$refs.offerModal.open()"
-                >
-                    Get Offer
-                </a>
+                <span v-if="offer.discount" class="off-percentage">{{ offer.discount }}% OFF</span>
             </div>
-            <div class="offer-rating d-none d-md-flex align-items-center">
+            <div class="offer-rating">
                 <!-- <span>{{ offer.rating }}</span>&nbsp; -->
-                <star-rating :rating="offer.rating"
-                        :star-size="15"
-                        :show-rating="false"
-                        class="mt-n1"
-                        read-only
-                />
+                <star-rating :rating="offer.rating" :star-size="15" :show-rating="false" class="mt-n1" read-only />
                 <span class="ml-1 cursor-pointer" @click="addNewReview">{{ offer.review_count }} Ratings</span>
-                <span v-if="expire_at" class="expires text-danger ml-auto">{{ expire_at }}</span>
             </div>
+            <a href="javascript:;" class="btn btn-sm btn-get-offer ml-auto mt-2 mt-md-0" @click="$refs.offerModal.open()">
+                Get Offer
+            </a>
+            <div v-if="expire_at" class="expires text-danger"><span>{{ expire_at }}</span></div>
         </div>
 
         <div class="dropdown dropdown-context-menu">
@@ -77,19 +61,11 @@
                 </template>
             </ul>
         </div>
-        <offer-modal ref="offerModal"
-             :offer="offer"
-             :modal-name="`offer_modal_${Math.random().toString(6)}`"
-             @edit-review="editReview"
-        />
-        <review-modal ref="writeReviewModal"
-             :url="reviewUrl"
-             :profile-name="offer.merchant.name"
-             :profile-image="offer.merchant.image_url"
-             :params="reviewFormData"
-             @submit="reviewSubmitted"
-             @closed="initReviewParams"
-        />
+        <offer-modal ref="offerModal" :offer="offer" :modal-name="`offer_modal_${Math.random().toString(6)}`"
+                     @edit-review="editReview" />
+        <review-modal ref="writeReviewModal" :url="reviewUrl" :profile-name="offer.merchant.name"
+                      :profile-image="offer.merchant.image_url" :params="reviewFormData" @submit="reviewSubmitted"
+                      @closed="initReviewParams" />
     </div>
 </template>
 <script>
@@ -220,7 +196,7 @@ export default {
             }
         },
         async getReviews() {
-            const response = await this.axios.post(`${process.env.merchantApiUrl}/merchant/get_reviews`, {user_id: this.auth_user.id, offer_id: this.offer.id,});
+            const response = await this.axios.post(`${process.env.merchantApiUrl}/merchant/get_reviews`, { user_id: this.auth_user.id, offer_id: this.offer.id, });
             if (response.data.status === 'Success') {
                 return response.data.data;
             } else {
@@ -228,10 +204,10 @@ export default {
             }
         },
         openMerchantProfile() {
-            this.$router.push({name: 'merchant.profile', params: {slug: this.offer.merchant.slug}});
+            this.$router.push({ name: 'merchant.profile', params: { slug: this.offer.merchant.slug } });
         },
         edit() {
-            return this.$router.push({name: 'merchant.edit_offer', params: {id: this.offer.id}});
+            return this.$router.push({ name: 'merchant.edit_offer', params: { id: this.offer.id } });
         },
         remove() {
             if (this.auth_user.id != this.offer.user_id) return false;
@@ -261,109 +237,140 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .offer-item {
-        border-radius: 12px;
+.offer-item {
+    border-radius: 12px;
+    position: relative;
+
+    .offer-image {
         position: relative;
-        .offer-image {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 180px;
-            border-radius: 10px 10px 0 0;
-            overflow: hidden;
-            &::v-deep {
-                .image-slider {
-                    .image-wrapper {
-                        height: 180px;
-                        @media (max-width: 600px) {
-                            height: 120px;
-                        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 180px;
+        border-radius: 10px 10px 0 0;
+        overflow: hidden;
+
+        &::v-deep {
+            .image-slider {
+                .image-wrapper {
+                    height: 180px;
+
+                    @media (max-width: 600px) {
+                        height: 120px;
                     }
                 }
             }
-            @media (max-width: 600px) {
-                height: 120px;
-            }
-            img {
-                border-radius: 10px 10px 0 0;
-                object-fit: cover;
-            }
-            .merchant {
-                position: absolute;
-                top: 6px;
-                left: 6px;
-                background: rgba(0, 0, 0, 0.502);
-                color: #FFFFFF;
-                font-size: 12px;
-                font-weight: 400;
-                border-radius: 4px;
-                padding: 3px 4px;
-            }
         }
-        .offer-information {
-            padding: 10px 16px 10px;
-            border-radius: 0 0 10px 10px;
-            @media (max-width: 600px) {
-                padding: 8px;
-            }
-            .offer-title {
-                font-weight: 500;
-                margin-bottom: 4px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-            }
-            .old-price {
-                font-size: 12px;
-                color: #64748B;
-                line-height: 1;
-            }
-            .price {
-                color: #FF40AE;
-                font-weight: 600;
-                font-size: 16px;
-            }
-            .off-percentage {
-                font-size: 10px;
-                padding: 0 3px;
-                color: #FF7272;
-                border-style: dashed;
-                border-width: 1px;
-                border-color: #FF7272;
-                border-radius: 3px;
-                background-color: #FF72721A;
-                // background: linear-gradient(0deg, #FF7272, #FF7272), linear-gradient(0deg, rgba(255, 114, 114, 0.1), rgba(255, 114, 114, 0.1));
-            }
-            .btn-get-offer {
-                padding: 6px 8px;
-                font-size: 12px;
-                border-radius: 5px;
-                border: solid 1px #FF22A1;
-                color: #FF22A1;
-                @media (max-width: 600px) {
-                    display: block;
-                    background: linear-gradient(100.05deg, #FF22A1 2.3%, #FFA3D8 100%);
-                    color: #FFF;
-                    text-transform: uppercase;
-                    border: none;
-                }
-            }
-            .offer-rating {
-                font-size: 12px;
-            }
+
+        @media (max-width: 600px) {
+            height: 120px;
         }
-        .dropdown-context-menu {
+
+        img {
+            border-radius: 10px 10px 0 0;
+            object-fit: cover;
+        }
+
+        .merchant {
             position: absolute;
             top: 6px;
-            right: 6px;
-            z-index: 1;
+            left: 6px;
+            background: rgba(0, 0, 0, 0.502);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 400;
+            border-radius: 4px;
+            padding: 3px 4px;
         }
     }
 
-    [data-theme=dark] {
+    .offer-information {
+        padding: 10px;
+        border-radius: 0 0 10px 10px;
+
+        @media (max-width: 600px) {
+            padding: 8px;
+        }
+
+        .offer-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .offer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .old-price {
+            font-size: 12px;
+            color: #64748B;
+            line-height: 1;
+        }
+
+        .price {
+            color: #FF40AE;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .off-percentage {
+            font-size: 12px;
+            padding: 3px 7px;
+            color: #FF7272;
+            border-style: dashed;
+            border-width: 1px;
+            border-color: #FF7272;
+            border-radius: 3px;
+            background-color: #FF72721A;
+            // background: linear-gradient(0deg, #FF7272, #FF7272), linear-gradient(0deg, rgba(255, 114, 114, 0.1), rgba(255, 114, 114, 0.1));
+        }
+
         .btn-get-offer {
-            color: #FFF !important;
+            width: 100%;
+            padding: 8px 0;
+            font-size: 12px;
+            margin-top: 10px !important;
+            margin-bottom: 7px;
+            border-radius: 5px;
+            border: solid 1px #FF22A1;
+            color: #FF22A1;
+
+            @media (max-width: 600px) {
+                display: block;
+                background: linear-gradient(100.05deg, #FF22A1 2.3%, #FFA3D8 100%);
+                color: #FFF;
+                text-transform: uppercase;
+                border: none;
+            }
+        }
+
+        .offer-rating {
+            
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .expires {
+            display: flex;
+            justify-content: flex-end;
         }
     }
+
+    .dropdown-context-menu {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        z-index: 1;
+    }
+}
+
+[data-theme=dark] {
+    .btn-get-offer {
+        color: #FFF !important;
+    }
+}
 </style>
