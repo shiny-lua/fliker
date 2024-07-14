@@ -261,7 +261,7 @@ export default {
           state: "",
           zipcode: "",
           county: "",
-          address: "Spa City USA",
+          address: "",
           full_address: "",
           latitude: "",
           longitude: "",
@@ -440,19 +440,19 @@ export default {
       }
     },
     async submit() {
-      // if (
-      //   this.form.location.address == "" ||
-      //   this.form.location.zipcode == "" ||
-      //   this.form.location.city == "" ||
-      //   this.form.location.state == ""
-      // ) {
-      //   this.showLocationError = true;
-      //   return false;
-      // }
-      // if (this.detail_words < 250) {
-      //   this.$toast.error("Description should be at least 250 Characters");
-      //   return false;
-      // }
+      if (
+        this.form.location.address == "" ||
+        this.form.location.zipcode == "" ||
+        this.form.location.city == "" ||
+        this.form.location.state == ""
+      ) {
+        this.showLocationError = true;
+        return false;
+      }
+      if (this.detail_words < 250) {
+        this.$toast.error("Description should be at least 250 Characters");
+        return false;
+      }
       try {
         this.loading = true;
         const uploadedImages = [];
@@ -467,7 +467,10 @@ export default {
           console.log(this.progress)
           // this.$refs.progresStatus.style.width = this.progress + "%";
         }
-
+        console.log(this.form.business_hours)
+        if (this.coverImages.length === 0) {
+          return this.$toast.error("You have to choose at least 1 image.");
+        }
         this.form.image = uploadedImages;
         this.loading = false;
         const response = await this.form.post(

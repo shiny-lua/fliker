@@ -1,17 +1,8 @@
 <template>
-  <div
-    class="form-post px-md-3"
-    :data-step="`step_${storeState.currentTab + 1}`"
-    :class="{ form_submitted: step == 6 && form_submitted, loading: loading }"
-  >
-    <form-wizard
-      @onNextStep="nextStep()"
-      @onPreviousStep="previousStep()"
-      @onComplete="submit()"
-      previousButtonText="Back"
-      nextButtonText="Next"
-      submitButtonText="Submit"
-    >
+  <div class="form-post px-md-3" :data-step="`step_${storeState.currentTab + 1}`"
+       :class="{ form_submitted: step == 6 && form_submitted, loading: loading }">
+    <form-wizard @onNextStep="nextStep()" @onPreviousStep="previousStep()" @onComplete="submit()"
+                 previousButtonText="Back" nextButtonText="Next" submitButtonText="Submit">
       <tab-content title="Select category" :selected="!action">
         <div class="form-content">
           <div class="fp-card fp-sm-no-card">
@@ -19,17 +10,9 @@
               Post in<span class="rule">(Required)</span>
             </h6>
             <div class="category-container">
-              <div
-                class="category button-view fp-text-default"
-                :class="{ active: item.id == formData.category_id }"
-                v-for="(item, index) in categories"
-                :key="index"
-                @click="selectCategory(item)"
-              >
-                <fp-icon
-                  :name="`ads-${item.slug}`"
-                  class="fp-fs-22 d-block mx-auto mb-2"
-                />
+              <div class="category button-view fp-text-default" :class="{ active: item.id == formData.category_id }"
+                   v-for="(item, index) in categories" :key="index" @click="selectCategory(item)">
+                <fp-icon :name="`ads-${item.slug}`" class="fp-fs-22 d-block mx-auto mb-2" />
                 {{ item.name }}
                 <span v-if="item.price">({{ item.price_with_currency }})</span>
               </div>
@@ -48,15 +31,9 @@
               (* If no category is applicable, select NEXT)
             </p>
             <div class="d-flex flex-wrap sub-category-container">
-              <div
-                class="category button-view sub_category"
-                :class="{
-                  active: formData.sub_category_id == item.id,
-                }"
-                v-for="(item, index) in sub_categories"
-                :key="index"
-                @click="selectSubCategory(item)"
-              >
+              <div class="category button-view sub_category" :class="{
+                active: formData.sub_category_id == item.id,
+              }" v-for="(item, index) in sub_categories" :key="index" @click="selectSubCategory(item)">
                 {{ item.name }}
               </div>
             </div>
@@ -70,16 +47,9 @@
           </h4>
           <div class="fp-card fp-sm-no-card">
             <div class="form-group">
-              <label
-                >Post subject or title <span class="text-danger">*</span></label
-              >
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter post subject"
-                v-model="formData.title"
-                maxlength="120"
-              />
+              <label>Post subject or title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Enter post subject" v-model="formData.title"
+                     maxlength="120" />
               <div v-if="hasError('title')" class="text-danger">
                 <div class="error" v-if="!$v.formData.title.required">
                   The title is required
@@ -88,17 +58,10 @@
             </div>
             <div class="form-group mb-0">
               <label>Description</label>
-              <textarea
-                rows="8"
-                class="form-control"
-                v-model="formData.description"
-                maxlength="100000"
-                placeholder="Enter post details"
-              ></textarea>
+              <textarea rows="8" class="form-control" v-model="formData.description" maxlength="100000"
+                        placeholder="Enter post details"></textarea>
               <div class="text-right mt-1">
-                <span class="fp-text-color-main"
-                  >{{ description_chars }}/100000</span
-                >
+                <span class="fp-text-color-main">{{ description_chars }}/100000</span>
               </div>
             </div>
           </div>
@@ -113,52 +76,29 @@
                 <div class="fp-border-color-1 p-3 border round-12 mb-4">
                   <div class="row mx-n2">
                     <div class="col-md-6 px-2 mb-4">
-                      <label
-                        >Accommodation Type
-                        <span class="text-danger">*</span></label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.house_type"
-                        maxlength="50"
-                        placeholder="Ex. Apartment or Condo"
-                      />
+                      <label>Accommodation Type
+                        <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" v-model="formData.house_type" maxlength="50"
+                             placeholder="Ex. Apartment or Condo" />
                       <div v-if="hasError('house_type')" class="text-danger">
-                        <div
-                          class="error"
-                          v-if="!$v.formData.house_type.required"
-                        >
+                        <div class="error" v-if="!$v.formData.house_type.required">
                           Accommodation type is required
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>Bed Rooms#</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.bed_rooms"
-                        maxlength="15"
-                        placeholder="Ex. 2 bed"
-                      />
+                      <input type="text" class="form-control" v-model="formData.bed_rooms" maxlength="15"
+                             placeholder="Ex. 2 bed" />
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>Bath Rooms#</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.bath_rooms"
-                        maxlength="15"
-                        placeholder="Ex. 2 bath"
-                      />
+                      <input type="text" class="form-control" v-model="formData.bath_rooms" maxlength="15"
+                             placeholder="Ex. 2 bath" />
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>Furnished?</label>
-                      <select
-                        class="form-control has-bg"
-                        v-model="formData.furnished"
-                      >
+                      <select class="form-control has-bg" v-model="formData.furnished">
                         <option value="" hidden>Select</option>
                         <option value="Semi-Furnished">Semi-Furnished</option>
                         <option value="Fully-Furnished">Fully-Furnished</option>
@@ -167,26 +107,16 @@
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label for="">Property Area Size</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.property_area"
-                        placeholder="Ex. 1450 sq.ft"
-                        maxlength="50"
-                      />
+                      <input type="text" class="form-control" v-model="formData.property_area"
+                             placeholder="Ex. 1450 sq.ft" maxlength="50" />
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>Rent+Utilities</label>
                       <div class="with-currency-unit with-currency with-unit">
                         <span class="symbol">$</span>
-                        <input
-                          v-model="formData.rent_other_utilities"
-                          class="form-control"
-                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                          type="number"
-                          placeholder="Ex. 2,100"
-                          maxlength="7"
-                        />
+                        <input v-model="formData.rent_other_utilities" class="form-control"
+                               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               type="number" placeholder="Ex. 2,100" maxlength="7" />
                         <select v-model="formData.rent_other_utilities_unit">
                           <option value="Day">Day</option>
                           <option value="Month">Month</option>
@@ -199,131 +129,51 @@
                     <div class="col-md-6 px-2 mb-4">
                       <label>Available For</label>
                       <div class="pt-2">
-                        <div
-                          class="d-inline-flex custom-control custom-checkbox"
-                        >
-                          <input
-                            v-model="formData.stay_available_for"
-                            type="checkbox"
-                            value="Any Stay"
-                            class="custom-control-input"
-                            id="stay_available_for_any_stay"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="stay_available_for_any_stay"
-                            >Any Stay</label
-                          >
+                        <div class="d-inline-flex custom-control custom-checkbox">
+                          <input v-model="formData.stay_available_for" type="checkbox" value="Any Stay"
+                                 class="custom-control-input" id="stay_available_for_any_stay" />
+                          <label class="custom-control-label" for="stay_available_for_any_stay">Any Stay</label>
                         </div>
-                        <div
-                          class="d-inline-flex custom-control custom-checkbox ml-3"
-                        >
-                          <input
-                            v-model="formData.stay_available_for"
-                            type="checkbox"
-                            value="Long term"
-                            class="custom-control-input"
-                            id="stay_available_for_long_term"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="stay_available_for_long_term"
-                            >Long term</label
-                          >
+                        <div class="d-inline-flex custom-control custom-checkbox ml-3">
+                          <input v-model="formData.stay_available_for" type="checkbox" value="Long term"
+                                 class="custom-control-input" id="stay_available_for_long_term" />
+                          <label class="custom-control-label" for="stay_available_for_long_term">Long term</label>
                         </div>
-                        <div
-                          class="d-inline-flex custom-control custom-checkbox ml-3"
-                        >
-                          <input
-                            v-model="formData.stay_available_for"
-                            type="checkbox"
-                            value="Short Term"
-                            class="custom-control-input"
-                            id="stay_available_for_short_term"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="stay_available_for_short_term"
-                            >Short Term</label
-                          >
+                        <div class="d-inline-flex custom-control custom-checkbox ml-3">
+                          <input v-model="formData.stay_available_for" type="checkbox" value="Short Term"
+                                 class="custom-control-input" id="stay_available_for_short_term" />
+                          <label class="custom-control-label" for="stay_available_for_short_term">Short Term</label>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label for="">Available From</label>
-                      <datepicker
-                        v-model="formData.available_from"
-                        :disabled-dates="{ to: new Date() }"
-                        input-class="form-control"
-                        placeholder="Ex. 08/22/2022"
-                        format="MM/dd/yyyy"
-                        :disabled="formData.available_from_today"
-                      ></datepicker>
+                      <datepicker v-model="formData.available_from" :disabled-dates="{ to: new Date() }"
+                                  input-class="form-control" placeholder="Ex. 08/22/2022" format="MM/dd/yyyy"
+                                  :disabled="formData.available_from_today"></datepicker>
                       <div class="custom-control custom-checkbox mt-2">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="available_from_today"
-                          @change="availableFromToday"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="available_from_today"
-                          >Available from today</label
-                        >
+                        <input type="checkbox" class="custom-control-input" id="available_from_today"
+                               @change="availableFromToday" />
+                        <label class="custom-control-label" for="available_from_today">Available from today</label>
                       </div>
                     </div>
                     <div class="col-md-6 px-2 mb-4 mb-md-0">
                       <label>Smoking Allowed</label>
                       <div class="pt-2">
                         <div class="d-inline-flex custom-control custom-radio">
-                          <input
-                            v-model="formData.smoking_allowed"
-                            type="radio"
-                            class="custom-control-input"
-                            id="smoking_allowed_yes"
-                            name="smoking_allowed"
-                            value="Yes"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="smoking_allowed_yes"
-                            >Yes</label
-                          >
+                          <input v-model="formData.smoking_allowed" type="radio" class="custom-control-input"
+                                 id="smoking_allowed_yes" name="smoking_allowed" value="Yes" />
+                          <label class="custom-control-label" for="smoking_allowed_yes">Yes</label>
                         </div>
-                        <div
-                          class="d-inline-flex ml-3 custom-control custom-radio"
-                        >
-                          <input
-                            v-model="formData.smoking_allowed"
-                            type="radio"
-                            class="custom-control-input"
-                            id="smoking_allowed_no"
-                            name="smoking_allowed"
-                            value="No"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="smoking_allowed_no"
-                            >No</label
-                          >
+                        <div class="d-inline-flex ml-3 custom-control custom-radio">
+                          <input v-model="formData.smoking_allowed" type="radio" class="custom-control-input"
+                                 id="smoking_allowed_no" name="smoking_allowed" value="No" />
+                          <label class="custom-control-label" for="smoking_allowed_no">No</label>
                         </div>
-                        <div
-                          class="d-inline-flex ml-3 custom-control custom-radio"
-                        >
-                          <input
-                            v-model="formData.smoking_allowed"
-                            type="radio"
-                            class="custom-control-input"
-                            id="smoking_allowed_outside_only"
-                            name="smoking_allowed"
-                            value="Outside only"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="smoking_allowed_outside_only"
-                            >Outside only</label
-                          >
+                        <div class="d-inline-flex ml-3 custom-control custom-radio">
+                          <input v-model="formData.smoking_allowed" type="radio" class="custom-control-input"
+                                 id="smoking_allowed_outside_only" name="smoking_allowed" value="Outside only" />
+                          <label class="custom-control-label" for="smoking_allowed_outside_only">Outside only</label>
                         </div>
                       </div>
                     </div>
@@ -331,46 +181,19 @@
                       <label>Pets Allowed</label>
                       <div class="pt-2">
                         <div class="d-inline-flex custom-control custom-radio">
-                          <input
-                            v-model="formData.pets_allowed"
-                            type="radio"
-                            class="custom-control-input"
-                            id="pets_allowed_yes"
-                            name="pets_allowed"
-                            value="Yes"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="pets_allowed_yes"
-                            >Yes</label
-                          >
+                          <input v-model="formData.pets_allowed" type="radio" class="custom-control-input"
+                                 id="pets_allowed_yes" name="pets_allowed" value="Yes" />
+                          <label class="custom-control-label" for="pets_allowed_yes">Yes</label>
                         </div>
-                        <div
-                          class="d-inline-flex ml-3 custom-control custom-radio"
-                        >
-                          <input
-                            v-model="formData.pets_allowed"
-                            type="radio"
-                            class="custom-control-input"
-                            id="pets_allowed_no"
-                            name="pets_allowed"
-                            value="No"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="pets_allowed_no"
-                            >No</label
-                          >
+                        <div class="d-inline-flex ml-3 custom-control custom-radio">
+                          <input v-model="formData.pets_allowed" type="radio" class="custom-control-input"
+                                 id="pets_allowed_no" name="pets_allowed" value="No" />
+                          <label class="custom-control-label" for="pets_allowed_no">No</label>
                         </div>
                       </div>
-                      <input
-                        v-if="formData.pets_allowed === 'Yes'"
-                        type="text"
-                        class="form-control mt-2"
-                        v-model="formData.pet_characteristics"
-                        maxlength="100"
-                        placeholder="Ex. Cats are ok - purr"
-                      />
+                      <input v-if="formData.pets_allowed === 'Yes'" type="text" class="form-control mt-2"
+                             v-model="formData.pet_characteristics" maxlength="100"
+                             placeholder="Ex. Cats are ok - purr" />
                     </div>
                   </div>
                 </div>
@@ -380,44 +203,20 @@
                     <div class="col-md-6 px-2 mb-4 mb-md-0">
                       <label>Near by Places</label>
                       <div>
-                        <form
-                          action=""
-                          class="d-flex"
-                          @submit.prevent="addProperty"
-                        >
-                          <input
-                            type="text"
-                            class="form-control flex-grow-1"
-                            ref="property_form"
-                            placeholder="Ex. Airport - 5 miles"
-                            maxlength="50"
-                            required
-                          />
-                          <button
-                            type="submit"
-                            class="btn fp-btn-gradient ml-2 cus-btn"
-                          >
+                        <form action="" class="d-flex" @submit.prevent="addProperty">
+                          <input type="text" class="form-control flex-grow-1" ref="property_form"
+                                 placeholder="Ex. Airport - 5 miles" maxlength="50" required />
+                          <button type="submit" class="btn fp-btn-gradient ml-2 cus-btn">
                             <fa icon="plus" />&nbsp;Add
                           </button>
                         </form>
-                        <div
-                          class="flex-wrap mt-2"
-                          style="flex-direction: row"
-                          v-show="formData.accommodation_properties.length"
-                        >
-                          <span
-                            class="information-item"
-                            v-for="(
+                        <div class="flex-wrap mt-2" style="flex-direction: row"
+                             v-show="formData.accommodation_properties.length">
+                          <span class="information-item" v-for="(
                               item, index
-                            ) in formData.accommodation_properties"
-                            :key="index"
-                          >
+                            ) in formData.accommodation_properties" :key="index">
                             {{ item }}
-                            <fa
-                              icon="times"
-                              class="btn-remove"
-                              @click="removeProperty(index)"
-                            />
+                            <fa icon="times" class="btn-remove" @click="removeProperty(index)" />
                           </span>
                         </div>
                       </div>
@@ -425,44 +224,20 @@
                     <div class="col-md-6 px-2">
                       <label>Property Amenities</label>
                       <div class="">
-                        <form
-                          action=""
-                          class="d-flex"
-                          @submit.prevent="addAmenity"
-                        >
-                          <input
-                            type="text"
-                            class="form-control flex-grow-1"
-                            ref="amenity_form"
-                            maxlength="50"
-                            placeholder="Ex. Playground"
-                            required
-                          />
-                          <button
-                            type="submit"
-                            class="btn fp-btn-gradient ml-2 cus-btn"
-                          >
+                        <form action="" class="d-flex" @submit.prevent="addAmenity">
+                          <input type="text" class="form-control flex-grow-1" ref="amenity_form" maxlength="50"
+                                 placeholder="Ex. Playground" required />
+                          <button type="submit" class="btn fp-btn-gradient ml-2 cus-btn">
                             <fa icon="plus" />&nbsp;Add
                           </button>
                         </form>
-                        <div
-                          class="flex-wrap mt-2"
-                          style="flex-direction: row"
-                          v-show="formData.accommodation_amenities.length"
-                        >
-                          <span
-                            class="information-item"
-                            v-for="(
+                        <div class="flex-wrap mt-2" style="flex-direction: row"
+                             v-show="formData.accommodation_amenities.length">
+                          <span class="information-item" v-for="(
                               item, index
-                            ) in formData.accommodation_amenities"
-                            :key="index"
-                          >
+                            ) in formData.accommodation_amenities" :key="index">
                             {{ item }}
-                            <fa
-                              icon="times"
-                              class="btn-remove"
-                              @click="removeAmenity(item)"
-                            />
+                            <fa icon="times" class="btn-remove" @click="removeAmenity(item)" />
                           </span>
                         </div>
                       </div>
@@ -476,58 +251,33 @@
                 <div class="fp-border-color-1 p-3 border round-12 mb-4">
                   <div class="row mx-n2">
                     <div class="col-md-6 px-2 mb-4">
-                      <label
-                        >Job title <span class="text-danger">*</span></label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.job_title"
-                        maxlength="50"
-                        placeholder="Ex. Marketing manager"
-                      />
+                      <label>Job title <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" v-model="formData.job_title" maxlength="50"
+                             placeholder="Ex. Marketing manager" />
                       <div v-if="hasError('job_title')" class="text-danger">
-                        <div
-                          class="error"
-                          v-if="!$v.formData.job_title.required"
-                        >
+                        <div class="error" v-if="!$v.formData.job_title.required">
                           Job title is required
                         </div>
                       </div>
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>Client or recruiter</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.client_recruiter"
-                        maxlength="50"
-                        placeholder="Ex. RGroup Solutions LLC, AZ"
-                      />
+                      <input type="text" class="form-control" v-model="formData.client_recruiter" maxlength="50"
+                             placeholder="Ex. RGroup Solutions LLC, AZ" />
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>Employment type</label>
-                      <multiselect
-                        v-model="formData.employement_types"
-                        :options="employement_types"
-                        :preserve-search="true"
-                        :multiple="true"
-                        placeholder="Select option"
-                        :show-labels="false"
-                      ></multiselect>
+                      <multiselect v-model="formData.employement_types" :options="employement_types"
+                                   :preserve-search="true" :multiple="true" placeholder="Select option"
+                                   :show-labels="false"></multiselect>
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>Compensation or salary</label>
                       <div class="with-currency-unit with-currency with-unit">
                         <span class="symbol">$</span>
-                        <input
-                          v-model="formData.compensation"
-                          class="form-control"
-                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                          type="number"
-                          placeholder="Ex. 65,000"
-                          maxlength="9"
-                        />
+                        <input v-model="formData.compensation" class="form-control"
+                               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               type="number" placeholder="Ex. 65,000" maxlength="9" />
                         <select v-model="formData.compensation_unit">
                           <option value="Hour">\Hr</option>
                           <option value="Day">\Day</option>
@@ -540,20 +290,12 @@
                     </div>
                     <div class="col-md-6 px-2 mb-4 mb-md-0">
                       <label>Interview mode</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.interview_mode"
-                        maxlength="50"
-                        placeholder="Ex. Telephonic + WebEx"
-                      />
+                      <input type="text" class="form-control" v-model="formData.interview_mode" maxlength="50"
+                             placeholder="Ex. Telephonic + WebEx" />
                     </div>
                     <div class="col-md-6 px-2">
                       <label>Remote or work from home available?</label>
-                      <select
-                        v-model="formData.remote_work_from_home"
-                        class="form-control has-bg"
-                      >
+                      <select v-model="formData.remote_work_from_home" class="form-control has-bg">
                         <option value="" hidden>Select</option>
                         <option value="No">No</option>
                         <option value="Yes">Yes</option>
@@ -567,33 +309,15 @@
                 <h5 class="sub-title">Benefits</h5>
                 <div class="fp-border-color-1 px-3 pt-3 border round-12 mb-4">
                   <div>
-                    <div
-                      v-for="(item, index) in benefits"
-                      :key="index"
-                      class="d-inline-flex custom-control custom-checkbox mb-3 mr-3"
-                    >
-                      <input
-                        v-model="formData.benefits"
-                        type="checkbox"
-                        :value="item"
-                        class="custom-control-input"
-                        :id="`jobs_benefits_${index}`"
-                      />
-                      <label
-                        class="custom-control-label"
-                        :for="`jobs_benefits_${index}`"
-                        >{{ item }}</label
-                      >
+                    <div v-for="(item, index) in benefits" :key="index"
+                         class="d-inline-flex custom-control custom-checkbox mb-3 mr-3">
+                      <input v-model="formData.benefits" type="checkbox" :value="item" class="custom-control-input"
+                             :id="`jobs_benefits_${index}`" />
+                      <label class="custom-control-label" :for="`jobs_benefits_${index}`">{{ item }}</label>
                     </div>
                     <form class="add-benefit-form" @submit.prevent="addBenefit">
-                      <input
-                        type="text"
-                        class="form-control"
-                        ref="benefit_form"
-                        maxlength="30"
-                        required
-                        placeholder="Ex. Retirement benefits"
-                      />
+                      <input type="text" class="form-control" ref="benefit_form" maxlength="30" required
+                             placeholder="Ex. Retirement benefits" />
                       <button type="submit" class="btn fp-btn-gradient ml-1 cus-btn">
                         Add
                       </button>
@@ -603,76 +327,39 @@
                 <h5 class="sub-title">Work authorization required</h5>
                 <div class="fp-border-color-1 px-3 pt-3 border round-12 mb-4">
                   <div>
-                    <div
-                      v-for="(item, index) in work_authorizations"
-                      :key="index"
-                      class="d-inline-flex custom-control custom-checkbox mb-3 mr-3"
-                    >
-                      <input
-                        v-model="formData.work_authorizations"
-                        type="checkbox"
-                        :value="item"
-                        class="custom-control-input"
-                        :id="`work_authorizations_${index}`"
-                      />
-                      <label
-                        class="custom-control-label"
-                        :for="`work_authorizations_${index}`"
-                        >{{ item }}</label
-                      >
+                    <div v-for="(item, index) in work_authorizations" :key="index"
+                         class="d-inline-flex custom-control custom-checkbox mb-3 mr-3">
+                      <input v-model="formData.work_authorizations" type="checkbox" :value="item"
+                             class="custom-control-input" :id="`work_authorizations_${index}`" />
+                      <label class="custom-control-label" :for="`work_authorizations_${index}`">{{ item }}</label>
                     </div>
                   </div>
                 </div>
                 <div class="options">
                   <div class="custom-control custom-checkbox mb-3">
-                    <input
-                      v-model="formData.job_options"
-                      type="checkbox"
-                      value="EOE"
-                      class="custom-control-input"
-                      id="job_options_eoe"
-                    />
-                    <label class="custom-control-label" for="job_options_eoe"
-                      >We are e-verified and Equal Opportunity
-                      Employer(EOE)</label
-                    >
+                    <input v-model="formData.job_options" type="checkbox" value="EOE" class="custom-control-input"
+                           id="job_options_eoe" />
+                    <label class="custom-control-label" for="job_options_eoe">We are e-verified and Equal Opportunity
+                      Employer(EOE)</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
-                    <input
-                      v-model="formData.job_options"
-                      type="checkbox"
-                      value="Invite"
-                      class="custom-control-input"
-                      id="job_options_invite"
-                    />
-                    <label class="custom-control-label" for="job_options_invite"
-                      >Invite people with disabilities for this position</label
-                    >
+                    <input v-model="formData.job_options" type="checkbox" value="Invite" class="custom-control-input"
+                           id="job_options_invite" />
+                    <label class="custom-control-label" for="job_options_invite">Invite people with disabilities for this
+                      position</label>
                   </div>
                   <div class="custom-control custom-checkbox mb-3">
-                    <input
-                      v-model="formData.job_options"
-                      type="checkbox"
-                      value="VISA"
-                      class="custom-control-input"
-                      id="job_options_visa"
-                    />
-                    <label class="custom-control-label" for="job_options_visa"
-                      >Work visa sponsership available for this position</label
-                    >
+                    <input v-model="formData.job_options" type="checkbox" value="VISA" class="custom-control-input"
+                           id="job_options_visa" />
+                    <label class="custom-control-label" for="job_options_visa">Work visa sponsership available for this
+                      position</label>
                   </div>
                   <div class="custom-control custom-checkbox">
-                    <input
-                      v-model="formData.job_options"
-                      type="checkbox"
-                      value="Direct"
-                      class="custom-control-input"
-                      id="job_options_direct"
-                    />
-                    <label class="custom-control-label" for="job_options_direct"
-                      >Direct applicants only. No third party recruiters allowed
-                      apply.</label
-                    >
+                    <input v-model="formData.job_options" type="checkbox" value="Direct" class="custom-control-input"
+                           id="job_options_direct" />
+                    <label class="custom-control-label" for="job_options_direct">Direct applicants only. No third party
+                      recruiters allowed
+                      apply.</label>
                   </div>
                 </div>
               </div>
@@ -680,17 +367,9 @@
               <div v-else-if="selected_category.name == 'For Sale'">
                 <div class="row mx-n2">
                   <div class="col-md-6 px-2 mb-4">
-                    <label
-                      >Item for sale <span class="text-danger">*</span></label
-                    >
-                    <input
-                      type="text"
-                      v-model="formData.job_title"
-                      class="form-control"
-                      maxlength="50"
-                      placeholder="Ex. Macbook pro"
-                      required
-                    />
+                    <label>Item for sale <span class="text-danger">*</span></label>
+                    <input type="text" v-model="formData.job_title" class="form-control" maxlength="50"
+                           placeholder="Ex. Macbook pro" required />
                     <div v-if="hasError('job_title')" class="text-danger">
                       <div class="error" v-if="!$v.formData.job_title.required">
                         The item name is required
@@ -699,10 +378,7 @@
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Sale by</label>
-                    <select
-                      v-model="formData.sale_by"
-                      class="form-control has-bg"
-                    >
+                    <select v-model="formData.sale_by" class="form-control has-bg">
                       <option value="" hidden>Select</option>
                       <option value="Individual/Owner">Individual/Owner</option>
                       <option value="Local Store">Local Store</option>
@@ -713,10 +389,7 @@
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Condition</label>
-                    <select
-                      v-model="formData.condition"
-                      class="form-control has-bg"
-                    >
+                    <select v-model="formData.condition" class="form-control has-bg">
                       <option value="" hidden>Select</option>
                       <option value="New">New</option>
                       <option value="Excellent">Excellent</option>
@@ -730,50 +403,30 @@
                     <label>Asking price</label>
                     <div class="with-currency-unit with-currency">
                       <span class="symbol">$</span>
-                      <input
-                        v-model="formData.cost"
-                        class="form-control"
-                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                        type="number"
-                        placeholder="Ex. 1,050"
-                        maxlength="10"
-                      />
+                      <input v-model="formData.cost" class="form-control"
+                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                             type="number" placeholder="Ex. 1,050" maxlength="10" />
                     </div>
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Make</label>
-                    <input
-                      type="text"
-                      v-model="formData.manufacturer"
-                      class="form-control"
-                      maxlength="50"
-                      placeholder="Enter Manufacturer"
-                    />
+                    <input type="text" v-model="formData.manufacturer" class="form-control" maxlength="50"
+                           placeholder="Enter Manufacturer" />
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Model</label>
-                    <input
-                      type="text"
-                      v-model="formData.model"
-                      class="form-control"
-                      maxlength="50"
-                      placeholder="Model or Serial Number"
-                    />
+                    <input type="text" v-model="formData.model" class="form-control" maxlength="50"
+                           placeholder="Model or Serial Number" />
                   </div>
                   <div class="col-12 px-2">
                     <label>Additional Info</label>
-                    <textarea
-                      v-model="formData.business_hours"
-                      rows="3"
-                      class="form-control"
-                      maxlength="500"
-                      placeholder="Enter details here..."
-                    ></textarea>
+                    <textarea v-model="formData.business_hours" rows="3" class="form-control" maxlength="500"
+                              placeholder="Enter details here..."></textarea>
                     <p class="text-right fp-text-color-main mb-0">
                       {{
                         formData.business_hours
-                          ? formData.business_hours.length
-                          : 0
+                        ? formData.business_hours.length
+                        : 0
                       }}/ 500
                     </p>
                   </div>
@@ -784,141 +437,69 @@
                 <div class="row mx-n2">
                   <div class="col-md-6 px-2 mb-4">
                     <label>Trainer or institute</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.trainer_institute"
-                      maxlength="50"
-                      placeholder="Ex. ABC institute"
-                    />
+                    <input type="text" class="form-control" v-model="formData.trainer_institute" maxlength="50"
+                           placeholder="Ex. ABC institute" />
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Training offered</label>
                     <form class="d-flex" @submit.prevent="addTrainingCourse">
-                      <input
-                        type="text"
-                        class="form-control flex-grow-1"
-                        ref="training_course_form"
-                        maxlength="50"
-                        placeholder="Ex. Spanish classes"
-                      />
+                      <input type="text" class="form-control flex-grow-1" ref="training_course_form" maxlength="50"
+                             placeholder="Ex. Spanish classes" />
                       <button type="submit" class="btn fp-btn-gradient ml-2 cus-btn">
                         <fa icon="plus" />&nbsp;Add
                       </button>
                     </form>
                   </div>
-                  <div
-                    v-show="formData.training_courses.length"
-                    class="col-12 px-2 mb-4"
-                  >
+                  <div v-show="formData.training_courses.length" class="col-12 px-2 mb-4">
                     <div class="flex-wrap" style="flex-direction: row">
-                      <span
-                        class="information-item"
-                        v-for="(item, index) in formData.training_courses"
-                        :key="index"
-                      >
+                      <span class="information-item" v-for="(item, index) in formData.training_courses" :key="index">
                         {{ item }}
-                        <fa
-                          icon="times"
-                          class="btn-remove"
-                          @click="removeTrainingCourse(index)"
-                        />
+                        <fa icon="times" class="btn-remove" @click="removeTrainingCourse(index)" />
                       </span>
                     </div>
                   </div>
                   <div class="col-12 px-2 mb-4">
                     <label>Training mode</label>
                     <div>
-                      <div
-                        class="d-inline-flex custom-control custom-checkbox mr-3"
-                      >
-                        <input
-                          v-model="formData.training_modes"
-                          type="checkbox"
-                          value="Online"
-                          class="custom-control-input"
-                          id="training_modes_online"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="training_modes_online"
-                          >Online</label
-                        >
+                      <div class="d-inline-flex custom-control custom-checkbox mr-3">
+                        <input v-model="formData.training_modes" type="checkbox" value="Online"
+                               class="custom-control-input" id="training_modes_online" />
+                        <label class="custom-control-label" for="training_modes_online">Online</label>
                       </div>
-                      <div
-                        class="d-inline-flex custom-control custom-checkbox mr-3"
-                      >
-                        <input
-                          v-model="formData.training_modes"
-                          type="checkbox"
-                          value="Onsite"
-                          class="custom-control-input"
-                          id="training_modes_onsite"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="training_modes_onsite"
-                          >Onsite</label
-                        >
+                      <div class="d-inline-flex custom-control custom-checkbox mr-3">
+                        <input v-model="formData.training_modes" type="checkbox" value="Onsite"
+                               class="custom-control-input" id="training_modes_onsite" />
+                        <label class="custom-control-label" for="training_modes_onsite">Onsite</label>
                       </div>
-                      <div
-                        class="d-inline-flex custom-control custom-checkbox mr-3"
-                      >
-                        <input
-                          v-model="formData.training_modes"
-                          type="checkbox"
-                          value="Hybrid"
-                          class="custom-control-input"
-                          id="training_modes_hybrid"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="training_modes_hybrid"
-                          >Hybrid</label
-                        >
+                      <div class="d-inline-flex custom-control custom-checkbox mr-3">
+                        <input v-model="formData.training_modes" type="checkbox" value="Hybrid"
+                               class="custom-control-input" id="training_modes_hybrid" />
+                        <label class="custom-control-label" for="training_modes_hybrid">Hybrid</label>
                       </div>
                       <div class="d-inline-flex custom-control custom-checkbox">
-                        <input
-                          v-model="formData.training_modes"
-                          type="checkbox"
-                          value="Trainee preferred"
-                          class="custom-control-input"
-                          id="training_modes_trainee_preferred"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="training_modes_trainee_preferred"
-                          >Trainee preferred</label
-                        >
+                        <input v-model="formData.training_modes" type="checkbox" value="Trainee preferred"
+                               class="custom-control-input" id="training_modes_trainee_preferred" />
+                        <label class="custom-control-label" for="training_modes_trainee_preferred">Trainee
+                          preferred</label>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6 px-2 mb-4 mb-md-0">
                     <label>Training or course fee</label>
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      v-model="formData.training_fee"
-                      placeholder="Explain fee details..."
-                      maxlength="500"
-                    />
+                    <textarea class="form-control" rows="3" v-model="formData.training_fee"
+                              placeholder="Explain fee details..." maxlength="500" />
                     <p class="text-right text-muted mb-0">
                       {{
                         formData.training_fee
-                          ? formData.training_fee.length
-                          : 0
+                        ? formData.training_fee.length
+                        : 0
                       }}/ 500
                     </p>
                   </div>
                   <div class="col-md-6 px-2">
                     <label>Open Hours</label>
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      v-model="formData.business_hours"
-                      placeholder="Explain open hours..."
-                      maxlength="80"
-                    />
+                    <textarea class="form-control" rows="3" v-model="formData.business_hours"
+                              placeholder="Explain open hours..." maxlength="80" />
                   </div>
                 </div>
               </div>
@@ -931,18 +512,10 @@
                   <div class="row mx-n2">
                     <div class="col-md-6 px-2 mb-4">
                       <label>Property Type</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.house_type"
-                        maxlength="50"
-                        placeholder="Ex. Apt or Commercial Land"
-                      />
+                      <input type="text" class="form-control" v-model="formData.house_type" maxlength="50"
+                             placeholder="Ex. Apt or Commercial Land" />
                       <div v-if="hasError('house_type')" class="text-danger">
-                        <div
-                          class="error"
-                          v-if="!$v.formData.house_type.required"
-                        >
+                        <div class="error" v-if="!$v.formData.house_type.required">
                           Property type is required
                         </div>
                       </div>
@@ -950,14 +523,9 @@
                     <div class="col-md-6 px-2 mb-4">
                       <label>Property Area Size</label>
                       <div class="with-currency-unit with-unit">
-                        <input
-                          v-model="formData.property_area"
-                          class="form-control"
-                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                          type="number"
-                          placeholder="Ex. 5,400"
-                          maxlength="10"
-                        />
+                        <input v-model="formData.property_area" class="form-control"
+                               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               type="number" placeholder="Ex. 5,400" maxlength="10" />
                         <select v-model="formData.property_area_unit">
                           <option value="Sq.ft">Sq.ft</option>
                           <option value="Sq.yd">Sq.yd</option>
@@ -967,34 +535,25 @@
                         </select>
                       </div>
                       <div v-if="hasError('property_area')" class="text-danger">
-                        <div
-                          class="error"
-                          v-if="!$v.formData.property_area.required"
-                        >
+                        <div class="error" v-if="!$v.formData.property_area.required">
                           Property area size is required
                         </div>
                       </div>
                     </div>
-                    <template
-                      v-if="
-                        selected_sub_category &&
-                        [
-                          'Single/Multi-Family Homes',
-                          'Independent House/ Villas',
-                          'Swap Properties',
-                          'Condos/ Townhouse/ Studios',
-                          'Bank/Foreclosures',
-                          'Government/Auction',
-                          'New/Upcoming',
-                        ].includes(selected_sub_category.name)
-                      "
-                    >
+                    <template v-if="selected_sub_category &&
+                      [
+                        'Single/Multi-Family Homes',
+                        'Independent House/ Villas',
+                        'Swap Properties',
+                        'Condos/ Townhouse/ Studios',
+                        'Bank/Foreclosures',
+                        'Government/Auction',
+                        'New/Upcoming',
+                      ].includes(selected_sub_category.name)
+                      ">
                       <div class="col-md-6 px-2 mb-4">
                         <label>Furnished?</label>
-                        <select
-                          class="form-control has-bg"
-                          v-model="formData.furnished"
-                        >
+                        <select class="form-control has-bg" v-model="formData.furnished">
                           <option value="" hidden>Select</option>
                           <option value="Semi-Furnished">Semi-Furnished</option>
                           <option value="Fully-Furnished">
@@ -1005,27 +564,17 @@
                       </div>
                       <div class="col-md-6 px-2 mb-4">
                         <label>No.of Beds/Baths</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="formData.bed_rooms"
-                          maxlength="20"
-                          placeholder="Ex. 2-bed/ 3-bath"
-                        />
+                        <input type="text" class="form-control" v-model="formData.bed_rooms" maxlength="20"
+                               placeholder="Ex. 2-bed/ 3-bath" />
                       </div>
                     </template>
                     <div class="col-md-6 px-2">
                       <label>Estimated/Selling price</label>
                       <div class="with-currency-unit with-currency">
                         <span class="symbol">$</span>
-                        <input
-                          v-model="formData.cost"
-                          class="form-control"
-                          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                          type="number"
-                          placeholder="Enter best selling price"
-                          maxlength="10"
-                        />
+                        <input v-model="formData.cost" class="form-control"
+                               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                               type="number" placeholder="Enter best selling price" maxlength="10" />
                       </div>
                       <div v-if="hasError('cost')" class="text-danger">
                         <div class="error" v-if="!$v.formData.cost.required">
@@ -1042,39 +591,19 @@
                       <label>Near by places</label>
                       <div>
                         <form class="d-flex" @submit.prevent="addProperty">
-                          <input
-                            type="text"
-                            class="form-control flex-grow-1"
-                            ref="property_form"
-                            placeholder="Ex. Airport - 5 miles"
-                            maxlength="50"
-                            required
-                          />
-                          <button
-                            type="submit"
-                            class="btn fp-btn-gradient ml-2 cus-btn no-wrap"
-                          >
+                          <input type="text" class="form-control flex-grow-1" ref="property_form"
+                                 placeholder="Ex. Airport - 5 miles" maxlength="50" required />
+                          <button type="submit" class="btn fp-btn-gradient ml-2 cus-btn no-wrap">
                             <fa icon="plus" />&nbsp;Add
                           </button>
                         </form>
-                        <div
-                          class="flex-wrap mt-2"
-                          style="flex-direction: row"
-                          v-show="formData.accommodation_properties.length"
-                        >
-                          <span
-                            class="information-item"
-                            v-for="(
+                        <div class="flex-wrap mt-2" style="flex-direction: row"
+                             v-show="formData.accommodation_properties.length">
+                          <span class="information-item" v-for="(
                               item, index
-                            ) in formData.accommodation_properties"
-                            :key="index"
-                          >
+                            ) in formData.accommodation_properties" :key="index">
                             {{ item }}
-                            <fa
-                              icon="times"
-                              class="btn-remove"
-                              @click="removeProperty(index)"
-                            />
+                            <fa icon="times" class="btn-remove" @click="removeProperty(index)" />
                           </span>
                         </div>
                       </div>
@@ -1083,39 +612,19 @@
                       <label>Amenities/Features</label>
                       <div>
                         <form class="d-flex" @submit.prevent="addAmenity">
-                          <input
-                            type="text"
-                            class="form-control flex-grow-1"
-                            ref="amenity_form"
-                            maxlength="50"
-                            placeholder="Ex. Playground"
-                            required
-                          />
-                          <button
-                            type="submit"
-                            class="btn fp-btn-gradient ml-2 cus-btn"
-                          >
+                          <input type="text" class="form-control flex-grow-1" ref="amenity_form" maxlength="50"
+                                 placeholder="Ex. Playground" required />
+                          <button type="submit" class="btn fp-btn-gradient ml-2 cus-btn">
                             <fa icon="plus" />&nbsp;Add
                           </button>
                         </form>
-                        <div
-                          class="flex-wrap mt-2"
-                          style="flex-direction: row"
-                          v-show="formData.accommodation_amenities.length"
-                        >
-                          <span
-                            class="information-item"
-                            v-for="(
+                        <div class="flex-wrap mt-2" style="flex-direction: row"
+                             v-show="formData.accommodation_amenities.length">
+                          <span class="information-item" v-for="(
                               item, index
-                            ) in formData.accommodation_amenities"
-                            :key="index"
-                          >
+                            ) in formData.accommodation_amenities" :key="index">
                             {{ item }}
-                            <fa
-                              icon="times"
-                              class="btn-remove"
-                              @click="removeAmenity(item)"
-                            />
+                            <fa icon="times" class="btn-remove" @click="removeAmenity(item)" />
                           </span>
                         </div>
                       </div>
@@ -1127,23 +636,13 @@
                   <div class="row mx-n2">
                     <div class="col-md-6 px-2 mb-4">
                       <label>Realtor</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.realtor"
-                        placeholder="Ex. Business/Realtor name"
-                        maxlength="40"
-                      />
+                      <input type="text" class="form-control" v-model="formData.realtor"
+                             placeholder="Ex. Business/Realtor name" maxlength="40" />
                     </div>
                     <div class="col-md-6 px-2 mb-4">
                       <label>License#</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.license"
-                        placeholder="Ex. XX-0000-XX"
-                        maxlength="20"
-                      />
+                      <input type="text" class="form-control" v-model="formData.license" placeholder="Ex. XX-0000-XX"
+                             maxlength="20" />
                     </div>
                     <div class="col-12 px-2 mb-4">
                       <label>Business Location</label>
@@ -1151,50 +650,28 @@
                         <div class="row mx-n2">
                           <div class="col-12 mb-2">
                             <label>Street Address</label>
-                            <gmap-autocomplete
-                              :value="formData.business_address"
-                              class="form-control w-100"
-                              @place_changed="updateBusinessAddress"
-                              placeholder="Enter street address"
-                              style="max-width: 100%"
-                              @keypress.enter="$event.preventDefault()"
-                              :options="gmapAutocompleteOptions"
-                            ></gmap-autocomplete>
+                            <gmap-autocomplete :value="formData.business_address" class="form-control w-100"
+                                               @place_changed="updateBusinessAddress" placeholder="Enter street address"
+                                               style="max-width: 100%" @keypress.enter="$event.preventDefault()"
+                                               :options="gmapAutocompleteOptions"></gmap-autocomplete>
                           </div>
                           <div class="col-md-4 px-n2 mb-3 mb-md-0">
                             <label>Zip Code</label>
-                            <gmap-autocomplete
-                              class="form-control w-100"
-                              :value="formData.business_zipcode"
-                              @place_changed="updateBusinessAddress"
-                              @input="
-                                formData.business_zipcode = $event.target.value
-                              "
-                              placeholder="Zip"
-                              style="max-width: 100%"
-                              @keypress.enter="$event.preventDefault()"
-                              :options="gmapAutocompleteOptions"
-                            ></gmap-autocomplete>
+                            <gmap-autocomplete class="form-control w-100" :value="formData.business_zipcode"
+                                               @place_changed="updateBusinessAddress" @input="
+                                                 formData.business_zipcode = $event.target.value
+                                                 " placeholder="Zip" style="max-width: 100%" @keypress.enter="$event.preventDefault()"
+                                               :options="gmapAutocompleteOptions"></gmap-autocomplete>
                           </div>
                           <div class="col-md-4 px-n2 mb-3 mb-md-0">
                             <label>City</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              v-model="formData.business_city"
-                              placeholder="City"
-                              readonly
-                            />
+                            <input type="text" class="form-control" v-model="formData.business_city" placeholder="City"
+                                   readonly />
                           </div>
                           <div class="col-md-4 px-n2 mb-3 mb-md-0">
                             <label>State</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              v-model="formData.business_state"
-                              placeholder="State"
-                              readonly
-                            />
+                            <input type="text" class="form-control" v-model="formData.business_state" placeholder="State"
+                                   readonly />
                           </div>
                         </div>
                       </div>
@@ -1202,44 +679,22 @@
                     <div class="col-md-12 px-2 mb-4">
                       <label>Services provide in</label>
                       <div>
-                        <gmap-autocomplete
-                          class="form-control w-100"
-                          :value="location_form.value"
-                          @place_changed="addLocation"
-                          placeholder="Select State"
-                          style="max-width: 100%"
-                          @keypress.enter="$event.preventDefault()"
-                          :options="gmapAutocompleteOptions"
-                        ></gmap-autocomplete>
+                        <gmap-autocomplete class="form-control w-100" :value="location_form.value"
+                                           @place_changed="addLocation" placeholder="Select State" style="max-width: 100%"
+                                           @keypress.enter="$event.preventDefault()"
+                                           :options="gmapAutocompleteOptions"></gmap-autocomplete>
                       </div>
-                      <div
-                        class="flex-wrap mt-2"
-                        style="flex-direction: row"
-                        v-show="formData.locations.length"
-                      >
-                        <span
-                          class="information-item"
-                          v-for="(item, index) in formData.locations"
-                          :key="index"
-                        >
+                      <div class="flex-wrap mt-2" style="flex-direction: row" v-show="formData.locations.length">
+                        <span class="information-item" v-for="(item, index) in formData.locations" :key="index">
                           {{ item }}
-                          <fa
-                            icon="times"
-                            class="btn-remove"
-                            @click="removeLocation(item)"
-                          />
+                          <fa icon="times" class="btn-remove" @click="removeLocation(item)" />
                         </span>
                       </div>
                     </div>
                     <div class="col-md-12 px-2">
                       <label>Hours of Operation</label>
-                      <textarea
-                        rows="3"
-                        class="form-control"
-                        placeholder="Enter business hours"
-                        v-model="formData.business_hours"
-                        maxlength="60"
-                      ></textarea>
+                      <textarea rows="3" class="form-control" placeholder="Enter business hours"
+                                v-model="formData.business_hours" maxlength="60"></textarea>
                     </div>
                   </div>
                 </div>
@@ -1250,14 +705,8 @@
                   <div class="col-md-6 px-2 mb-4">
                     <label>Property or item</label>
                     <div class="with-currency-unit with-unit">
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.rent_lease_item"
-                        maxlength="50"
-                        placeholder="Ex. Office space"
-                        style="padding-right: 90px"
-                      />
+                      <input type="text" class="form-control" v-model="formData.rent_lease_item" maxlength="50"
+                             placeholder="Ex. Office space" style="padding-right: 90px" />
                       <select v-model="formData.rent_lease_unit">
                         <option value="for rent">For Rent</option>
                         <option value="for lease">For Lease</option>
@@ -1268,14 +717,9 @@
                     <label>Rent or lease cost</label>
                     <div class="with-currency-unit with-currency with-unit">
                       <span class="symbol">$</span>
-                      <input
-                        v-model="formData.rent_lease_cost"
-                        class="form-control"
-                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                        type="number"
-                        placeholder="Ex. 1,200"
-                        maxlength="9"
-                      />
+                      <input v-model="formData.rent_lease_cost" class="form-control"
+                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                             type="number" placeholder="Ex. 1,200" maxlength="9" />
                       <select v-model="formData.cost_unit">
                         <option value="Day">\Day</option>
                         <option value="Week">\Week</option>
@@ -1287,18 +731,13 @@
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Terms or duration</label>
-                    <textarea
-                      class="form-control"
-                      rows="3"
-                      v-model="formData.rent_lease_term"
-                      maxlength="500"
-                      placeholder="Explain term/ duration..."
-                    />
+                    <textarea class="form-control" rows="3" v-model="formData.rent_lease_term" maxlength="500"
+                              placeholder="Explain term/ duration..." />
                     <p class="text-right fp-text-color-main mb-0">
                       {{
                         formData.rent_lease_term
-                          ? formData.rent_lease_term.length
-                          : 0
+                        ? formData.rent_lease_term.length
+                        : 0
                       }}/ 500
                     </p>
                   </div>
@@ -1308,127 +747,73 @@
               <div v-else-if="selected_category.name == 'Community'">
                 <div class="form-group mb-0">
                   <label>Quick Comments</label>
-                  <textarea
-                    class="form-control"
-                    rows="3"
-                    v-model="formData.business_hours"
-                    maxlength="500"
-                    placeholder="Enter key details in few words..."
-                  />
+                  <textarea class="form-control" rows="3" v-model="formData.business_hours" maxlength="500"
+                            placeholder="Enter key details in few words..." />
                   <p class="text-right text-muted mb-0">
                     {{
                       formData.business_hours
-                        ? formData.business_hours.length
-                        : 0
+                      ? formData.business_hours.length
+                      : 0
                     }}/ 500
                   </p>
                 </div>
               </div>
 
-              <div
-                v-else-if="
-                  selected_category.name === 'Pets' &&
+              <div v-else-if="selected_category.name === 'Pets' &&
                   selected_sub_category &&
                   selected_sub_category.name === 'Pet Adoption'
-                "
-              >
+                  ">
                 <div class="row mx-n2">
                   <div class="col-lg-6 px-2 mb-4">
                     <label>Breed/Species</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.breed_species_type"
-                      placeholder="Ex. Papillon"
-                      maxlength="50"
-                    />
+                    <input type="text" class="form-control" v-model="formData.breed_species_type"
+                           placeholder="Ex. Papillon" maxlength="50" />
                   </div>
                   <div class="col-lg-6 px-2 mb-4">
                     <label>Pet Age</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.pet_age"
-                      placeholder="Ex. 3 years"
-                      maxlength="40"
-                    />
+                    <input type="text" class="form-control" v-model="formData.pet_age" placeholder="Ex. 3 years"
+                           maxlength="40" />
                   </div>
                   <div class="col-lg-6 px-2 mb-4">
                     <label>Color</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.pet_color"
-                      placeholder="Ex. Gold/White"
-                      maxlength="40"
-                    />
+                    <input type="text" class="form-control" v-model="formData.pet_color" placeholder="Ex. Gold/White"
+                           maxlength="40" />
                   </div>
                   <div class="col-lg-6 px-2 mb-4">
                     <label>Sex</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.pet_sex"
-                      placeholder="Ex. Male"
-                      maxlength="40"
-                    />
+                    <input type="text" class="form-control" v-model="formData.pet_sex" placeholder="Ex. Male"
+                           maxlength="40" />
                   </div>
                   <div class="col-lg-6 px-2 mb-4">
                     <label>Size/Weight</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.pet_size_weight"
-                      placeholder="Ex. 4.5lbs"
-                      maxlength="40"
-                    />
+                    <input type="text" class="form-control" v-model="formData.pet_size_weight" placeholder="Ex. 4.5lbs"
+                           maxlength="40" />
                   </div>
                   <div class="col-lg-6 px-2 mb-4">
                     <label>Characteristics</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.pet_characteristics"
-                      placeholder="Ex. Friendly, Calm"
-                      maxlength="100"
-                    />
+                    <input type="text" class="form-control" v-model="formData.pet_characteristics"
+                           placeholder="Ex. Friendly, Calm" maxlength="100" />
                   </div>
                   <div class="col-12 px-2">
                     <label>Additional Info</label>
-                    <textarea
-                      rows="3"
-                      class="form-control"
-                      v-model="formData.business_hours"
-                      placeholder="Explain any other details..."
-                      maxlength="200"
-                    ></textarea>
+                    <textarea rows="3" class="form-control" v-model="formData.business_hours"
+                              placeholder="Explain any other details..." maxlength="200"></textarea>
                   </div>
                 </div>
               </div>
-              <div
-                v-else-if="
-                  selected_category.name === 'Pets' &&
-                  selected_sub_category &&
-                  selected_sub_category.name === 'Pet Accessories'
-                "
-              >
+              <div v-else-if="selected_category.name === 'Pets' &&
+                selected_sub_category &&
+                selected_sub_category.name === 'Pet Accessories'
+                ">
                 <div class="row mx-n2">
                   <div class="col-md-6 px-2 mb-4">
                     <label>Item/Accessory for sale</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.job_title"
-                      placeholder="Ex. Neck belt"
-                      maxlength="50"
-                    />
+                    <input type="text" class="form-control" v-model="formData.job_title" placeholder="Ex. Neck belt"
+                           maxlength="50" />
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Sale by</label>
-                    <select
-                      class="form-control has-bg"
-                      v-model="formData.sale_by"
-                    >
+                    <select class="form-control has-bg" v-model="formData.sale_by">
                       <option value="" hidden>Select</option>
                       <option value="Individual/Owner">Individual/Owner</option>
                       <option value="Local Store">Local Store</option>
@@ -1439,10 +824,7 @@
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Condition</label>
-                    <select
-                      class="form-control has-bg"
-                      v-model="formData.condition"
-                    >
+                    <select class="form-control has-bg" v-model="formData.condition">
                       <option value="" hidden>Select</option>
                       <option value="New">New</option>
                       <option value="Excellent">Excellent</option>
@@ -1455,23 +837,13 @@
                   </div>
                   <div class="col-md-6 px-2 mb-4">
                     <label>Asking price</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="formData.cost"
-                      placeholder="Ex. 25$/item"
-                      maxlength="40"
-                    />
+                    <input type="text" class="form-control" v-model="formData.cost" placeholder="Ex. 25$/item"
+                           maxlength="40" />
                   </div>
                   <div class="col-12 px-2">
                     <label>Additional Info</label>
-                    <textarea
-                      class="form-control"
-                      rows="5"
-                      v-model="formData.business_hours"
-                      placeholder="Any other details..."
-                      maxlength="200"
-                    />
+                    <textarea class="form-control" rows="5" v-model="formData.business_hours"
+                              placeholder="Any other details..." maxlength="200" />
                   </div>
                 </div>
               </div>
@@ -1482,134 +854,66 @@
                   <div class="col-md-6 px-2">
                     <div class="form-group">
                       <label>
-                        <span v-if="selected_category.name === 'Legal/Lawyers'"
-                          >Legal firm or lawyer name</span
-                        >
-                        <span
-                          v-else-if="
-                            selected_category.name === 'Gigs/Freelancers'
-                          "
-                          >Freelancer/ Service provider</span
-                        >
-                        <span
-                          v-else-if="
-                            selected_category.name === 'Pets' &&
-                            selected_sub_category &&
-                            selected_sub_category.name === 'Pet Care'
-                          "
-                          >Business or care provider</span
-                        >
+                        <span v-if="selected_category.name === 'Legal/Lawyers'">Legal firm or lawyer name</span>
+                        <span v-else-if="selected_category.name === 'Gigs/Freelancers'
+                          ">Freelancer/ Service provider</span>
+                        <span v-else-if="selected_category.name === 'Pets' &&
+                          selected_sub_category &&
+                          selected_sub_category.name === 'Pet Care'
+                          ">Business or care provider</span>
                         <span v-else>Business or your name</span>
                       </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.service_provider"
-                        :placeholder="placeholder_service_provider"
-                        :maxlength="max_length_service_provider"
-                      />
+                      <input type="text" class="form-control" v-model="formData.service_provider"
+                             :placeholder="placeholder_service_provider" :maxlength="max_length_service_provider" />
                     </div>
-                    <div
-                      class="form-group mb-md-0"
-                      :class="
-                        'pt-md-2' &&
-                        selected_category.name !== 'Legal/Lawyers' &&
-                        selected_category.name !== 'Skilled Trades'
-                      "
-                    >
+                    <div class="form-group mb-md-0" :class="'pt-md-2' &&
+                      selected_category.name !== 'Legal/Lawyers' &&
+                      selected_category.name !== 'Skilled Trades'
+                      ">
                       <label>List of Services</label>
                       <div>
                         <form class="d-flex" @submit.prevent="addService()">
-                          <input
-                            type="text"
-                            class="form-control flex-grow-1"
-                            ref="service_form"
-                            :placeholder="placeholder_list_of_services"
-                            required
-                            :maxlength="
-                              selected_category.name === 'Legal/Lawyers'
-                                ? 50
-                                : 40
-                            "
-                          />
-                          <button
-                            type="submit"
-                            class="btn fp-btn-gradient ml-2 cus-btn"
-                          >
+                          <input type="text" class="form-control flex-grow-1" ref="service_form"
+                                 :placeholder="placeholder_list_of_services" required :maxlength="selected_category.name === 'Legal/Lawyers'
+                                     ? 50
+                                     : 40
+                                   " />
+                          <button type="submit" class="btn fp-btn-gradient ml-2 cus-btn">
                             <fa icon="plus" /> Add
                           </button>
                         </form>
-                        <div
-                          class="flex-wrap d-md-none"
-                          v-show="formData.services.length"
-                        >
-                          <span
-                            class="information-item"
-                            v-for="(item, index) in formData.services"
-                            :key="index"
-                          >
+                        <div class="flex-wrap d-md-none" v-show="formData.services.length">
+                          <span class="information-item" v-for="(item, index) in formData.services" :key="index">
                             {{ item }}
-                            <fa
-                              icon="times"
-                              class="btn-remove"
-                              @click="removeService(item)"
-                            />
+                            <fa icon="times" class="btn-remove" @click="removeService(item)" />
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6 px-2">
-                    <div
-                      v-if="
-                        selected_category.name === 'Legal/Lawyers' ||
-                        selected_category.name === 'Skilled Trades'
-                      "
-                      class="form-group"
-                    >
+                    <div v-if="selected_category.name === 'Legal/Lawyers' ||
+                      selected_category.name === 'Skilled Trades'
+                      " class="form-group">
                       <label> License Info </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.license"
-                        placeholder="Ex. #2563A01"
-                        :maxlength="max_length_list_of_services"
-                      />
+                      <input type="text" class="form-control" v-model="formData.license" placeholder="Ex. #2563A01"
+                             :maxlength="max_length_list_of_services" />
                     </div>
                     <div class="form-group mb-0">
                       <label>
-                        <span
-                          v-if="selected_category.name === 'Gigs/Freelancers'"
-                          >Working Hours</span
-                        >
+                        <span v-if="selected_category.name === 'Gigs/Freelancers'">Working Hours</span>
                         <span v-else>Open hours</span>
                       </label>
 
                       <!-- <p>{{`timings are${formData.fromavailable} to ${formData.toavailable}`  }}</p> -->
-                      <textarea
-                        rows="5"
-                        class="form-control"
-                        :placeholder="placeholder_hours_of_operation"
-                        v-model="formData.business_hours"
-                        maxlength="80"
-                      ></textarea>
+                      <textarea rows="5" class="form-control" :placeholder="placeholder_hours_of_operation"
+                                v-model="formData.business_hours" maxlength="80"></textarea>
                     </div>
                   </div>
-                  <div
-                    class="flex-wrap d-none d-md-flex mt-2"
-                    v-show="formData.services.length"
-                  >
-                    <span
-                      class="information-item"
-                      v-for="(item, index) in formData.services"
-                      :key="index"
-                    >
+                  <div class="flex-wrap d-none d-md-flex mt-2" v-show="formData.services.length">
+                    <span class="information-item" v-for="(item, index) in formData.services" :key="index">
                       {{ item }}
-                      <fa
-                        icon="times"
-                        class="btn-remove"
-                        @click="removeService(item)"
-                      />
+                      <fa icon="times" class="btn-remove" @click="removeService(item)" />
                     </span>
                   </div>
                 </div>
@@ -1621,12 +925,8 @@
       <tab-content title="Gallery">
         <div class="row justify-content-center">
           <div class="col-lg-9">
-            <fp-uploader
-              :url="uploadImageUrl"
-              :remove-url="removeImageUrl"
-              v-model="formData.images"
-              @removed="imageRemoved"
-            />
+            <fp-uploader :url="uploadImageUrl" :remove-url="removeImageUrl" v-model="formData.images"
+                         @removed="imageRemoved" />
           </div>
         </div>
       </tab-content>
@@ -1639,35 +939,20 @@
                   <h6>
                     {{
                       streetRequired
-                        ? "Enter Property Location"
-                        : "Choose Post Location"
+                      ? "Enter Property Location"
+                      : "Choose Post Location"
                     }}
                   </h6>
                   <div class="fp-border-color-1 p-3 border round-10">
                     <div class="form-group">
                       <label>Address</label>
-                      <div
-                        :class="streetRequired && 'required-input-container'"
-                      >
-                        <gmap-autocomplete
-                          :value="formData.address"
-                          class="form-control w-100"
-                          @place_changed="updateAddress"
-                          :placeholder="`Enter street address ${
-                            streetRequired ? '' : '(Optional)'
-                          }`"
-                          style="max-width: 100%"
-                          @keypress.enter="$event.preventDefault()"
-                          :options="gmapAutocompleteOptions"
-                        ></gmap-autocomplete>
-                        <div
-                          v-if="streetRequired && hasError('address')"
-                          class="text-danger"
-                        >
-                          <div
-                            class="error"
-                            v-if="!$v.formData.address.required"
-                          >
+                      <div :class="streetRequired && 'required-input-container'">
+                        <gmap-autocomplete :value="formData.address" class="form-control w-100"
+                                           @place_changed="updateAddress" :placeholder="`Enter street address ${streetRequired ? '' : '(Optional)'
+                                             }`" style="max-width: 100%" @keypress.enter="$event.preventDefault()"
+                                           :options="gmapAutocompleteOptions"></gmap-autocomplete>
+                        <div v-if="streetRequired && hasError('address')" class="text-danger">
+                          <div class="error" v-if="!$v.formData.address.required">
                             The street address is required
                           </div>
                         </div>
@@ -1676,45 +961,26 @@
                     <div class="row mx-n1">
                       <div class="col-md-6 px-1 mb-3">
                         <label>Zip Code <sup class="text-danger">*</sup></label>
-                        <gmap-autocomplete
-                          class="form-control w-100"
-                          :value="formData.zipcode"
-                          @place_changed="updateAddress"
-                          @input="formData.zipcode = $event.target.value"
-                          placeholder="Enter zip"
-                          style="max-width: 100%"
-                          :options="gmapAutocompleteOptions"
-                        ></gmap-autocomplete>
+                        <gmap-autocomplete class="form-control w-100" :value="formData.zipcode"
+                                           @place_changed="updateAddress" @input="formData.zipcode = $event.target.value"
+                                           placeholder="Enter zip" style="max-width: 100%"
+                                           :options="gmapAutocompleteOptions"></gmap-autocomplete>
                         <div v-if="hasError('zipcode')" class="text-danger">
-                          <div
-                            class="error"
-                            v-if="!$v.formData.zipcode.required"
-                          >
+                          <div class="error" v-if="!$v.formData.zipcode.required">
                             Zip Code is required
                           </div>
-                          <div
-                            class="error"
-                            v-if="!$v.formData.zipcode.numeric"
-                          >
+                          <div class="error" v-if="!$v.formData.zipcode.numeric">
                             Zip Code must be numbers
                           </div>
-                          <div
-                            class="error"
-                            v-if="!$v.formData.zipcode.maxLength"
-                          >
+                          <div class="error" v-if="!$v.formData.zipcode.maxLength">
                             Max 9 digits allowed.
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6 px-1 mb-3">
                         <label>City <sup class="text-danger">*</sup></label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="formData.city"
-                          placeholder="Enter city"
-                          readonly
-                        />
+                        <input type="text" class="form-control" v-model="formData.city" placeholder="Enter city"
+                               readonly />
                         <div v-if="hasError('city')" class="text-danger">
                           <div class="error" v-if="!$v.formData.city.required">
                             City is required
@@ -1723,13 +989,8 @@
                       </div>
                       <div class="col-md-12 px-1">
                         <label>State <sup class="text-danger">*</sup></label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          v-model="formData.state"
-                          placeholder="Enter state"
-                          readonly
-                        />
+                        <input type="text" class="form-control" v-model="formData.state" placeholder="Enter state"
+                               readonly />
                         <div v-if="hasError('state')" class="text-danger">
                           <div class="error" v-if="!$v.formData.state.required">
                             State is required
@@ -1741,115 +1002,60 @@
                 </div>
                 <div class="col-lg-6 px-2">
                   <h6>Post Contact Details</h6>
-                  <div
-                    class="fp-border-color-1 p-3 border round-10 contact-details-input"
-                  >
+                  <div class="fp-border-color-1 p-3 border round-10 contact-details-input">
                     <div class="form-group">
                       <label>Email</label>
-                      <input
-                        type="email"
-                        class="form-control"
-                        v-model="formData.contact_email"
-                        maxlength="100"
-                        placeholder="Email (Recommended)"
-                      />
-                      <span class="fp-text-active"
-                        >* We will not disclose your email</span
-                      >
+                      <input type="email" class="form-control" v-model="formData.contact_email" maxlength="100"
+                             placeholder="Email (Recommended)" />
+                      <span class="fp-text-active">* We will not disclose your email</span>
                     </div>
                     <div class="form-group">
                       <label for="" class="mb-2">Phone</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.contact_phone_number"
-                        maxlength="50"
-                        placeholder="Phone (Optional)"
-                      />
+                      <input type="text" class="form-control" v-model="formData.contact_phone_number" maxlength="50"
+                             placeholder="Phone (Optional)" />
                     </div>
                     <div class="form-group">
                       <label for="" class="mb-2">Web Link</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        v-model="formData.contact_weblink"
-                        maxlength="300"
-                        placeholder="Any web links (Optional)"
-                      />
+                      <input type="text" class="form-control" v-model="formData.contact_weblink" maxlength="300"
+                             placeholder="Any web links (Optional)" />
                     </div>
                     <div class="d-flex justify-content-between">
                       <div class="d-inline-flex custom-control custom-checkbox">
-                        <input
-                          v-model="formData.enable_chat"
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="enable_chat"
-                        />
-                        <label class="custom-control-label" for="enable_chat"
-                          >Chat</label
-                        >
+                        <input v-model="formData.enable_chat" type="checkbox" class="custom-control-input"
+                               id="enable_chat" />
+                        <label class="custom-control-label" for="enable_chat">Chat</label>
                       </div>
-                      <div
-                        class="d-inline-flex custom-control custom-checkbox ml-auto"
-                      >
-                        <input
-                          v-model="formData.no_reply_to_this_post"
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="no_reply_to_this_post"
-                          @change="noReply"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="no_reply_to_this_post"
-                          >No reply to this post</label
-                        >
+                      <div class="d-inline-flex custom-control custom-checkbox ml-auto">
+                        <input v-model="formData.no_reply_to_this_post" type="checkbox" class="custom-control-input"
+                               id="no_reply_to_this_post" @change="noReply" />
+                        <label class="custom-control-label" for="no_reply_to_this_post">No reply to this post</label>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-12">
-                  <div
-                    class="border fp-border-color-1 round-10 overflow-hidden"
-                    style="
+                  <div class="border fp-border-color-1 round-10 overflow-hidden" style="
                       height: calc(100% - 85px);
                       min-height: 300px;
                       margin-top: 35px;
-                    "
-                  >
-                    <GmapMap
-                      ref="mapRef"
-                      :options="{
-                        mapTypeControl: false,
-                        streetViewControl: false,
-                      }"
-                      :center="map_center"
-                      :zoom="11"
-                      map-type-id="roadmap"
-                      style="width: 100%; height: 100%"
-                    >
-                      <GmapCircle
-                        :center="{
-                          lat: Number(formData.location.latitude),
-                          lng: Number(formData.location.longitude),
-                        }"
-                        :radius="7000"
-                        :visible="true"
-                        :editable="true"
-                        :options="{
-                          fillColor: 'green',
-                          fillOpacity: 0.3,
-                          strokeColor: 'green',
-                          strokeOpacity: 0.5,
-                          strokeWeight: 2,
-                        }"
-                      />
+                    ">
+                    <GmapMap ref="mapRef" :options="{
+                      mapTypeControl: false,
+                      streetViewControl: false,
+                    }" :center="map_center" :zoom="11" map-type-id="roadmap" style="width: 100%; height: 100%">
+                      <GmapCircle :center="{
+                        lat: Number(formData.location.latitude),
+                        lng: Number(formData.location.longitude),
+                      }" :radius="7000" :visible="true" :editable="true" :options="{
+  fillColor: 'green',
+  fillOpacity: 0.3,
+  strokeColor: 'green',
+  strokeOpacity: 0.5,
+  strokeWeight: 2,
+}" />
                     </GmapMap>
                   </div>
-                  <p
-                    class="mt-1 mb-0 fp-text-clolor-main"
-                    style="font-weight: 400"
-                  >
+                  <p class="mt-1 mb-0 fp-text-clolor-main" style="font-weight: 400">
                     The location data here is only for information purposes. May
                     not be accurate.
                   </p>
@@ -1862,11 +1068,7 @@
       <tab-content title="Submit" :selected="action === 'repost'">
         <div>
           <div class="d-flex justify-content-center align-items-center mb-3">
-            <h5
-              class="text-underline mb-0"
-              style="cursor: pointer"
-              @click="submit()"
-            >
+            <h5 class="text-underline mb-0" style="cursor: pointer" @click="submit()">
               Review &amp; Submit
             </h5>
           </div>
@@ -1877,32 +1079,13 @@
           <PostDetail :post="formData"></PostDetail>
           <div class="mt-3 text-center">
             <div class="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                :class="{ invalid: !formData.isAccepted && clicked_submit }"
-                id="is_accepted"
-                name="accept"
-                v-model="formData.isAccepted"
-              />
-              <label
-                class="custom-control-label fp-text-color-main"
-                for="is_accepted"
-                >I have read and accept the
-                <a
-                  href="/learn/terms_of_use"
-                  class="fp-text-active"
-                  target="_blank"
-                  >Terms of use</a
-                >
+              <input type="checkbox" class="custom-control-input"
+                     :class="{ invalid: !formData.isAccepted && clicked_submit }" id="is_accepted" name="accept"
+                     v-model="formData.isAccepted" />
+              <label class="custom-control-label fp-text-color-main" for="is_accepted">I have read and accept the
+                <a href="/learn/terms_of_use" class="fp-text-active" target="_blank">Terms of use</a>
                 and
-                <a
-                  href="/learn/privacy_policies"
-                  class="fp-text-active"
-                  target="_blank"
-                  >Privacy policy</a
-                ></label
-              >
+                <a href="/learn/privacy_policies" class="fp-text-active" target="_blank">Privacy policy</a></label>
             </div>
           </div>
           <!-- <div class="progress-container" v-if="loading">
@@ -1930,17 +1113,9 @@
           <!-- loader view start -->
 
           <div class="fp-loading" v-if="loading">
-            <img
-              src="@/assets/images/logo_loading.gif"
-              width="100"
-              height="100"
-              alt=""
-            />
+            <img src="@/assets/images/logo_loading.gif" width="100" height="100" alt="" />
             <div class="progress mt-3 mt-md-4">
-              <div
-                class="progress-bar bg-success"
-                :style="{ width: `${this.progress}%` }"
-              >
+              <div class="progress-bar bg-success" :style="{ width: `${this.progress}%` }">
                 {{ this.progress }}%
               </div>
             </div>
@@ -2533,6 +1708,7 @@ export default {
       }
     },
     selectCategory(item) {
+
       if (
         this.selected_category &&
         item &&
@@ -2562,6 +1738,8 @@ export default {
       ) {
         this.selected_sub_category = null;
       } else {
+        console.log(item)
+        console.log(this.selected_sub_category)
         this.selected_sub_category = item;
       }
     },
@@ -2933,6 +2111,7 @@ export default {
 .cus-btn {
   width: 95px;
 }
+
 .form-post::v-deep .form-submitted {
   .step-footer {
     display: none;
@@ -3018,21 +2197,25 @@ export default {
   height: 100vh;
   z-index: 100000;
   background: #00000080;
+
   .progress {
     height: 23px;
     width: 380px;
     text-align: right;
     background: #ffffff26;
     border-radius: 6px;
+
     @media (max-width: 600px) {
       width: 80%;
     }
   }
+
   @media (max-width: 600px) {
     img {
       width: 64px;
       height: 64px;
     }
+
     .progress {
       height: 18px;
     }

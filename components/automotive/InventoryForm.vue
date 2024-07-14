@@ -70,7 +70,7 @@
               </form>
               <div v-if="formData.automotive_category" class="d-flex flex-wrap pt-3">
                 <div v-for="(item, index) in formData.automotive_category
-                  .sub_categories" :key="index" class="content-group"
+                  .sub_categories" :key="index" class="content-group category button-view"
                      :class="{ active: item.id == formData.automotive_sub_category_id, }"
                      @click="selectSubCategory(item)">
                   {{ item.name }}
@@ -1151,6 +1151,15 @@ export default {
       }
     },
     selectSubCategory(item) {
+      // if (
+      //   this.formData &&
+      //   item &&
+      //   this.formData.automotive_sub_category_id == item.id
+      // ) {
+      //   this.formData.automotive_sub_category_id = null;
+      // } else {
+      //   this.formData.automotive_sub_category_id = item.id;
+      // }
       this.formData.automotive_sub_category_id = item.id;
     },
     addFeature() {
@@ -1220,9 +1229,11 @@ export default {
 
       this.formData.images = uploadedImages;
       this.loading = false;
-
+      console.log("image", this.formData)
       // logic to upload images end
-
+      if (this.formData.images.length === 0) {
+          return this.$toast.error("You have to choose at least 1 image.");
+        }
       const response = await this.axios.post(uri, this.formData);
       this.loading = false;
       if (response.data.status == "Success") {
@@ -1394,7 +1405,6 @@ export default {
     }
   }
 }
-
 .category-container {
   display: flex;
   /* flex-direction: column; */
@@ -1589,7 +1599,7 @@ export default {
   gap: 1em;
   border: solid 1px #64748b;
   border-radius: .5em;
-  margin-right: .5em;
+  margin-right: .5em !important;
   margin-bottom: .5em;
   padding: .5em .75em;
   color: #8598B2 !important;

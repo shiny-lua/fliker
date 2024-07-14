@@ -65,24 +65,24 @@
               </span>
             </div>
             <div class="business-info align-items-center">
-              <div class="d-flex align-items-center">
+              <div class="business-hours">
                 <label class="mb-0">
                   <fp-icon name="clock" class="fp-fs-20" />
                   Business Hours
                 </label>
-                <p class="mb-0 automotive-profile-detail">
-                  {{ profile.business_hours }}
+                <p class="automotive-profile-detail">
+                  {{ formatted_hours }}
                 </p>
               </div>
-              <div>
-                <label class="">
+              <div class="location">
+                <label class="mb-0">
                   <fp-icon name="location" class="fp-fs-20" />
                   Location
                 </label>
-                <!-- <div class="" v-if="profile.location.full_address">
+                <div class="" v-if="profile.location.address">
                   <p class="cursor-pointer mb-0 automotive-profile-detail" @click="openGoogleMap()">{{
-                    profile.location.full_address }}</p>
-                </div> -->
+                    profile.location.address }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -90,7 +90,8 @@
             <div v-if="isMyProfile" class="btn-group">
               <div>
                 <div class="dropup dropdown-automotive-profile mb-2 w-100">
-                  <a href="javascript:;" class="btn btn-automotive-profile w-100 fp-text-color fp-btn-outline dropdown-toggle"
+                  <a href="javascript:;"
+                     class="btn btn-automotive-profile w-100 fp-text-color fp-btn-outline dropdown-toggle"
                      data-toggle="dropdown">
                     <fp-icon name="user" class="fp-fs-18" />
                     <span class="d-none d-md-inline">Seller Profile</span>
@@ -119,7 +120,8 @@
                 </div>
                 <div class="w-100">
                   <div v-if="profile.subscribed" class="dropup dropdown-automotive-profile mb-2">
-                    <a href="javascript:;" class="btn btn-automotive-profile fp-text-color w-100 fp-btn-outline dropdown-toggle"
+                    <a href="javascript:;"
+                       class="btn btn-automotive-profile fp-text-color w-100 fp-btn-outline dropdown-toggle"
                        data-toggle="dropdown">
                       <fp-icon name="star-circle" class="fp-fs-18" />
                       Subscription
@@ -329,6 +331,9 @@ export default {
         ? this.$moment(this.profile.subscription.ends_at).format("MM/DD/YY")
         : "";
     },
+    formatted_hours() {
+      return this.profile.business_hours.replace(/\n/g, '\n');
+    },
     isMyProfile() {
       return this.auth_user && this.auth_user.id === this.profile.user_id;
     },
@@ -346,6 +351,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("setEnableChat", true);
+    console.log("this.profile.location", this.profile.location)
   },
   beforeDestroy() {
     this.$store.dispatch("setEnableChat", false);
@@ -688,19 +694,11 @@ export default {
     .dropdown-automotive-profile {
       display: inline-block;
       width: 100%;
+
       .dropdown-toggle {
         &::after {
           display: none;
         }
-      }
-    }
-
-    p.business_hours {
-      white-space: pre-line;
-      padding-left: 16px;
-
-      svg {
-        margin-left: -18px;
       }
     }
 
@@ -736,7 +734,6 @@ export default {
     }
 
     .automotive-profile-detail {
-      white-space: pre-wrap;
 
       @media (max-width: 600px) {
         padding-left: 24px;
@@ -749,6 +746,16 @@ export default {
         padding: 12px 8px;
       }
     }
+  }
+}
+
+.business-hours {
+  display: flex;
+  flex-direction: column;
+
+  p {
+    white-space: pre-line;
+    transform: translateY(-7px);
   }
 }
 
@@ -808,6 +815,13 @@ export default {
   }
 }
 
+.location {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1em;
+}
+
 .contact-info-container {
   .contact-info-item {
     border-style: solid;
@@ -821,6 +835,7 @@ export default {
     }
   }
 }
+
 .automotive-profile-card-content {
   @media (max-width: 991px) {
     padding-top: 1em;

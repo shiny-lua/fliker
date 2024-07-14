@@ -219,6 +219,7 @@ export default {
       this.infiniteId++;
     },
     selectSubCategory(item) {
+      console.log("item", item)
       this.filter.automotive_category_id = "";
       // this.filter.automotive_sub_category_id = item ? item.id : "";
       if (!this.filter.automotive_sub_category_id) {
