@@ -17,9 +17,9 @@
               active: !filter.automotive_category_id,
             }" @click="displayAll()">All</span>
           </div>
-          <div v-for="(item, index) in automotive_seller.categories" :key="index">
+          <div v-for="(item, index) in automotive_seller.categories" :key="index" style="display: flex; align-items: center;">
             <div class="fp-filter-item" @click="selectCategory(item)" :class="{
-              'fp-filter-item mr-2 mb-2': true,
+              'fp-filter-item': true,
               active: filter.automotive_category_id === item.id,
             }">
               {{ item.name }}
@@ -255,7 +255,8 @@ export default {
 .related-posts {
   .profile-categories {
     display: flex;
-    gap: 1em;
+    gap: .5em;
+    padding: .7em;
   }
 }
 

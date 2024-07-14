@@ -28,9 +28,27 @@
         </div>
       </div>
 
+      <div v-if="profile.image.length === 0" class="carousel">
+          <div class="indicator">
+            <img v-for="(image, index) in ['../../assets/images/fp-default-bg.webp']" src="../../assets/images/fp-default-bg.webp" :key="index" @click="changeCarousel(index)"
+                 :class="{ active: indexOfImage == index }" alt="" />
+          </div>
+          <div class="slider">
+            <VueSlickCarousel ref="carousel" v-bind="slickSettings" @afterChange="afterChange">
+              <div class="text-center" v-for="(img, index) in ['../../assets/images/fp-default-bg.webp']" :key="index" @click="openGallery(index)">
+                <img class="slider-img img-slide mx-auto" src="../../assets/images/fp-default-bg.webp" alt="" />
+              </div>
+            </VueSlickCarousel>
+          </div>
+        </div>
+
       <div class="md-slide">
         <div v-if="profile.image.length" class="m-indicator mt-2">
           <img v-for="(image, index) in profile.image" :src="image.src_url" :key="index" @click="changeCarousel(index)"
+               :class="{ active: indexOfImage == index }" alt="" />
+        </div>
+        <div v-if="profile.image.length === 0" class="m-indicator mt-2">
+          <img v-for="(image, index) in ['../../assets/images/fp-default-bg.webp']" src="../../assets/images/fp-default-bg.webp" :key="index" @click="changeCarousel(index)"
                :class="{ active: indexOfImage == index }" alt="" />
         </div>
         <div v-if="post" class="fp-card user-detail-container p-2 mt-3">

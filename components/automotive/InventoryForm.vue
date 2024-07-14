@@ -1229,11 +1229,7 @@ export default {
 
       this.formData.images = uploadedImages;
       this.loading = false;
-      console.log("image", this.formData)
-      // logic to upload images end
-      if (this.formData.images.length === 0) {
-          return this.$toast.error("You have to choose at least 1 image.");
-        }
+
       const response = await this.axios.post(uri, this.formData);
       this.loading = false;
       if (response.data.status == "Success") {

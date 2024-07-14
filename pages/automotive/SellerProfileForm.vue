@@ -467,10 +467,6 @@ export default {
           console.log(this.progress)
           // this.$refs.progresStatus.style.width = this.progress + "%";
         }
-        console.log(this.form.business_hours)
-        if (this.coverImages.length === 0) {
-          return this.$toast.error("You have to choose at least 1 image.");
-        }
         this.form.image = uploadedImages;
         this.loading = false;
         const response = await this.form.post(
