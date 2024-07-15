@@ -9,7 +9,7 @@
       <div v-else>
         <profile-card :profile="automotive_seller" />
       </div>
-      <div v-if="automotive_seller" class="related-posts mt-3">
+      <div v-if="automotive_seller" class="related-posts mt-1">
         <div v-if="automotive_seller.categories.length" class="profile-categories mb-2">
           <div>
             <span :class="{
