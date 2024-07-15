@@ -15,26 +15,12 @@
             </VueSlickCarousel>
           </div>
         </div>
-        <div v-if="lightBoxImages.length === 0" class="carousel">
-          <div class="indicator">
-            <img v-for="(image, index) in ['../../assets/images/fp-default-bg.webp']" src="../../assets/images/fp-default-bg.webp" :key="index" @click="changeCarousel(index)"
-                 :class="{ active: indexOfImage == index }" alt="" />
-          </div>
-          <div class="slider">
-            <VueSlickCarousel ref="carousel" v-bind="slickSettings" @afterChange="afterChange">
-              <div class="text-center" v-for="(img, index) in ['../../assets/images/fp-default-bg.webp']" :key="index" @click="openGallery(index)">
-                <img class="slider-img img-slide mx-auto" src="../../assets/images/fp-default-bg.webp" alt="" />
-              </div>
-            </VueSlickCarousel>
-          </div>
+        <div v-if="lightBoxImages.length === 0" class="d-flex justify-content-center" style="width: 100%;">
+          <img class="" src="../../assets/images/default.svg" alt="" />
         </div>
         <div class="md-slide">
           <div v-if="lightBoxImages.length" class="m-indicator mt-2">
             <img v-for="(image, index) in lightBoxImages" :src="image.src" :key="index" @click="changeCarousel(index)"
-                 :class="{ active: indexOfImage == index }" alt="" />
-          </div>
-          <div v-if="lightBoxImages.length === 0" class="m-indicator mt-2">
-            <img v-for="(image, index) in ['../../assets/images/fp-default-bg.webp']" src="../../assets/images/fp-default-bg.webp" :key="index" @click="changeCarousel(index)"
                  :class="{ active: indexOfImage == index }" alt="" />
           </div>
           <div class="fp-card user-detail-container fp-border-color-1 p-2 mt-3">
@@ -153,7 +139,7 @@ export default {
       slickSettings: {
         arrows: false,
         slidesToScroll: 1,
-        
+
         pauseOnHover: true,
       },
       disclaimer_text: "",
@@ -257,6 +243,7 @@ export default {
 .carousel {
   display: flex;
   height: 300px;
+
   .indicator {
     max-height: 400px;
     overflow-y: auto;
@@ -313,28 +300,30 @@ export default {
 
 .md-slide {
   display: none;
+
   @media (max-width: 600px) {
     display: block;
   }
 }
+
 .m-indicator {
-    display: flex;
-    overflow-x: auto;
+  display: flex;
+  overflow-x: auto;
 
-    img {
-      width: 70px;
-      height: 70px;
-      cursor: pointer;
-      margin-bottom: 5px;
-      margin-right: 5px;
-      border-radius: 4px;
-      opacity: 0.75;
+  img {
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    border-radius: 4px;
+    opacity: 0.75;
 
-      &.active {
-        opacity: 1;
-      }
+    &.active {
+      opacity: 1;
     }
   }
+}
 
 .post-description {
   white-space: pre-line;
@@ -413,5 +402,4 @@ export default {
   .post-description {
     color: #222;
   }
-}
-</style>
+}</style>
