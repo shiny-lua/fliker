@@ -2,30 +2,34 @@
   <div class="row justify-content-center pt-3 pt-md-4">
     <div class="col-lg-12">
       <div v-if="automotive_seller == null"></div>
-      <div v-else-if="automotive_seller.status === 'deleted'" class="center-align">
+      <div v-else-if="automotive_seller.status === 'deleted' || automotive_seller.status === 'archival'" class="center-align">
         <img src="~assets/images/deleted.png" width="500" />
-        <h6 class="mt-3">Automotive seller profile has been deleted.</h6>
+        <h6 class="mt-3">Your Automotive seller profile has been deleted recently.</h6>
+        <div class="btn-group">
+          <button @click="changeStatus('active')">Reactivate</button>
+          <button @click="changeStatus('archival')">Create New</button>
+        </div>
       </div>
       <div v-else>
         <profile-card :profile="automotive_seller" />
-      </div>
-      <div v-if="automotive_seller" class="related-posts mt-1">
-        <div v-if="automotive_seller.categories.length" class="profile-categories mb-2">
-          <div>
-            <span :class="{
-              'fp-filter-item': true,
-              active: !filter.automotive_category_id,
-            }" @click="displayAll()">All</span>
-          </div>
-          <div v-for="(item, index) in automotive_seller.categories" :key="index" style="display: flex; align-items: center;">
-            <div class="fp-filter-item" @click="selectCategory(item)" :class="{
-              'fp-filter-item': true,
-              active: filter.automotive_category_id === item.id,
-            }">
-              {{ item.name }}
+        <div v-if="automotive_seller" class="related-posts mt-1">
+          <div v-if="automotive_seller.categories.length" class="profile-categories mb-2">
+            <div>
+              <span :class="{
+                'fp-filter-item': true,
+                active: !filter.automotive_category_id,
+              }" @click="displayAll()">All</span>
             </div>
-          </div>
-          <!-- <div
+            <div v-for="(item, index) in automotive_seller.categories" :key="index"
+                 style="display: flex; align-items: center;">
+              <div class="fp-filter-item" @click="selectCategory(item)" :class="{
+                'fp-filter-item': true,
+                active: filter.automotive_category_id === item.id,
+              }">
+                {{ item.name }}
+              </div>
+            </div>
+            <!-- <div
             class="category-item fp-borer-color-1 fp-text-color-main mb-2 mb-md-0"
             :class="
               { active: !filter.automotive_category_id } &&
@@ -36,8 +40,8 @@
             All Categories
           </div> -->
 
-          <!--  New category slider design start -->
-          <!-- 
+            <!--  New category slider design start -->
+            <!-- 
           <VueSlickCarousel v-bind="sliderSettings">
             <div>
               <span :class="{
@@ -52,35 +56,43 @@
               </div>
             </div>
           </VueSlickCarousel> -->
-        </div>
-        <!-- Sub category chips start -->
-        <div class="" v-if="selectedCategory">
-          <div>
-            <span class="information-item" v-for="(item, index) in selectedCategory.sub_categories" :key="index" :class="{
-              'fp-filter-item mr-2 mb-2': true,
-              active: filter.automotive_sub_category_id.includes(item.id),
-            }" @click="selectSubCategory(item)">
-              {{ item.name }}
-            </span>
           </div>
-        </div>
-        <!-- sub category chips end -->
-        <div class="posts mb-5" :class="automotive_seller.categories.length && 'has-categories'">
-          <div class="row mx-n1 mx-md-n2">
-            <div v-for="(item, index) in posts" :key="index" class="col-md-3" :class="{
-              'col-6 mb-2 mb-md-3 px-1 px-md-2': true,
-              // 'col-lg-4': automotive_seller.categories.length,
-              // 'col-lg-3': automotive_seller.categories.length == 0,
-            }">
-              <Post :post="item" :is_admin="auth_user && item.user_id === auth_user.id" />
+          <!-- Sub category chips start -->
+          <div class="" v-if="selectedCategory">
+            <div>
+              <span class="information-item" :class="{
+                'fp-filter-item mr-2 mb-2': true,
+                active: !filter.automotive_sub_category_id,
+              }" @click="selectAllSubCategory()">
+                All
+              </span>
+              <span class="information-item" v-for="(item, index) in selectedCategory.sub_categories" :key="index" :class="{
+                'fp-filter-item mr-2 mb-2': true,
+                active: filter.automotive_sub_category_id.includes(item.id),
+              }" @click="selectSubCategory(item)">
+                {{ item.name }}
+              </span>
             </div>
           </div>
-          <infinite-loading :distance="1" :identifier="infiniteId" @infinite="searchPosts">
-            <div slot="no-more"></div>
-            <div slot="no-results">No inventory found!</div>
-          </infinite-loading>
+          <!-- sub category chips end -->
+          <div class="posts mb-5" :class="automotive_seller.categories.length && 'has-categories'">
+            <div class="row mx-n1 mx-md-n2">
+              <div v-for="(item, index) in posts" :key="index" class="col-md-3" :class="{
+                'col-6 mb-2 mb-md-3 px-1 px-md-2': true,
+                // 'col-lg-4': automotive_seller.categories.length,
+                // 'col-lg-3': automotive_seller.categories.length == 0,
+              }">
+                <Post :post="item" :is_admin="auth_user && item.user_id === auth_user.id" />
+              </div>
+            </div>
+            <infinite-loading :distance="1" :identifier="infiniteId" @infinite="searchPosts">
+              <div slot="no-more"></div>
+              <div slot="no-results">No inventory found!</div>
+            </infinite-loading>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -90,6 +102,7 @@ import Post from "~/components/ads/Post.vue";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import VueSlickCarousel from "vue-slick-carousel";
+import Swal from "sweetalert2";
 
 export default {
   name: "SellerProfile",
@@ -111,6 +124,7 @@ export default {
         page: 1,
       },
       selectedCategory: null,
+      selectedAllSubCategories: [],
       sliderSettings: {
         slidesToScroll: 1,
         variableWidth: true,
@@ -211,6 +225,7 @@ export default {
       });
     },
     selectCategory(item) {
+      console.log(item)
       this.selectedCategory = item;
       this.filter.automotive_category_id = item ? item.id : "";
       this.filter.automotive_sub_category_id = "";
@@ -218,10 +233,13 @@ export default {
       this.filter.page = 1;
       this.infiniteId++;
     },
+    selectAllSubCategory() {
+      this.filter.automotive_sub_category_id = "";
+      this.posts = [];
+      this.filter.page = 1;
+      this.infiniteId++;
+    },
     selectSubCategory(item) {
-      console.log("item", item)
-      this.filter.automotive_category_id = "";
-      // this.filter.automotive_sub_category_id = item ? item.id : "";
       if (!this.filter.automotive_sub_category_id) {
         this.filter.automotive_sub_category_id = [];
       }
@@ -243,6 +261,62 @@ export default {
       this.posts = [];
       this.filter.page = 1;
       this.infiniteId++;
+      console.log("this.post", this.posts)
+    },
+    changeStatus(status) {
+      console.log(status)
+      let title = "";
+      let text = "";
+      if (status == "archival") {
+        title =
+          "Are you sure, you want to create new automotive seller profile?";
+        text =
+          "* Your new automotive seller profile will be created. \n * You can create items.";
+      }
+      if (status == "active") {
+        title =
+          "Are you sure, you want to reactivate your automotive seller profile?";
+        text =
+          "* Your automotive seller profile will be active. \n * All items in your inventory will go online. \n * You can add/remove items.";
+      }
+      Swal.fire({
+        title: title,
+        text: text,
+        icon: "warning",
+        showCancelButton: true,
+        customClass: {
+          title: "automotive-swal-title",
+          content: "automotive-swal-content",
+        },
+      }).then((willDelete) => {
+        if (willDelete.isConfirmed) {
+          let params = {
+            id: this.automotive_seller.id,
+            status: status,
+          };
+
+          this.axios
+            .post(`${process.env.adsApiUrl}/automotive/change_status`, params)
+            .then((response) => {
+              if (response.data.status == "Success") {
+                let successMessage = "Successfully done";
+
+                if (status == "active") {
+                  successMessage = "Your automotive seller profile is live!";
+                } else if (status == "archival") {
+                  return this.$router.push({ name: "automotive.seller_profile_form" });
+                }
+                this.$store.dispatch("fetchNotifications");
+                this.$toast.success(successMessage);
+                this.$emit("update");
+                this.load();
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      });
     },
   },
 };
@@ -322,6 +396,29 @@ export default {
   .btn-remove {
     margin-left: 5px;
     cursor: pointer;
+  }
+}
+
+.btn-group {
+  display: flex;
+  gap: 1em;
+  margin-top: 20px;
+
+  button {
+    padding: 8px 25px;
+    border: none;
+    outline: none;
+    border-radius: .4em;
+    color: white;
+    font-size: 16px;
+  }
+
+  &>:first-child {
+    background-color: #22b14c;
+  }
+
+  &>:last-child {
+    background-color: #00a2e8;
   }
 }
 </style>

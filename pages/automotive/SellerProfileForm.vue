@@ -261,7 +261,7 @@ export default {
           state: "",
           zipcode: "",
           county: "",
-          address: "",
+          address: "USA",
           full_address: "",
           latitude: "",
           longitude: "",

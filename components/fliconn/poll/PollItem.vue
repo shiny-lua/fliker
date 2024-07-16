@@ -25,6 +25,7 @@ export default {
     },
     methods: {
         async vote(item) {
+            console.log("item" ,item)
             try {
                 const payload = {
                     poll_id: this.poll.id,

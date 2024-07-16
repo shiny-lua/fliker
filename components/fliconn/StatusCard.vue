@@ -199,10 +199,6 @@
         justify-content: center;
         align-items: center;
         margin-bottom: 30px;
-
-        img {
-            border-radius: 20px;
-        }
     }
     .profile-status-card {
         .status-item::v-deep {

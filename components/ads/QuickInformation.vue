@@ -756,8 +756,9 @@ export default {
             font-size: 16px;
         }
         .service-item-container {
-            padding-top: 8px;
-            border-radius: 8px;
+            padding-top: 12px;
+            padding-inline: 8px;
+            border-radius: 7px;
             border-width: 1px;
             border-style: solid;
             &.no-group {

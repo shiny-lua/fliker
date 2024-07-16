@@ -69,6 +69,7 @@ export default {
     },
     methods: {
         paymentSuccess() {
+            console.log("post",this.$route)
             if (this.$route.params.is_posting === true) {
                 this.$router.push({name: 'automotive.post'})
             } else {

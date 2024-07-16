@@ -582,8 +582,8 @@
         </div>
       </tab-content>
       <tab-content title="Gallery">
-        <div class="row justify-content-center">
-          <div class="col-lg-9">
+        <div class="gallery-content">
+          <div class="" style="flex: 1;">
             <fp-uploader v-model="formData.images" :url="uploadImageUrl" :remove-url="removeImageUrl"
                          @removed="imageRemoved" />
             <div class="text-center mt-3" v-if="progress && formData.images">
@@ -1739,7 +1739,11 @@ export default {
     }
   }
 }
-
+.gallery-content {
+  display: flex;
+  justify-content: center;
+  padding-inline: 30px;
+}
 .category-container {
   display: flex;
 

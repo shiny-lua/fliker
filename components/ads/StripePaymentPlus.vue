@@ -209,6 +209,7 @@ export default {
             try {
                 const response = await this.axios.post(`${process.env.adsApiUrl}/stripe/process_post_payment`, params)
                 if (response.data.status == 'Success') {
+                    console.log("response.data", response.data)
                     this.$emit('success')
                 }
             } catch (error) {
@@ -222,7 +223,6 @@ export default {
                 amount: this.amount,
                 card_name: this.cardName,
             }
-
             try {
                 const response = await this.axios.post(`${process.env.adsApiUrl}/stripe/subscribe_automotive`, params)
                 if (response.data.status == 'Success') {

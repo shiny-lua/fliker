@@ -202,6 +202,7 @@ export default {
       }
     },
     goToPage(routerName, params = {}, query = {}) {
+      console.log(this.auth_user)
       this.$refs.postTypeModal.close();
       this.$modal.hide("mobile_menu_modal");
       if (

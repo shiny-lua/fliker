@@ -355,7 +355,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("setEnableChat", true);
-    console.log("this.profile.location", this.profile.location)
+    console.log("this.profile", this.profile)
   },
   beforeDestroy() {
     this.$store.dispatch("setEnableChat", false);
@@ -410,14 +410,15 @@ export default {
         this.login(this.$route.path);
       }
     },
-    changeStatus(status) {
+    async changeStatus(status) {
       let title = "";
       let text = "";
+      console.log("status", status)
       if (status == "deleted") {
         title =
           "Are you sure, you want to delete your automotive seller profile?";
         text =
-          "* Your automotive seller profile will be removed permanently. \n * All items in your inventory will be removed.";
+          "* Your car seller profile will be permanently removed 30 days after deletion. \n * All items in your inventory will be removed.";
       }
       if (status == "inactive") {
         title =
@@ -426,12 +427,6 @@ export default {
           "* Your automotive seller profile will be inactive. \n * All items in your inventory will go offline. \n * You can not add/remove items.";
       }
       if (status == "active") {
-        if (!this.profile.subscribed) {
-          this.$router.push({ name: "automotive.subscribe" });
-        } else if (!this.auth_user.available_add_inventory) {
-          this.$modal.show("availableInventoryModal");
-          return false;
-        }
         title =
           "Are you sure, you want to activate your automotive seller profile?";
         text =
@@ -462,6 +457,12 @@ export default {
                 } else {
                   if (status == "active") {
                     successMessage = "Your automotive seller profile is live!";
+                    if (!this.profile.subscribed) {
+                      this.$router.push({ name: "automotive.subscribe" });
+                    } else if (!this.auth_user.available_add_inventory) {
+                      this.$modal.show("availableInventoryModal");
+                    }
+                    return
                   } else if (status == "inactive") {
                     successMessage =
                       "Your automotive seller profile is offline!";
@@ -470,6 +471,7 @@ export default {
                 this.$store.dispatch("fetchNotifications");
                 this.$toast.success(successMessage);
                 this.$emit("update");
+                window.location.reload();
               }
             })
             .catch(function (error) {
