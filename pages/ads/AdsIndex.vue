@@ -513,13 +513,17 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 1em;
+  gap: .7em;
   width: 100%;
 
   .card {
     width: 24%;
     border: none;
     padding-inline: 0 !important;
+
+    @media (max-width: 1037px) {
+      width: 23.5%;
+    }
 
     @media (max-width: 991px) {
       width: 31%;
