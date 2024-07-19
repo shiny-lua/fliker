@@ -462,6 +462,7 @@ export default {
                     } else if (!this.auth_user.available_add_inventory) {
                       this.$modal.show("availableInventoryModal");
                     }
+                    window.location.reload();
                     return
                   } else if (status == "inactive") {
                     successMessage =
