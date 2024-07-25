@@ -13,6 +13,7 @@
 <script>
 import PostForm from "~/components/topic/PostForm.vue";
 export default {
+    middleware: 'auth',
     components: {
         PostForm
     },

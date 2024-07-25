@@ -10,8 +10,9 @@
                     </a>
                     <a href="javascript:;" class="fp-filter-item mr-2 mb-2" v-if="filter.topics.length > 0"
                        v-for="(item, index) in filter.topics" :key="index">
+                            {{ getTopicName(item) }}
                         <!-- {{ topics.find((i) => i.id === item).name }} -->
-                        {{ getTopicName(item) }}
+                        
                         <fp-icon name="times" class="fp-fs-24 ml-2 fp-text-active"
                                  @click="filter.topics.splice(index, 1)" />
                     </a>
