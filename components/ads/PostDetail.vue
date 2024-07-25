@@ -16,7 +16,6 @@
           </div>
         </div>
         <div v-if="lightBoxImages.length === 0" class="d-flex justify-content-center" style="width: 100%;">
-          <img v-if="currentPath !== '/automotive/post' && !currentPath.includes('/ads/detail')" class="" src="../../assets/images/default.svg" alt="" />
         </div>
         <div class="md-slide">
           <div v-if="lightBoxImages.length" class="m-indicator mt-2">
