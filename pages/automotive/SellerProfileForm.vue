@@ -169,7 +169,6 @@
             <div class="form-group">
               <automotives-uploader v-model="form.image"></automotives-uploader>
             </div>
-
             <!-- <div class="form-group">
               <label for="" class="mb-1">Add Cover Image</label>
               <div>
@@ -330,7 +329,6 @@ export default {
           if (response.data.status == "Success") {
             let result = response.data.data;
             if (result) {
-              // console.log(response.data.data)
               this.loadForm(result);
               this.profile = result;
               this.is_update = true;
@@ -357,6 +355,8 @@ export default {
       if (result.image) {
         this.imageData = result.image.src_url;
         this.form.image = result.image;
+        console.log(result.image)
+        this.$store.dispatch("ads/setAutomotiveSellerImages", result.image);
       }
     },
     updateAddress(place) {
@@ -499,6 +499,7 @@ export default {
       }
     },
     async uploadImage(image) {
+      if(!image.file) return
       try {
         const formData = new FormData();
         formData.append("image", image.file);

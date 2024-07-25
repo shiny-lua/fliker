@@ -33,12 +33,12 @@
 <script>
 import Swal from "sweetalert2";
 export default {
-  name: "AUtomotivesUploader",
+  name: "AutomotivesUploader",
   props: {
     value: {
       type: Array,
       required: true,
-      default: () => [],
+      // default: () => [],
     },
     max_images: {
       type: Number,
@@ -70,6 +70,7 @@ export default {
             src_url: e.target.result,
             file: file,
           };
+          console.log("fileData", fileData)
           this.$store.dispatch("ads/setAutomotiveSellerImages", [
             ...this.$store.getters["ads/automotiveSellerImages"],
             fileData,
@@ -102,6 +103,7 @@ export default {
     },
   },
   mounted() {
+    console.log("image", this.images)
     console.log(
       "Component loaded. Initial automotiveSellerImages:",
       this.automotiveSellerImages
