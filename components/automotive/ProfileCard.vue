@@ -13,7 +13,6 @@
           >
         </div>
       </div> -->
-
       <div v-if="profile.image.length" class="carousel">
         <div class="indicator">
           <img v-for="(image, index) in profile.image" :src="image.src_url" :key="index" @click="changeCarousel(index)"
@@ -29,7 +28,7 @@
       </div>
 
       <div v-if="profile.image.length === 0" class="d-flex justify-content-center" style="width: 100%;">
-        <img class="" src="../../assets/images/default.svg" alt="" />
+        <img v-if="currentPath === '/automotive/seller-profile'" class="" src="../../assets/images/default.svg" alt="" />
       </div>
 
       <div class="md-slide">
@@ -334,6 +333,9 @@ export default {
       return this.profile.subscribed
         ? this.$moment(this.profile.subscription.ends_at).format("MM/DD/YY")
         : "";
+    },
+    currentPath () {
+      return this.$route.path;
     },
     formatted_hours() {
       return this.profile.business_hours.replace(/\n/g, '\n');
