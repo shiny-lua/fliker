@@ -251,7 +251,7 @@ export default {
             }
         },
         getTopicName(topicId) {
-            const topic = this.posts.find(t => t.id === topicId);
+            const topic = this.tags.find(t => t.id === topicId);
             return topic ? topic.name : "";
         },
         debounceSearchTags() {
