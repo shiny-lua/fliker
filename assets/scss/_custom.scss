@@ -440,6 +440,7 @@ body {
 
 .chat-list-container {
     height: 450px;
+    width: 230px;
     background-color: #fff;
     border-radius: 8px 8px 0 0;
     .page-header {
@@ -493,10 +494,10 @@ body {
         }
         .profile {
             position: relative;
-            margin-right: 1rem;
+            margin-right: 0.5rem;
             img {
-                width: 2.5rem;
-                height: 2.5rem;
+                width: 2.0rem;
+                height: 2.0rem;
                 border-radius: 100%;
                 object-fit: cover;
             }
@@ -508,11 +509,13 @@ body {
         }
         .info {
             margin-right: auto;
-            max-width: calc(100% - 70px);
+            max-width: calc(100% - 40px);
             p {
                 display: flex;
                 align-items: center;
                 margin-bottom: 0;
+                justify-content:space-between;
+                font-size: 0.75rem;
                 &.last-message {
                     display: block;
                     white-space: nowrap;
@@ -523,7 +526,7 @@ body {
             }
         }
         .last-time {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             margin-bottom: 0;
             color: #64748b;
             margin-left: 8px;
@@ -2189,12 +2192,16 @@ hr {
     color: #fff;
     background-color: #ff22a1;
 }
+.fp-btn-disabled {
+    color: #FFF;
+    background-color: #c2c1c1;
+}
 
 .fp-btn-gradient {
     border: none;
     background: linear-gradient(93.93deg, #ff22a1 0%, #ffa3d8 100%);
     color: #fff;
-    min-width: 95px;
+    min-width: 50px;
     &.btn {
         font-size: 16px;
         padding-top: 7px;

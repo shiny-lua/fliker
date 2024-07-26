@@ -26,7 +26,7 @@
                     <fp-icon name="gif" class="fp-fs-16" />
                 </label>
             </div>
-            <button type="submit" class="btn fp-btn-gradient ml-2" :disabled="chat.is_blocked">
+            <button type="submit" class="btn fp-btn-gradient ml-2" :disabled="chat.is_blocked || form.content.length <=0">
                 <fp-icon name="share" class="fp-fs-20" />
             </button>
         </form>
@@ -38,7 +38,9 @@ export default {
     name: 'UserMessageForm',
     props: {
         chat: { type: Object, reuired: true },
+        
     },
+    
     data() {
         return {
             form: new Form({
