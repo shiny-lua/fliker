@@ -43,6 +43,7 @@ export default {
             input {
                 background-color: #4F6AA3;
                 border-color: #4F6AA3;
+                color: #FFF;
                 height: 40px;
                 &::placeholder {
                     color: #FFF;
