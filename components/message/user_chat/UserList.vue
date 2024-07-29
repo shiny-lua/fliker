@@ -18,7 +18,7 @@
                         <span class="online-offline" :class="{online: item.is_online}"></span>
                     </div>
                     <div class="info flex-grow-1">
-                        <p class="name">{{item.name}} <span class="last-time">{{ item.is_online ? 'Online' : item.diff_time }}</span> </p>
+                        <p class="name">{{item.name}} <span class="last-time">{{ item.is_online ? 'Online' : (item.diff_time).split(",")[0] }}</span> </p>
                         <p :class="{
                                 'last-message': true,
                                 'text-danger': !item.last_message_read

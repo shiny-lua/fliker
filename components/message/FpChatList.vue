@@ -40,7 +40,7 @@
                         :class="chatType === 'group' && 'active'"
                         @click="chatType = 'group'"
                     >
-                        Group Chat
+                        Group
                         <span v-if="group_unreads" class="badge badge-danger badge-pill">{{ group_unreads }}</span>
                     </a>
                 </li>
