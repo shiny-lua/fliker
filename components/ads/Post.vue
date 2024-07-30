@@ -338,7 +338,7 @@ export default {
 
     .post-image {
       max-width: 100%;
-      height: auto;
+      //height: auto;
       width: 100%;
     }
     .no-image {
