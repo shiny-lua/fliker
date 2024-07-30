@@ -248,7 +248,7 @@ export default {
     flex-direction: row;
     justify-content: end;
 
-    @media (max-width: 600px) {
+    @media (max-width: 767px) {
         display: none;
     }
 

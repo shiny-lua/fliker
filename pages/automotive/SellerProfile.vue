@@ -199,9 +199,10 @@ export default {
       }
     },
     searchPosts($state) {
-      if (!this.$route.params.id && this.auth_user) {
-        this.filter.user_id = this.auth_user.id;
+      if (!this.$route.params.id && this.automotive_seller.user_id) {
+        this.filter.user_id = this.automotive_seller.user_id;
       }
+      console.log("this.filter", this.filter)
       this.axios
         .post(`${process.env.adsApiUrl}/post/search`, this.filter)
         .then((response) => {
