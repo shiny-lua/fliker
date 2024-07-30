@@ -279,7 +279,7 @@ export default {
   },
   computed: {
     detail_words() {
-      return this.form.detail ? this.form.detail.replace(/\n/g, ' ').split(' ').filter((i) => i !== '').length : 0;
+      return this.form.detail ? this.form.detail.length : 0;
     },
     sellerTypes() {
       return [

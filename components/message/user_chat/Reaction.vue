@@ -60,6 +60,9 @@
         //     }
         // }
         .dropdown-menu {
+            position: absolute;
+            top: 0;
+            transform: translate3d(-143px, -275px, -10px) !important;
             width: 260px;
             padding: 8px 9px;
             border-radius: 8px;

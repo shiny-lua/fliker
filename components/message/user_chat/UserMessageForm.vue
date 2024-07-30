@@ -93,7 +93,7 @@ export default {
         },
         async selectEmoji(emoji) {
             console.log(emoji)
-            this.form.content += emoji;
+            this.form.content += emoji.alice;
         },
     }
 }
