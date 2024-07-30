@@ -59,12 +59,12 @@ export default {
   },
   methods: {
     handleFileInput(newFiles) {
+      // this.$store.dispatch("ads/setAutomotiveSellerImages", []);
+      console.log("newFiles", newFiles)
       this.fileDuplicateError = "";
       const file = newFiles.file;
-      const isDuplicate = this.checkForDuplicates(file);
-
-      if (!isDuplicate) {
-        let reader = new FileReader();
+      // const isDuplicate = this.checkForDuplicates(file);
+      let reader = new FileReader();
         reader.onload = (e) => {
           const fileData = {
             src_url: e.target.result,
@@ -76,24 +76,30 @@ export default {
             fileData,
           ]);
         };
+        console.log("fileData", )
         reader.readAsDataURL(file);
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Some images are already uploaded!",
-          reverseButtons: true,
-          showCancelButton: true,
-        });
-      }
+      // if (!isDuplicate) {
+        
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Oops...",
+      //     text: "Some images are already uploaded!",
+      //     reverseButtons: true,
+      //     showCancelButton: true,
+      //   });
+      // }
     },
     checkForDuplicates(newFile) {
+
       const existingFiles = this.$store.getters["ads/automotiveSellerImages"];
       return existingFiles.some(
-        (existingFile) =>
+        (existingFile) => {
+          console.log("existingFile", existingFile)    
           existingFile.file.name === newFile.name &&
           existingFile.file.size === newFile.size
-      );
+      
+        });
     },
     removeFile(image, index) {
       const updatedImages = [...this.automotiveSellerImages];

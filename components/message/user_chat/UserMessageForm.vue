@@ -4,29 +4,23 @@
             <div class="progress-bar" :style="{ width: `${form.progress.percentage}%` }"></div>
         </div>
         <form class="chat-form px-0 px-md-2 py-2" @submit.prevent="formSubmit">
-            <textarea ref="msgInput"
-                 v-model="form.content"
-                 rows="1"
-                 class="form-control chat-input fp-bg-color-2 bg-revert-sm flex-grow-1"
-                 :placeholder="!chat.is_blocked ? 'Send message...' : `Chat has been disabled`"
-                 required
-                 maxlength="300"
-                 @keydown="sendMessage"
-                 :disabled="chat.is_blocked"
-            ></textarea>
+            <textarea ref="msgInput" v-model="form.content" rows="1"
+                      class="form-control chat-input fp-bg-color-2 bg-revert-sm flex-grow-1"
+                      :placeholder="!chat.is_blocked ? 'Send message...' : `Chat has been disabled`" required
+                      maxlength="300" @keydown="sendMessage" :disabled="chat.is_blocked"></textarea>
             <div v-if="!chat.is_blocked" class="message-actions">
                 <label class="mb-0">
                     <input type="file" multiple hidden accept="image/*,video/*,.pdf,.doc,.docx" @change="handleFiles" />
                     <fp-icon name="attachment" class="fp-fs-18 fp-text-active" />
                 </label>
                 <label class="mb-0 ml-1">
-                    <fp-icon name="emoji" class="fp-fs-20 fp-text-active" />
+                    <reaction-emoji @selected="selectEmoji" />
                 </label>
                 <label class="mx-1 mb-0">
                     <fp-icon name="gif" class="fp-fs-16" />
                 </label>
             </div>
-            <button type="submit" class="btn fp-btn-gradient ml-2" :disabled="chat.is_blocked || form.content.length <=0">
+            <button type="submit" class="btn fp-btn-gradient ml-2" :disabled="chat.is_blocked || form.content.length <= 0">
                 <fp-icon name="share" class="fp-fs-20" />
             </button>
         </form>
@@ -34,13 +28,15 @@
 </template>
 <script>
 import Form from "vform";
+import ReactionEmoji from "~/components/message/user_chat/Reaction.vue";
 export default {
     name: 'UserMessageForm',
     props: {
         chat: { type: Object, reuired: true },
-        
     },
-    
+    components: {
+        ReactionEmoji,
+    },
     data() {
         return {
             form: new Form({
@@ -94,47 +90,58 @@ export default {
             if (this.form.content.trim()) {
                 this.submit();
             }
-        }
+        },
+        async selectEmoji(emoji) {
+            console.log(emoji)
+            this.form.content += emoji;
+        },
     }
 }
 </script>
 <style lang="scss" scoped>
-    .user-message-form {
-        .chat-form {
-            display: flex;
-            align-items: center;
-            .chat-input {
-                resize: none;
+.user-message-form {
+    .chat-form {
+        display: flex;
+        align-items: center;
+
+        .chat-input {
+            resize: none;
+            border: none;
+            font-size: 14.4px;
+            font-weight: 400;
+            flex-grow: 1;
+            scrollbar-width: none;
+            border-radius: 8px;
+            padding: 8.3px 84px 8.3px 12px;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            &:focus {
                 border: none;
-                font-size: 14.4px;
+                outline: none;
+                box-shadow: none;
+            }
+
+            &::placeholder {
                 font-weight: 400;
-                flex-grow: 1;
-                scrollbar-width: none;
-                border-radius: 8px;
-                padding: 8.3px 84px 8.3px 12px;
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-                &:focus {
-                    border: none;
-                    outline: none;
-                    box-shadow: none;
-                }
-                &::placeholder {
-                    font-weight: 400;
-                }
             }
-        }
-        .progress {
-            height: 2px;
-            &-bar {
-                height: 2px;
-            }
-        }
-        .message-actions {
-            display: flex;
-            align-items: center;
-            margin-left: -80px;
         }
     }
+
+    .progress {
+        height: 2px;
+
+        &-bar {
+            height: 2px;
+        }
+    }
+
+    .message-actions {
+        display: flex;
+        align-items: center;
+        margin-left: -80px;
+    }
+}
 </style>

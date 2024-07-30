@@ -355,7 +355,6 @@ export default {
       if (result.image) {
         this.imageData = result.image.src_url;
         this.form.image = result.image;
-        console.log(result.image)
         this.$store.dispatch("ads/setAutomotiveSellerImages", result.image);
       }
     },

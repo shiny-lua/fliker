@@ -97,6 +97,7 @@ export default {
     .message-left-panel {
         &::v-deep {
             .chat-list-container {
+                width: 100%;
                 border: none;
                 height: 373px;
                 @media (max-width: 600px) {
