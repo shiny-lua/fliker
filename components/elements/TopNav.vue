@@ -178,13 +178,13 @@
                     <fp-icon name="tag" />
                     Manage Offers/Coupons
                   </router-link>
-                  <router-link
+                  <!-- <router-link
                     :to="{ name: 'account.messages' }"
                     class="dropdown-item"
                   >
                     <fp-icon name="comment-dots" />
                     Messages
-                  </router-link>
+                  </router-link> -->
                   <router-link
                     :to="{ name: 'settings.basic_information' }"
                     class="dropdown-item"

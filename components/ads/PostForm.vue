@@ -1011,12 +1011,12 @@
                     </div>
                     <div class="form-group">
                       <label for="" class="mb-2">Phone</label>
-                      <input type="text" class="form-control" v-model="formData.contact_phone_number" maxlength="50"
+                      <input type="text" class="form-control" v-model="formData.contact_phone_number" maxlength="13"
                              placeholder="Phone (Optional)" />
                     </div>
                     <div class="form-group">
                       <label for="" class="mb-2">Web Link</label>
-                      <input type="text" class="form-control" v-model="formData.contact_weblink" maxlength="300"
+                      <input type="text" class="form-control" v-model="formData.contact_weblink" maxlength="30"
                              placeholder="Any web links (Optional)" />
                     </div>
                     <div class="d-flex justify-content-between">
