@@ -434,8 +434,12 @@ export default {
           }
         });
       } else {
+        console.log("this.imageData", this.imageData)
+        console.log("this.form.image", this.form.image)
         this.imageData = null;
         this.form.image = null;
+        console.log("this.imageData", this.imageData)
+        console.log("this.form.image", this.form.image)
       }
     },
     async submit() {
@@ -454,15 +458,21 @@ export default {
       }
       try {
         this.loading = true;
+        console.log("this.coverImages", this.coverImages)
         const uploadedImages = [];
         const totalImages = this.coverImages.length;
         let count = 0;
         for (const image of this.coverImages) {
-          console.log("result", image)
-          const uploadedImage = await this.uploadImage(image);
-          uploadedImages.push(uploadedImage);
+          if ("created_at" in image) {
+            uploadedImages.push(image);
+          } else {
+            const uploadedImage = await this.uploadImage(image);
+            uploadedImages.push(uploadedImage);
+          }
           count++;
           this.progress = Math.floor((count / totalImages) * 100);
+          
+
           console.log(this.progress)
           // this.$refs.progresStatus.style.width = this.progress + "%";
         }

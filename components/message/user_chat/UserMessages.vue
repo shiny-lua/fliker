@@ -134,6 +134,9 @@ export default {
                 });
                 this.$emit('read');
             });
+
+            console.log("receiveMsgRef", receiveMsgRef)
+            console.log("readMsgRef", readMsgRef)
         },
         async getMessages($state) {
             try {

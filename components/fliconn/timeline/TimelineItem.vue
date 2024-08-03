@@ -738,6 +738,7 @@
                     alias: emoji.alias,
                 };
                 const response = await this.axios.post(`${process.env.timelineApiUrl}/fliconn/react`, params);
+                console.log("response", response)
                 this.post.my_emoji = emoji.alias;
                 if (this.is_reacted == false) {
                     this.is_reacted = true;

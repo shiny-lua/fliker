@@ -91,7 +91,6 @@ export default {
       // }
     },
     checkForDuplicates(newFile) {
-
       const existingFiles = this.$store.getters["ads/automotiveSellerImages"];
       return existingFiles.some(
         (existingFile) => {

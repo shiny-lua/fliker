@@ -18,9 +18,9 @@
     </div>
 </template>
 <script>
-    import emojis from "../../ui/emoji";
+    import emojis from "./emoji";
     export default {
-        name: 'Reaction',
+        name: 'ChatEmoji',
         data() {
             return {
                 emojis: emojis,

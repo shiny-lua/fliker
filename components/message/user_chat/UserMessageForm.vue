@@ -14,10 +14,10 @@
                     <fp-icon name="attachment" class="fp-fs-18 fp-text-active" />
                 </label>
                 <label class="mb-0 ml-1">
-                    <reaction-emoji @selected="selectEmoji" />
+                    <chat-emoji @selected="selectEmoji" />
                 </label>
                 <label class="mx-1 mb-0">
-                    <fp-icon name="gif" class="fp-fs-16" />
+                    <chat-gif @selected="selectEmoji" />
                 </label>
             </div>
             <button type="submit" class="btn fp-btn-gradient ml-2" :disabled="chat.is_blocked || form.content.length <= 0">
@@ -28,14 +28,16 @@
 </template>
 <script>
 import Form from "vform";
-import ReactionEmoji from "~/components/message/user_chat/Reaction.vue";
+import ChatEmoji from "~/components/ui/ChatEmoji.vue";
+import ChatGif from "~/components/ui/ChatGif.vue";
 export default {
     name: 'UserMessageForm',
     props: {
         chat: { type: Object, reuired: true },
     },
     components: {
-        ReactionEmoji,
+        ChatEmoji,
+        ChatGif
     },
     data() {
         return {
@@ -92,8 +94,28 @@ export default {
             }
         },
         async selectEmoji(emoji) {
-            console.log(emoji)
-            this.form.content += emoji.alice;
+            let params = {
+                id: this.post.id,
+                alias: emoji.alias,
+            };
+            const response = await this.axios.post(`${process.env.timelineApiUrl}/fliconn/react`, params);
+            console.log("response", response)
+            this.post.my_emoji = emoji.alias;
+            if (this.is_reacted == false) {
+                this.is_reacted = true;
+                this.reacts_count++;
+
+                if (this.post.enable_notification) {
+                    let notiFb = this.$fire.database.ref("notifications/" + this.post.user_id).push();
+                    notiFb.set({
+                        notifier_id: this.auth_user.id,
+                        type: "react_timelime_post",
+                    });
+                }
+            }
+            this.getReacts();
+            this.post.post_reacts = response.data.data.post_reacts;
+            this.post.total_reacts = response.data.data.total_reacts;
         },
     }
 }
@@ -141,7 +163,7 @@ export default {
     .message-actions {
         display: flex;
         align-items: center;
-        margin-left: -80px;
+        margin-left: -94px;
     }
 }
 </style>
