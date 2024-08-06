@@ -6,29 +6,8 @@
             <div class="message-info">
                 <div class="message-user">
                     <span class="user-name ml-2">{{ message.user.first_name }}</span>
-                    <div v-if="auth_user && message.user_id === auth_user.id" class="actions">
-                        <div class="dropdown dropdown-group">
-                            <a href="javascript:;" class="dropdown-toggle no-caret fp-text-color-main" data-toggle="dropdown"><fa icon="ellipsis-h" /></a>
-                            <div class="dropdown-menu dropdown-menu-sm">
-                                <a href="javascript:;" class="dropdown-item" @click.prevent="edit()">Edit</a>
-                                <a href="javascript:;" class="dropdown-item" @click.prevent="remove()">Delete</a>
-                            </div>
-                        </div>
                     </div>
-                    <div v-else-if="isPrimaryAdmin" class="actions mr-3">
-                        <div class="dropdown dropdown-group">
-                            <a href="javascript:;" class="dropdown-toggle no-caret fp-text-color-main" data-toggle="dropdown">
-                                <fa icon="ellipsis-h" />
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-sm">
-                                <a href="javascript:;" class="dropdown-item" @click.prevent="block()">Block</a>
-                                <a href="javascript:;" class="dropdown-item" @click.prevent="report()">Report</a>
-                                <a href="javascript:;" class="dropdown-item" @click.prevent="contact()">Contact {{message.user.first_name}}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="message-detail fp-bg-color-2 bg-revert-sm"
+                    <div class="message-detail fp-bg-color-2 bg-revert-sm"
                      :class="{
                         'has-media': message.images.length,
                         'no-detail': !message.detail,
@@ -58,6 +37,31 @@
                         </div>
                     </div>
                 </div>
+                <div class="message-user">
+                    <!-- <span class="user-name ml-2">{{ message.user.first_name }}</span> -->
+                    <div v-if="auth_user && message.user_id === auth_user.id" class="actions">
+                        <div class="dropdown dropdown-group">
+                            <a href="javascript:;" class="dropdown-toggle no-caret fp-text-color-main" data-toggle="dropdown"><fa icon="ellipsis-h" /></a>
+                            <div class="dropdown-menu dropdown-menu-sm">
+                                <div v-if="message.images.length <= 0"> <a href="javascript:;" class="dropdown-item" @click.prevent="edit()">Edit</a> </div>
+                               <a href="javascript:;" class="dropdown-item" @click.prevent="remove()">Delete</a> 
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="isPrimaryAdmin" class="actions mr-3">
+                        <div class="dropdown dropdown-group">
+                            <a href="javascript:;" class="dropdown-toggle no-caret fp-text-color-main" data-toggle="dropdown">
+                                <fa icon="ellipsis-h" />
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-sm">
+                                <a href="javascript:;" class="dropdown-item" @click.prevent="block()">Block</a>
+                                <a href="javascript:;" class="dropdown-item" @click.prevent="report()">Report</a>
+                                <a href="javascript:;" class="dropdown-item" @click.prevent="contact()">Contact {{message.user.first_name}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
                 <p class="created_at mb-0">{{ $moment(message.created_at).format('h:mm A') }}</p>
             </div>
         </div>

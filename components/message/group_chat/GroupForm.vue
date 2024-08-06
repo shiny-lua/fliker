@@ -4,7 +4,7 @@
             <div>
                 <label class="image-label mx-auto">
                     <img v-if="imageData" :src="imageData" width="100%" height="100%" class="form-image" alt="">
-                    <fp-icon v-else name="camera-fill" class="fp-fs-30 text-success" />
+                    <fp-icon v-else name="camera-fill" class="fp-fs-30 cam-icon" />
                     <input type="file" name="image" hidden accept="image/*" @change="handleImage" />
                 </label>
             </div>
@@ -147,6 +147,9 @@ export default {
 <style lang="scss" scoped>
     .group-form {
         position: relative;
+        .cam-icon {
+            color: #FF22A1;
+        }
         .btn-create-group {
             color: #FFF;
             background: linear-gradient(97.08deg, #FF22A1 1.5%, #FF76C5 99.31%);

@@ -97,11 +97,16 @@
                             class="mt-1"
                     />
                     <div class="mt-3">
-                        <comment-card v-for="(item, index) in comments"
+                        <div v-if="comments.length > 0"> 
+                            <comment-card v-for="(item, index) in comments"
                                 :key="index"
                                 :comment="item"
                                 model="clips"
-                        />
+                            />
+                        </div>
+                        <div> 
+                            <p>No Comments Found</p>
+                        </div>
                     </div>
                 </div>
             </div>

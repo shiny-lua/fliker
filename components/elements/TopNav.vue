@@ -59,9 +59,9 @@
                   v-tooltip="`FliConn`"
                 >
                   <img
-                    src="../../assets/images/timelineIcon.png"
+                    src="../../assets/images/flipconn.svg"
                     alt="FliConn"
-                    style="width: 40px; height: 40px"
+                    style="width: 30px; height: 30px"
                   />
                   <!-- <fp-icon name="home" /> -->
                 </a>

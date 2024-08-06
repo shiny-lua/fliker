@@ -112,28 +112,41 @@
                 </a>
             </div>
         </div>
-
+        
         <div v-if="showComments" class="clips-comments d-none d-md-block">
             <div class="fp-card border-0 h-100">
                 <a href="javascript:;" class="btn-close-comments" @click="showComments = false">
                     <fp-icon name="close" class="fp-fs-22" />
                 </a>
+                <div class="comments-block">
                 <div class="mt-3 pt-1 comments  nice-scrollbar">
-                    <comment-form :clip_id="clips.id"
-                            model="clips"
-                            @posted="commentPosted"
-                            class="mt-1"
-                    />
                     <div class="mt-3">
-                        <comment-card v-for="(item, index) in comments"
+                        <div v-if="comments.length > 0"> 
+                            <comment-card v-for="(item, index) in comments"
                                 :key="index"
                                 :comment="item"
                                 model="clips"
                         />
                     </div>
+                        <div v-else> 
+                        <p class="text-center">No Comments Found</p>
+                    </div>
+                    </div>
+                </div>
+                <div class="mt-3 pt-1 comments">
+                    
+                        <comment-form :clip_id="clips.id"
+                            model="clips"
+                            @posted="commentPosted"
+                            class="mt-1"
+                        />
+                    
+                   
                 </div>
             </div>
+            </div>
         </div>
+    
 
         <fp-modal name="clipCommentModal"
              :width="550"
@@ -360,6 +373,7 @@
     };
 </script>
 <style lang="scss" scoped>
+
     .clips-detail-container {
         position: relative;
         // aspect-ratio: 9 / 16;
@@ -426,8 +440,8 @@
             max-width: 376px;
             max-height: 570px;
             .comments {
-                max-height: calc(100% - 16px);
-                overflow: auto;
+                max-height: calc(100% - 75px);
+                overflow: auto;                
             }
             .btn-close-comments {
                 position: absolute;
