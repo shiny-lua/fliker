@@ -1113,6 +1113,26 @@
         }
     }
 
+    [data-theme=dark] {
+        .timeline_reacts_modal {
+            .card{
+                background-color: #00162D;
+                svg{
+                    color: #F0F3F9;
+                }
+            }
+            .card-body {
+                background-color: #00162D;
+                color: #F0F3F9;
+            }
+            img{
+                border: solid 2px #F0F3F9;
+            }
+            .username{
+                color: #F0F3F9;
+            }
+        }
+    }
     .timeline-comments-wrapper {
         // height: calc(100vh - 140px);
         max-height: 500px;
