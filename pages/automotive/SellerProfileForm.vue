@@ -196,7 +196,7 @@
                     accept="image/*"
                   />
                 </label>
-                
+
               </div>
             </div> -->
             <div class="text-center mt-3" v-if="progress && form.image">
@@ -260,7 +260,7 @@ export default {
           state: "",
           zipcode: "",
           county: "",
-          address: "USA",
+          address: "",
           full_address: "",
           latitude: "",
           longitude: "",
@@ -471,7 +471,7 @@ export default {
           }
           count++;
           this.progress = Math.floor((count / totalImages) * 100);
-          
+
 
           console.log(this.progress)
           // this.$refs.progresStatus.style.width = this.progress + "%";
