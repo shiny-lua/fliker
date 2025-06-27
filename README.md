@@ -1,5 +1,7 @@
 # flicker-page-ui
 
+![UI](assets/images/flicker.png)
+
 ### FlickerPage UI app for end user interactions.
 
 ## Build Setup
